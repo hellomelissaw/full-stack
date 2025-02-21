@@ -34,11 +34,11 @@ html_content += """</table>
 </html>"""
 
 # Save the HTML file in Apache's web directory
-html_file_path = "/var/www/html/index.html"  # Apache serves from here by default
-with open(html_file_path, "w") as file:
-    file.write(html_content)
+# html_file_path = "/var/www/html/index.html"  # Apache serves from here by default
+# with open(html_file_path, "w") as file:
+#     file.write(html_content)
 
-print(f"HTML file generated at {html_file_path}")
+print(html_content)
 
 # Close the database connection
 conn.close()
