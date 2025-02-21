@@ -35,7 +35,7 @@ html_content = """<!DOCTYPE html>
 """
 
 for row in rows:
-    html_content += f"<tr><td>user id: {row[0]}</td><td>user name: {row[1]}</td></tr>\n"
+    html_content += f"<tr><td>user name: {row[1]}</td></tr>\n"
 
 html_content += """</table>
 </body>
