@@ -1,52 +1,66 @@
 import sqlite3
 
-# Connect to the SQLite database
-db_path = "../game.db"  
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
+def application(enverion, start_response):
+    status = '200 OK'
+    output = b"""<h1><center>It Works</center></h1>
+            <h2><center>Best game ever, right here</center></h2>"""
 
-# Query the database
-cursor.execute("SELECT * FROM user") 
-rows = cursor.fetchall()
+    response_headers = [('Content-Type', 'text/html'),
+                    ('Content-Length', str(len(output))),
+                    ('Cache-Control', 'no-cache')]
+    
+    start_response(status, response_headers)
 
-# Output some headers
-print("Content-Type: html/text")
-print("Cache-Control: no-cache")
-print("")
+    # Connect to the SQLite database
+    db_path = "../game.db"  
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
 
-# Generate HTML content
-html_content = """<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Data</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; border: 1px solid black; text-align: left; }
-        th { background-color: #f2f2f2; }
-    </style>
-</head>
-<body>
-    <h2>User Data</h2>
-    <table>
-        <tr><th>ID</th><th>Name</th><th>Email</th></tr>
-"""
+    # Query the database
+    cursor.execute("SELECT * FROM user") 
+    rows = cursor.fetchall()
 
-for row in rows:
-    html_content += f"<tr><td>user id: {row[0]}</td><td>user name: {row[1]}</td></tr>\n"
+    # Output some headers
+    print("Content-Type: text/html\n")
+    print("")
 
-html_content += """</table>
-</body>
-</html>"""
+    # Generate HTML content
+    html_content = """<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Data</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { padding: 8px; border: 1px solid black; text-align: left; }
+            th { background-color: #f2f2f2; }
+        </style>
+    </head>
+    <body>
+        <h2>User Data</h2>
+        <table>
+            <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+    """
 
-# Save the HTML file in Apache's web directory
-html_file_path = "index.html"  # Apache serves from here by default
-with open(html_file_path, "w") as file:
-    file.write(html_content)
+    for row in rows:
+        html_content += f"<tr><td>user id: {row[0]}</td><td>user name: {row[1]}</td></tr>\n"
 
-print(f"Heeej bish, HTML file generated at {html_file_path}")
+    html_content += """</table>
+    </body>
+    </html>"""
 
-# Close the database connection
-conn.close()
+    # Save the HTML file in Apache's web directory
+    # html_file_path = "index.html"  # Apache serves from here by default
+    # with open(html_file_path, "w") as file:
+    #     file.write(html_content)
+    
+    
+
+    # Close the database connection
+    conn.close()
+    print("Database connection closed.")
+
+    print(f"Heeej bish, serving HTML.")
+    return [html_content]
