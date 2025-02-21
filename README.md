@@ -1,3 +1,3 @@
-# full-stack
+# full-stacks
 # testing
 # hi
