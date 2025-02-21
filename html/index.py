@@ -1,3 +1,8 @@
+#!/bin/env python3
+print("Content-Type: text/html")
+print("Cache-Control: no-cache")
+print("")
+
 import sqlite3
 
 # Connect to the SQLite database
@@ -18,7 +23,7 @@ html_content = """<!DOCTYPE html>
     <title>User Data</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px; border: 1px solid black; text-align: left; }
         th { background-color: #f2f2f2; }
     </style>
