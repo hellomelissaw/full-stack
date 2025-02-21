@@ -6,7 +6,7 @@ conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
 # Query the database
-cursor.execute("SELECT userid FROM user") 
+cursor.execute("SELECT * FROM user") 
 rows = cursor.fetchall()
 
 # Output some headers
@@ -23,7 +23,7 @@ html_content = """<!DOCTYPE html>
     <title>User Data</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        table { width: 100%%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px; border: 1px solid black; text-align: left; }
         th { background-color: #f2f2f2; }
     </style>
@@ -35,14 +35,14 @@ html_content = """<!DOCTYPE html>
 """
 
 for row in rows:
-    html_content += f"<tr><td>user name: {row[1]}</td></tr>\n"
+    html_content += f"<tr><td>user id: {row[0]}</td><td>user name: {row[1]}</td></tr>\n"
 
 html_content += """</table>
 </body>
 </html>"""
 
 # Save the HTML file in Apache's web directory
-html_file_path = "/var/www/html/index.html"  # Apache serves from here by default
+html_file_path = "index.html"  # Apache serves from here by default
 with open(html_file_path, "w") as file:
     file.write(html_content)
 
