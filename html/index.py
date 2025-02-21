@@ -9,6 +9,11 @@ cursor = conn.cursor()
 cursor.execute("SELECT userid FROM user") 
 rows = cursor.fetchall()
 
+# Output some headers
+print("Content-Type: html/text")
+print("Cache-Control: no-cache")
+print("")
+
 # Generate HTML content
 html_content = """<!DOCTYPE html>
 <html lang="en">
