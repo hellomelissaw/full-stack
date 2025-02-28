@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/hellomelissaw/full-stack/issues"
   },
-  "homepage": "https://github.com/hellomelissaw/full-stack#readme"
+  "homepage": "https://github.com/hellomelissaw/full-stack#readme",
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
 }

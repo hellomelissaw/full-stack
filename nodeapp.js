@@ -3,9 +3,9 @@ const http = require('http');
 const hostname = 'localhost';
 const port = 3000;
 
-const sqlite = require('node:sqlite');
-const { DatabaseSync } = require('node:sqlite');
-const database = new DatabaseSync('game.db');
+const sqlite3 = require('sqlite3');
+// const { DatabaseSync } = require('sqlite3');
+const database = new sqlite3.Database('game.db');
 
 const query = database.prepare('SELECT * from user');
 
@@ -22,4 +22,4 @@ server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-db.close();
+// database.close();
