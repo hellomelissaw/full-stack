@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
                 </head>
 
                 <body>
-                    <h1> User List </h1>
+                    <h1> User List &#x1F92A; </h1>
                      <table>
                         <tr><th>ID</th><th>Name</th></tr>
                         ${rows.map(row => `<tr><td>${row.userid}</td><td>${row.name}</td></tr>`).join('')}
@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
         `;
         
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Type', 'text/html');
         res.setHeader('Cache-Control', 'no-cache');
         res.end(html);
     })
