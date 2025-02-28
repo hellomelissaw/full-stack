@@ -31,13 +31,14 @@ const server = http.createServer((req, res) => {
                     </table>
                 </body>
             </html>
-        `       
+        `;
+        
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.end(html);
     })
 
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.end(html);
 });
 
 server.listen(port, hostname, () => {
