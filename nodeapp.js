@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     res.setHeader('Cache-Control', 'no-cache');
-    res.end('Welcome to da Game!\n');
+    res.end('Welcome to da Game! hihi\n');
 });
 
 server.listen(port, hostname, () => {
