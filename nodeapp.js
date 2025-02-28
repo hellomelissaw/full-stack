@@ -1,22 +1,15 @@
-import sqlite3 from "sqlite3";
-
-const db = new sqlite3.Database(game.db);
-
 const url = require('node:url');
 const http = require('http');
 const hostname = 'localhost';
 const port = 3000;
 
-sql = "SELECT * FROM user";
-params = [];
+const sqlite = require('node:sqlite');
+const { DatabaseSync } = require('node:sqlite');
+const database = new DatabaseSync('game.db');
 
-db.all(sql, params, function(err, rows) {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(rows);
-    }
-  });
+const query = database.prepare('SELECT * from user');
+
+console.log(query.all());
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
