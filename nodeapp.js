@@ -8,8 +8,11 @@ const database = new sqlite3.Database('game.db');
 
 const server = http.createServer((req, res) => {
     // Parse the URL
+    let url = '';
     if (req.headers['Get']) {
-        var url = req.headers['GET'];
+        url = req.headers['GET'];
+    } else {
+        url = 'No GET header retrieved.';
     }
 
     // query database
