@@ -7,6 +7,11 @@ const port = 3000;
 const database = new sqlite3.Database('game.db');
 
 const server = http.createServer((req, res) => {
+    // Parse the URL
+    if (req.headers['Get']) {
+        var url = req.headers['GET'];
+    }
+
     // query database
     database.all('SELECT * FROM user', (err, rows) => {
         if (err) {
@@ -18,17 +23,17 @@ const server = http.createServer((req, res) => {
 
         // make html page with table data
         let html = `
-            <html>
+            <html lang="en">
                 <head>
                     <title> Users </title>
                 </head>
-
                 <body>
                     <h1> User List </h1>
                      <table>
                         <tr><th>ID</th><th>Name</th></tr>
                         ${rows.map(row => `<tr><td>${row.userid}</td><td>${row.name}</td></tr>`).join('')}
                     </table>
+                <p>Parsed URL: ${url}</p>
                 </body>
             </html>
         `;
