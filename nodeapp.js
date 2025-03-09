@@ -12,14 +12,24 @@ const pool = mariadb.createPool({
     connectionLimit: 5 // limit shown in the mariadb docs
 });
 
+// initialize db connection
+let conn;
+
+async function initDbConnection() {
+    try {
+        conn = await pool.getConnection();
+        console.log("Database connected.");
+    } catch (err) {
+        console.error("Database connection failed:", err);
+        process.exit(1); 
+}
+
 
 //async function asyncFunction() {
 const server = http.createServer(async(req, res) => { 
-    let conn;
     console.log("Creating server...");
-    console.log(`Request url: ${req.url}`);
+
     try {
-        conn = await pool.getConnection();
 
         let html;
         if(req.url === '/page1') {
