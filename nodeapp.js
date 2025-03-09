@@ -62,7 +62,7 @@ async function requestHandler(req, res) {
                     <title>Page Navigation</title>
                 </head>
                 <body>
-                    <h1>Welcome to the forest. &#x1F332</h1>
+                    <h1>Welcome to the ${rows.name}. ${rows.emojis}</h1>
                     <button onclick="window.location.href='/home'">Go Home</button>
                 </body>
                 </html>
@@ -79,7 +79,7 @@ async function requestHandler(req, res) {
                     <title>Page Navigation</title>
                 </head>
                 <body>
-                    <h1>Welcome to the discotheque. &#x1F57A &#x1F483 &#x1FAA9</h1>
+                    <h1>Welcome to the ${rows.name}. ${rows.emojis}</h1>
                     <button onclick="window.location.href='/home'">Go Home</button>
                 </body>
                 </html>
