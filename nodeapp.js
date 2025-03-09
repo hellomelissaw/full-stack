@@ -114,19 +114,25 @@ server.listen(port, hostname, () => {
 
 
 process.on('SIGINT', () => {
-    console.log('Bye');
-    server.close(() => {
-        if(conn){
-            conn.end();
-            console.log("Db connection closed.");
-        }
+    try{
+	
+     if(server) {
+         console.log("Closing server...");
+         server.close();
+ }
+     if(conn) {
+         conn.end();
+         console.log("Database connection closed.");
+      }
 
-        if(pool) {
-            pool.end();
-            console.log("Pool ended.");
-        }
-    })
-})
+     if(pool) {
+        pool.end();
+        console.log("Connection pool closed. Summer is over.");
+     }
+  } finally {
+console.log("Bye.");
+process.exit(0); 
+});
 
 process.on('uncaughtException', (err) => {
     console.error('Uncaught exception: ', err);
