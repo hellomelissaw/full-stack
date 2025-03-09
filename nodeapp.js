@@ -25,7 +25,7 @@ async function initDbConnection() {
     }
 }
 
-
+initDbConnection();
 //async function asyncFunction() {
 const server = http.createServer(async(req, res) => { 
     console.log("Creating server...");
@@ -106,6 +106,8 @@ const server = http.createServer(async(req, res) => {
 
 });
 
+
+
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 }).on("error", (err) => {
@@ -113,25 +115,29 @@ server.listen(port, hostname, () => {
 });
 
 
-process.on('SIGINT', () => {
-    try{
+process.on('SIGINT', async () => {
+    try {
 	
      if(server) {
          console.log("Closing server...");
-         server.close();
- }
-     if(conn) {
-         conn.end();
-         console.log("Database connection closed.");
-      }
+         await new Promise(resolve => server.close(resolve));
+         console.log("Server closed.");
+    }
+    if(conn) {
+        await conn.end();
+        console.log("Database connection closed.");
+    }
 
-     if(pool) {
-        pool.end();
+    if(pool) {
+        await pool.end();
         console.log("Connection pool closed. Summer is over.");
-     }
+    }
+    } catch (err) {
+        console.error("Error during shutdown ", err);
   } finally {
-console.log("Bye.");
-process.exit(0); 
+        console.log("Bye.");
+        process.exit(0); 
+  }
 });
 
 process.on('uncaughtException', (err) => {
