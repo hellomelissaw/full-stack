@@ -1,4 +1,4 @@
-const hostname = 'localhost';
+const hostname = '127.0.0.1';
 const port = 3000;
 
 const http = require('http');
@@ -14,7 +14,7 @@ const pool = mariadb.createPool({
 
 
 //async function asyncFunction() {
-const server = http.createServer(async(res) => { 
+const server = http.createServer(async(req, res) => { 
     let conn;
     console.log("Creating server...");
     try {
