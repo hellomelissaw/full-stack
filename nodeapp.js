@@ -58,6 +58,24 @@ server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
+process.on('SIGINT', () => {
+    console.log('Received SIGINT. Closing server and freeing port...');
+    server.close(() => {
+        console.log('HTTP server closed');
+        pool.end();  // Close database pool
+        process.exit(0);  // Exit the process
+    });
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught exception: ', err);
+    server.close(() => {
+        console.log('HTTP server closed due to uncaught exception');
+        pool.end();  // Close database pool
+        process.exit(1);  // Exit the process with error code
+    });
+});
+
 // asyncFunction().then(() => {
 //     pool.end();
 // });
