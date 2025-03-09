@@ -26,10 +26,8 @@ async function initDbConnection() {
 }
 
 initDbConnection();
-//async function asyncFunction() {
-const server = http.createServer(async(req, res) => { 
-    console.log("Creating server...");
 
+async function requestHandler(req, res) {
     try {
 
         if(!conn) {
@@ -99,11 +97,13 @@ const server = http.createServer(async(req, res) => {
     } catch (err) {
         throw err;
     
-    } finally {
-     console.log("Ending db connections.");
-        if (conn) conn.end();
     }
 
+}
+
+
+const server = http.createServer(requestHandler, () => {
+    console.log("Creating server...");
 });
 
 
