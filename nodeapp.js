@@ -24,19 +24,19 @@ const server = http.createServer(async(req, res) => {
         console.log(rows);
         // make html page with table data
         let html = `
-            <html>
-                <head>
-                    <title> Users </title>
-                </head>
-
-                <body>
-                    <h1> User List </h1>
-                     <table>
-                        <tr><th>ID</th><th>Name</th></tr>
-                        ${rows.map(row => `<tr><td>${row.LocID}</td><td>${row.name}</td></tr>`).join('')}
-                    </table>
-                </body>
+        <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Page Navigation</title>
+            </head>
+            <body>
+                <h1>Welcome</h1>
+                <button onclick="window.location.href='/page1'">Go to Page 1</button>
+                <button onclick="window.location.href='/page2'">Go to Page 2</button>
+            </body>
             </html>
+
         `;
 
        res.statusCode = 200;
