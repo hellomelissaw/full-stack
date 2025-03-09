@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/hellomelissaw/full-stack#readme",
   "dependencies": {
+    "mariadb": "^3.4.0",
     "sqlite3": "^5.1.7"
   }
 }
