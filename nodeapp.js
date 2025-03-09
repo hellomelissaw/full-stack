@@ -23,8 +23,8 @@ const server = http.createServer(async(req, res) => {
 
         let html;
         if(req.url === '/page1') {
-
-        const rows = await conn.query("SELECT * from Locations WHERE name='Forest");
+   
+        const rows = await conn.query("SELECT * from Locations WHERE name='Forest'");
         html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -41,7 +41,7 @@ const server = http.createServer(async(req, res) => {
             `;
         
         } else if (req.url === '/page2') {
-            const rows = await conn.query("SELECT * from Locations WHERE name='Discotheque");
+            const rows = await conn.query("SELECT * from Locations WHERE name='Discotheque'");
             html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -84,6 +84,7 @@ const server = http.createServer(async(req, res) => {
         throw err;
     
     } finally {
+     console.log("Ending db connections.");
         if (conn) conn.end();
     }
 //}
@@ -92,6 +93,8 @@ const server = http.createServer(async(req, res) => {
 
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
+}).on("error", (err) => {
+   console.error("Failed to start server", err);
 });
 
 
