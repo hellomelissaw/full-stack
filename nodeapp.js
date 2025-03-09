@@ -1,4 +1,4 @@
-const hostname = 'localhost';
+const hostname = '127.0.0.1';
 const port = 3000;
 
 const http = require('http');
@@ -53,7 +53,7 @@ async function requestHandler(req, res) {
         let html;
         if(req.url === '/page1') {
    
-        const rows = await conn.query("SELECT * from Locations WHERE name='Forest'");
+        const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
         html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -70,7 +70,7 @@ async function requestHandler(req, res) {
             `;
         
         } else if (req.url === '/page2') {
-            const rows = await conn.query("SELECT * from Locations WHERE name='Discotheque'");
+            const rows = await conn.query("SELECT * from Locations WHERE LocID=2");
             html = `
             <!DOCTYPE html>
                 <html lang="en">
