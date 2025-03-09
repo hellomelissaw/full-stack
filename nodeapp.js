@@ -22,6 +22,7 @@ async function initDbConnection() {
     } catch (err) {
         console.error("Database connection failed:", err);
         process.exit(1); 
+    }
 }
 
 
@@ -30,6 +31,11 @@ const server = http.createServer(async(req, res) => {
     console.log("Creating server...");
 
     try {
+
+        if(!conn) {
+            console.error("Database connection is missing!");
+            throw new Error("Database connection is unavailable");
+        }
 
         let html;
         if(req.url === '/page1') {
@@ -97,7 +103,6 @@ const server = http.createServer(async(req, res) => {
      console.log("Ending db connections.");
         if (conn) conn.end();
     }
-//}
 
 });
 
@@ -108,6 +113,20 @@ server.listen(port, hostname, () => {
 });
 
 
+process.on('SIGINT', () => {
+    console.log('Bye');
+    server.close(() => {
+        if(conn){
+            conn.end();
+            console.log("Db connection closed.");
+        }
+
+        if(pool) {
+            pool.end();
+            console.log("Pool ended.");
+        }
+    })
+})
 
 process.on('uncaughtException', (err) => {
     console.error('Uncaught exception: ', err);
