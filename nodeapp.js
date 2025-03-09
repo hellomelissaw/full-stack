@@ -16,15 +16,9 @@ const pool = mariadb.createPool({
 //async function asyncFunction() {
 const server = http.createServer(async(res) => { 
     let conn;
+    console.log("Creating server...");
     try {
-        conn = await pool.getConnection()
-        .then(conn => {
-            console.log('Database connected successfully');
-            conn.end();  // Close connection after testing
-        })
-        .catch(err => {
-            console.error('Database connection error:', err);
-        });
+        conn = await pool.getConnection();
         // conn = pool.getConnection();
         // const rows = await conn.query("SELECT * from Locations");
         const rows = await conn.query("SELECT * from Locations");
