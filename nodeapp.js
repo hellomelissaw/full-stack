@@ -1,3 +1,4 @@
+const http = require('http');
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: '127.0.0.1',
@@ -14,7 +15,7 @@ async function asyncFunction() {
         conn = await pool.getConnection();
         const rows = await conn.query("SELECT * from Locations");
         console.log(rows);
-
+        const server = http.createServer((res) => { 
         // make html page with table data
         let html = `
             <html>
@@ -31,12 +32,12 @@ async function asyncFunction() {
                 </body>
             </html>
         `;
-      console.log(html);
-      //  res.statusCode = 200;
-      //  res.setHeader('Content-Type', 'text/html');
-      //  res.setHeader('Cache-Control', 'no-cache');
-      //  res.end(html);
-
+       console.log(html);
+       res.statusCode = 200;
+       res.setHeader('Content-Type', 'text/html');
+       res.setHeader('Cache-Control', 'no-cache');
+       res.end(html);
+     });
     
     } catch (err) {
         throw err;
