@@ -1,3 +1,6 @@
+const hostname = 'localhost';
+const port = 3000;
+
 const http = require('http');
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
@@ -9,13 +12,16 @@ const pool = mariadb.createPool({
     connectionLimit: 5 // limit shown in the mariadb docs
 });
 
-async function asyncFunction() {
+
+//async function asyncFunction() {
+const server = http.createServer((res) => { 
     let conn;
     try {
-        conn = await pool.getConnection();
-        const rows = await conn.query("SELECT * from Locations");
+        // conn = await pool.getConnection();
+        conn = pool.getConnection();
+        // const rows = await conn.query("SELECT * from Locations");
+        const rows = conn.query("SELECT * from Locations");
         console.log(rows);
-        const server = http.createServer((res) => { 
         // make html page with table data
         let html = `
             <html>
@@ -37,7 +43,6 @@ async function asyncFunction() {
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
        res.end(html);
-     });
     
     } catch (err) {
         throw err;
@@ -45,11 +50,20 @@ async function asyncFunction() {
     } finally {
         if (conn) conn.end();
     }
-}
+//}
 
-asyncFunction().then(() => {
-    pool.end();
 });
+
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+// asyncFunction().then(() => {
+//     pool.end();
+// });
+
+
+
 // const http = require('http');
 // const sqlite3 = require('sqlite3').verbose();
 
