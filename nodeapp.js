@@ -1,4 +1,4 @@
-const hostname = '127.0.0.1';
+const hostname = 'localhost';
 const port = 3000;
 
 const http = require('http');
@@ -17,28 +17,64 @@ const pool = mariadb.createPool({
 const server = http.createServer(async(req, res) => { 
     let conn;
     console.log("Creating server...");
+    console.log(`Request url: ${req.url}`);
     try {
         conn = await pool.getConnection();
 
-        const rows = await conn.query("SELECT * from Locations");
-        console.log(rows);
-        // make html page with table data
-        let html = `
-        <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>Page Navigation</title>
-            </head>
-            <body>
-                <h1>Welcome</h1>
-                <button onclick="window.location.href='/page1'">Go to Page 1</button>
-                <button onclick="window.location.href='/page2'">Go to Page 2</button>
-            </body>
-            </html>
+        let html;
+        if(req.url === '/page1') {
 
-        `;
+        const rows = await conn.query("SELECT * from Locations WHERE name='Forest");
+        html = `
+            <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Page Navigation</title>
+                </head>
+                <body>
+                    <h1>Welcome to the forest. </h1>
+                    <button onclick="window.location.href='/home'">Go Home</button>
+                </body>
+                </html>
 
+            `;
+        
+        } else if (req.url === '/page2') {
+            const rows = await conn.query("SELECT * from Locations WHERE name='Discotheque");
+            html = `
+            <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Page Navigation</title>
+                </head>
+                <body>
+                    <h1>Welcome to the discotheque. </h1>
+                    <button onclick="window.location.href='/home'">Go Home</button>
+                </body>
+                </html>
+
+            `;
+
+       
+        } else {
+            html = `
+            <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Page Navigation</title>
+                </head>
+                <body>
+                    <h1>Welcome</h1>
+                    <button onclick="window.location.href='/page1'">Go to the forest</button>
+                    <button onclick="window.location.href='/page2'">Go to the discotheque</button>
+                </body>
+                </html>
+
+            `;
+        }
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
