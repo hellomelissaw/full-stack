@@ -3,6 +3,12 @@ const port = 3000;
 
 const http = require('http');
 const mariadb = require('mariadb');
+
+
+////////////////////////////////////////////////////////////
+// CREATE DB POOL
+////////////////////////////////////////////////////////////
+
 const pool = mariadb.createPool({
     host: '127.0.0.1',
     port: 3306,
@@ -12,7 +18,11 @@ const pool = mariadb.createPool({
     connectionLimit: 5 // limit shown in the mariadb docs
 });
 
-// initialize db connection
+
+////////////////////////////////////////////////////////////
+// INITIALIZE DB CONNECTION
+////////////////////////////////////////////////////////////
+
 let conn;
 
 async function initDbConnection() {
@@ -26,6 +36,11 @@ async function initDbConnection() {
 }
 
 initDbConnection();
+
+
+////////////////////////////////////////////////////////////
+// REQUEST HANDLING
+////////////////////////////////////////////////////////////
 
 async function requestHandler(req, res) {
     try {
@@ -89,6 +104,7 @@ async function requestHandler(req, res) {
 
             `;
         }
+
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
@@ -101,6 +117,10 @@ async function requestHandler(req, res) {
 
 }
 
+
+////////////////////////////////////////////////////////////
+// SERVER STUFF
+////////////////////////////////////////////////////////////
 
 const server = http.createServer(requestHandler, () => {
     console.log("Creating server...");
