@@ -14,13 +14,13 @@ const pool = mariadb.createPool({
 
 
 //async function asyncFunction() {
-const server = http.createServer((res) => { 
+const server = http.createServer(async(res) => { 
     let conn;
     try {
-        // conn = await pool.getConnection();
-        conn = pool.getConnection();
+        conn = await pool.getConnection();
+        // conn = pool.getConnection();
         // const rows = await conn.query("SELECT * from Locations");
-        const rows = conn.query("SELECT * from Locations");
+        const rows = await conn.query("SELECT * from Locations");
         console.log(rows);
         // make html page with table data
         let html = `
