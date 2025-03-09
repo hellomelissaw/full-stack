@@ -1,9 +1,10 @@
 const mariadb = require('mariadb');
 const pool = mariadb.createPool({
-    host: 'localhost',
-    port: '3306',
+    host: '127.0.0.1',
+    port: 3306,
     user: 'admin',
     password: 'your_password',
+    database: 'game',
     connectionLimit: 5 // limit shown in the mariadb docs
 });
 
@@ -30,11 +31,11 @@ async function asyncFunction() {
                 </body>
             </html>
         `;
-
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.end(html);
+      console.log(html);
+      //  res.statusCode = 200;
+      //  res.setHeader('Content-Type', 'text/html');
+      //  res.setHeader('Cache-Control', 'no-cache');
+      //  res.end(html);
 
     
     } catch (err) {
