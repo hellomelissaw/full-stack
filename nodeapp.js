@@ -54,7 +54,8 @@ async function requestHandler(req, res) {
         if(req.url === '/page1') {
    
         const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
-        console.log("rows page 1: " + rows);
+        console.log("rows page 1: " + rows[0].name);
+        console.table(rows);
         html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -63,7 +64,7 @@ async function requestHandler(req, res) {
                     <title>Page Navigation</title>
                 </head>
                 <body>
-                    <h1>Welcome to the ${rows.name}. ${rows.emojis}</h1>
+                    <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>
                     <button onclick="window.location.href='/home'">Go Home</button>
                 </body>
                 </html>
