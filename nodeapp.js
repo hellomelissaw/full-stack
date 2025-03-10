@@ -54,6 +54,7 @@ async function requestHandler(req, res) {
         if(req.url === '/page1') {
    
         const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
+        console.log("rows page 1: " + rows);
         html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -70,6 +71,7 @@ async function requestHandler(req, res) {
             `;
         
         } else if (req.url === '/page2') {
+            console.log("rows page 2: " + rows);
             const rows = await conn.query("SELECT * from Locations WHERE LocID=2");
             html = `
             <!DOCTYPE html>
@@ -108,6 +110,7 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
+       console.log(html);
        res.end(html);
     
     } catch (err) {
