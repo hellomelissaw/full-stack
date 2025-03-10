@@ -35,8 +35,6 @@ async function initDbConnection() {
     }
 }
 
-initDbConnection();
-
 
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
@@ -44,7 +42,7 @@ initDbConnection();
 
 async function requestHandler(req, res) {
     try {
-
+        initDbConnection();
         if(!conn) {
             console.error("Database connection is missing!");
             throw new Error("Database connection is unavailable");
