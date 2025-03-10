@@ -44,7 +44,7 @@ async function initDbConnection() {
 
 async function requestHandler(req, res) {
     try {
-        conn = initDbConnection();
+        conn = await pool.getConnection();
         if(!conn) {
             console.error("Database connection is missing!");
             throw new Error("Database connection is unavailable");
@@ -113,6 +113,8 @@ async function requestHandler(req, res) {
     } catch (err) {
         throw err;
     
+    } finally {
+        if(conn) conn.end();
     }
 
 }
