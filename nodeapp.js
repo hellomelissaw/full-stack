@@ -1,4 +1,4 @@
-const hostname = '127.0.0.1';
+const hostname = 'localhost';
 const port = 3000;
 
 const http = require('http');
@@ -27,12 +27,14 @@ let conn;
 
 async function initDbConnection() {
     try {
-        conn = await pool.getConnection();
+       console.log("Awaiting connection from pool.");
+     let conn = await pool.getConnection();
         console.log("Database connected.");
     } catch (err) {
         console.error("Database connection failed:", err);
         process.exit(1); 
     }
+	return conn;
 }
 
 
@@ -42,7 +44,7 @@ async function initDbConnection() {
 
 async function requestHandler(req, res) {
     try {
-        initDbConnection();
+        conn = initDbConnection();
         if(!conn) {
             console.error("Database connection is missing!");
             throw new Error("Database connection is unavailable");
