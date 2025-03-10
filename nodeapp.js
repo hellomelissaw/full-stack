@@ -71,8 +71,9 @@ async function requestHandler(req, res) {
             `;
         
         } else if (req.url === '/page2') {
-            console.log("rows page 2: " + rows);
+
             const rows = await conn.query("SELECT * from Locations WHERE LocID=2");
+            console.log("rows page 2: " + rows);
             html = `
             <!DOCTYPE html>
                 <html lang="en">
