@@ -4,6 +4,8 @@ const port = 3000;
 const http = require('http');
 const mariadb = require('mariadb');
 
+var pool;
+let conn;
 
 ////////////////////////////////////////////////////////////
 // CREATE DB POOL
@@ -19,7 +21,7 @@ const mariadb = require('mariadb');
 // });
 
 try {
-    const pool = mariadb.createPool({
+    pool = mariadb.createPool({
         host: '127.0.0.1',
         port: 3306,
         user: 'admin', // This might be worth changing
@@ -36,8 +38,6 @@ try {
 ////////////////////////////////////////////////////////////
 // INITIALIZE DB CONNECTION
 ////////////////////////////////////////////////////////////
-
-let conn;
 
 // NOT USING FOR NOW, MAYBE NEVER
 // async function initDbConnection() {
