@@ -9,15 +9,29 @@ const mariadb = require('mariadb');
 // CREATE DB POOL
 ////////////////////////////////////////////////////////////
 
-const pool = mariadb.createPool({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'admin',
-    password: 'your_password',
-    database: 'game',
-    connectionLimit: 5 // limit shown in the mariadb docs
-});
+// const pool = mariadb.createPool({
+//     host: '127.0.0.1',
+//     port: 3306,
+//     user: 'admin',
+//     password: 'your_password',
+//     database: 'game',
+//     connectionLimit: 5
+// });
 
+try {
+    const pool = mariadb.createPool({
+        host: '127.0.0.1',
+        port: 3306,
+        user: 'admin', // This might be worth changing
+        password: 'your_password', // This too
+        database: 'game',
+        connectionLimit: 5 // Why 5?
+    }
+)} catch (err) {
+    console.log("DB Pool creation error: ", err)
+} finally {
+    process.exit(1)
+}
 
 ////////////////////////////////////////////////////////////
 // INITIALIZE DB CONNECTION
