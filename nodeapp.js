@@ -20,19 +20,19 @@ let conn;
 //     connectionLimit: 5
 // });
 
+// Since we depend on the DB, it needs to be online
 try {
     pool = mariadb.createPool({
-        host: '127.0.0.1',
-        port: 3306,
-        user: 'admin', // This might be worth changing
-        password: 'your_password', // This too
+        // host and port has the standards localhost and 3306
+        user: 'admin',             // This might be worth changing
+        password: 'your_password', // This is
         database: 'game',
-        connectionLimit: 5 // Why 5?
-    }
-)} catch (err) {
-    console.log("DB Pool creation error: ", err)
-} finally {
-    process.exit(1)
+        connectionLimit: 5
+    })
+} catch (err) {
+    console.log("DB Pool creation error: ", err);
+    // Non-zero exit code indicates error
+    process.exit(1);
 }
 
 ////////////////////////////////////////////////////////////
