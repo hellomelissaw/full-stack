@@ -23,7 +23,8 @@ let conn;
 // Since we depend on the DB, it needs to be online
 try {
     pool = mariadb.createPool({
-        // host and port has the standards localhost and 3306
+        host: '127.0.0.1',         // Force usage of IPv4 on localhost
+        port: '3306',              // Default port number used
         user: 'admin',             // This might be worth changing
         password: 'your_password', // This is
         database: 'game',
