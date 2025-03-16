@@ -4,26 +4,41 @@ const port = 3000;
 const http = require('http');
 const mariadb = require('mariadb');
 
+var pool;
+let conn;
 
 ////////////////////////////////////////////////////////////
 // CREATE DB POOL
 ////////////////////////////////////////////////////////////
 
-const pool = mariadb.createPool({
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'admin',
-    password: 'your_password',
-    database: 'game',
-    connectionLimit: 5 // limit shown in the mariadb docs
-});
+// const pool = mariadb.createPool({
+//     host: '127.0.0.1',
+//     port: 3306,
+//     user: 'admin',
+//     password: 'your_password',
+//     database: 'game',
+//     connectionLimit: 5
+// });
 
+// Since we depend on the DB, it needs to be online
+try {
+    pool = mariadb.createPool({
+        host: '127.0.0.1',         // Force usage of IPv4 on localhost
+        port: '3306',              // Default port number used
+        user: 'admin',             // This might be worth changing
+        password: 'your_password', // This is
+        database: 'game',
+        connectionLimit: 5
+    })
+} catch (err) {
+    console.log("DB Pool creation error: ", err);
+    // Non-zero exit code indicates error
+    process.exit(1);
+}
 
 ////////////////////////////////////////////////////////////
 // INITIALIZE DB CONNECTION
 ////////////////////////////////////////////////////////////
-
-let conn;
 
 // NOT USING FOR NOW, MAYBE NEVER
 // async function initDbConnection() {
