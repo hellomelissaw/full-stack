@@ -71,12 +71,26 @@ async function requestHandler(req, res) {
         const parsed = url.parse(req.url, true);
         console.log('print parsed url');
         console.table(parsed);
-        //console.log(`parsed url query locID: ${parsed.query.locID}`);
-        //console.log(`req.url.query.locID: ${req.query.locID}`);
+
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const rows = await conn.query(`SELECT * from Locations WHERE LocID=${id}`);
-            //console.table(rows);
+            const rows = await conn.query(`SELECT * from location WHERE loc_id=${id}`); // TODO: select single row
+            const connection_rows = await conn.query(`
+                SELECT
+                    location_connection.loc_id,
+                    location_connection.conn_id,
+                    location.name AS conn_name
+                FROM
+                    location_connection
+                JOIN 
+                    location
+                ON 
+                    location_connection.conn_id = location.loc_id
+                WHERE
+                    location_connection.loc_id = ${id};
+                `);
+
+            console.table(connection_rows);
             html = `
                 <!DOCTYPE html>
                     <html lang="en">
@@ -85,12 +99,16 @@ async function requestHandler(req, res) {
                         <title>Currently adventuring...</title>
                     </head>
                     <body>
-                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>
-                        <button onclick="window.location.href='/home'">Go Home</button>
-                    </body>
-                    </html>
+                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>`;
 
-                `;
+            for (const row in connection_rows) {
+                html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
+            };
+                        
+            html += `
+                </body>
+                </html>
+            `;
         
         } else {
             html = `
