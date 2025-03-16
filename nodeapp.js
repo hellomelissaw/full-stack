@@ -73,55 +73,37 @@ async function requestHandler(req, res) {
         console.table(parsed);
         //console.log(`parsed url query locID: ${parsed.query.locID}`);
         //console.log(`req.url.query.locID: ${req.query.locID}`);
-        if(parsed.query.locID == '1') {
-        const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
-        //console.table(rows);
-        html = `
-            <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Page Navigation</title>
-                </head>
-                <body>
-                    <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>
-                    <button onclick="window.location.href='/home'">Go Home</button>
-                </body>
-                </html>
-
-            `;
-        
-        } else if (req.url === '/page2') {
-
-            const rows = await conn.query("SELECT * from Locations WHERE LocID=2");
+        if(parsed.pathname == '/location') {
+            const id = parsed.query.locID;
+            const rows = await conn.query(`SELECT * from Locations WHERE LocID=${id}`);
+            //console.table(rows);
             html = `
-            <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Page Navigation</title>
-                </head>
-                <body>
-                    <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>
-                    <button onclick="window.location.href='/home'">Go Home</button>
-                </body>
-                </html>
+                <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Currently adventuring...</title>
+                    </head>
+                    <body>
+                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>
+                        <button onclick="window.location.href='/home'">Go Home</button>
+                    </body>
+                    </html>
 
-            `;
-
-       
+                `;
+        
         } else {
             html = `
             <!DOCTYPE html>
                 <html lang="en">
                 <head>
                     <meta charset="UTF-8">
-                    <title>Page Navigation</title>
+                    <title>Game start!</title>
                 </head>
                 <body>
-                    <h1>Welcome</h1>
+                    <h1>Welcome to the game, where do you want to go?</h1>
                     <button onclick="window.location.href='/location?locID=1'">Go to the forest</button>
-                    <button onclick="window.location.href='/page2'">Go to the discotheque</button>
+                    <button onclick="window.location.href='/location?locID=2'">Go to the discotheque</button>
                 </body>
                 </html>
 
