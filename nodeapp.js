@@ -2,6 +2,7 @@ const hostname = 'localhost';
 const port = 3000;
 
 const http = require('http');
+const url = require('url');
 const mariadb = require('mariadb');
 
 var pool;
@@ -68,8 +69,11 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
-        console.log(`parsed url: ${parsed}`);
-        if(req.url === '/page1') {
+        console.log('print parsed url');
+        console.table(parsed);
+        //console.log(`parsed url query locID: ${parsed.query.locID}`);
+        //console.log(`req.url.query.locID: ${req.query.locID}`);
+        if(parsed.query.locID == '1') {
         const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
         //console.table(rows);
         html = `
@@ -116,7 +120,7 @@ async function requestHandler(req, res) {
                 </head>
                 <body>
                     <h1>Welcome</h1>
-                    <button onclick="window.location.href='/page1'">Go to the forest</button>
+                    <button onclick="window.location.href='/location?locID=1'">Go to the forest</button>
                     <button onclick="window.location.href='/page2'">Go to the discotheque</button>
                 </body>
                 </html>
