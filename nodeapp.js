@@ -99,9 +99,9 @@ async function requestHandler(req, res) {
                         <title>Currently adventuring...</title>
                     </head>
                     <body>
-                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis}</h1>`;
+                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis ? rows[0].emojis : ''}</h1>`;
 
-            for (const row in connection_rows) {
+            for (const row of connection_rows) {
                 html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
             };
                         
@@ -119,9 +119,8 @@ async function requestHandler(req, res) {
                     <title>Game start!</title>
                 </head>
                 <body>
-                    <h1>Welcome to the game, where do you want to go?</h1>
-                    <button onclick="window.location.href='/location?locID=1'">Go to the forest</button>
-                    <button onclick="window.location.href='/location?locID=2'">Go to the discotheque</button>
+                    <h1>Welcome to the game, click start to start!</h1>
+                    <button onclick="window.location.href='/location?locID=0'">start</button>
                 </body>
                 </html>
 
