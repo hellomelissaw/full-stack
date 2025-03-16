@@ -52,10 +52,11 @@ async function requestHandler(req, res) {
         }
 
         let html;
+        const parsed = url.parse(req.url, true);
+        console.log(`parsed url: ${parsed}`);
         if(req.url === '/page1') {
-   
         const rows = await conn.query("SELECT * from Locations WHERE LocID=1");
-        console.table(rows);
+        //console.table(rows);
         html = `
             <!DOCTYPE html>
                 <html lang="en">
@@ -111,7 +112,7 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       console.log(html);
+       //console.log(html);
        res.end(html);
     
     } catch (err) {
