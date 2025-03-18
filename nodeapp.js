@@ -84,6 +84,7 @@ sql_user = 'SELECT loc_id FROM user where uid = ?'
 function locationIsValid(connection_rows, user_loc_id) {
     const isValid = false;
     for(const row of connection_rows) {
+        console.log(`conn_id: ${row.conn_id}, user_loc_id: ${user_loc_id}`)
         if(row.conn_id == user_loc_id) {
             isValid = true;
         }
