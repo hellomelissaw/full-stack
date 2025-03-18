@@ -74,7 +74,7 @@ sql_conn = `SELECT
             WHERE
                 location_connection.loc_id = ?`;
 
-sql_user = 'SELECT 1 FROM user where uid = ?'
+sql_user = 'SELECT loc_id FROM user where uid = ?'
 
 
 
