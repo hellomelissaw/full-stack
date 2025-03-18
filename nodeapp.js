@@ -74,9 +74,9 @@ sql_conn = `SELECT
             WHERE
                 location_connection.loc_id = ?`;
 
-sql_user = 'SELECT loc_id FROM user WHERE uid = ?'
+sql_user = 'SELECT loc_id FROM user WHERE uid = ?';
 
-
+update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
 
 ////////////////////////////////////////////////////////////
 // HELPER FUNCTIONS
@@ -109,16 +109,16 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
-        console.log('print parsed url');
-        console.table(parsed);
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
             const user_loc = await conn.query(sql_user, [uid]);
-            console.table(user_loc);             
-if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
+
+            if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
+                await conn.query(update_user_location, [id, uid]);
+
                 html = `
                     <!DOCTYPE html>
                         <html lang="en">
