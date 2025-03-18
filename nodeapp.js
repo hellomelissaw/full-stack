@@ -74,7 +74,7 @@ sql_conn = `SELECT
             WHERE
                 location_connection.loc_id = ?`;
 
-sql_user = 'SELECT loc_id FROM user where uid = ?'
+sql_user = 'SELECT loc_id FROM user WHERE uid = ?'
 
 
 
@@ -114,8 +114,8 @@ async function requestHandler(req, res) {
             const id = parsed.query.locID;
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
-
-            if(locationIsValid(connection_rows)) {
+            const user_loc = await conn.query(sql_user, [uid]);
+            if(locationIsValid(connection_rows, user_loc)) {
                 html = `
                     <!DOCTYPE html>
                         <html lang="en">
