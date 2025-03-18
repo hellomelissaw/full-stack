@@ -109,12 +109,12 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
+        const user_loc = await conn.query(sql_user, [uid]);
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
-            const user_loc = await conn.query(sql_user, [uid]);
 
             if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
                 await conn.query(update_user_location, [id, uid]);
@@ -164,7 +164,7 @@ async function requestHandler(req, res) {
                 </head>
                 <body>
                     <h1>Welcome to the game, click start to start!</h1>
-                    <button onclick="window.location.href='/location?locID=0'">start</button>
+                    <button onclick="window.location.href='/location?locID=${user_loc[0].loc_id}'">start</button>
                 </body>
                 </html>
 
