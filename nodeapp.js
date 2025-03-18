@@ -1,3 +1,4 @@
+const uid = 1;
 const hostname = 'localhost';
 const port = 3000;
 
@@ -60,6 +61,20 @@ try {
 
 sql_loc = 'SELECT * from location WHERE loc_id = ?';
 
+sql_conn = `SELECT
+                location_connection.loc_id,
+                location_connection.conn_id,
+                location.name AS conn_name
+            FROM
+                location_connection
+            JOIN 
+                location
+            ON 
+                location_connection.conn_id = location.loc_id
+            WHERE
+                location_connection.loc_id = ?`;
+
+sql_user = 'SELECT 1 FROM user where uid = ?'
 
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
@@ -80,21 +95,8 @@ async function requestHandler(req, res) {
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const rows = await conn.query(sql_user, [id]); // TODO: select single row
-            const connection_rows = await conn.query(`
-                SELECT
-                    location_connection.loc_id,
-                    location_connection.conn_id,
-                    location.name AS conn_name
-                FROM
-                    location_connection
-                JOIN 
-                    location
-                ON 
-                    location_connection.conn_id = location.loc_id
-                WHERE
-                    location_connection.loc_id = ${id};
-                `);
+            const rows = await conn.query(sql_loc, [id]); // TODO: select single row
+            const connection_rows = await conn.query(sql_conn, [id]);
 
             console.table(connection_rows);
             html = `
