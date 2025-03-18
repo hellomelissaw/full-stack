@@ -76,6 +76,22 @@ sql_conn = `SELECT
 
 sql_user = 'SELECT 1 FROM user where uid = ?'
 
+
+
+////////////////////////////////////////////////////////////
+// HELPER FUNCTIONS
+////////////////////////////////////////////////////////////
+function locationIsValid(connection_rows, user_loc_id) {
+    const isValid = false;
+    for(const row of connection_rows) {
+        if(row.conn_id == user_loc_id) {
+            isValid = true;
+        }
+    }
+    return isValid;
+}
+
+
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
 ////////////////////////////////////////////////////////////
@@ -98,25 +114,41 @@ async function requestHandler(req, res) {
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
 
-            console.table(connection_rows);
-            html = `
+            if(locationIsValid(connection_rows)) {
+                html = `
+                    <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>Currently adventuring...</title>
+                        </head>
+                        <body>
+                            <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis ? rows[0].emojis : ''}</h1>`;
+
+                for (const row of connection_rows) {
+                    html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
+                };
+                            
+                html += `
+                    </body>
+                    </html>
+                `;
+            } else {
+                html = `
                 <!DOCTYPE html>
                     <html lang="en">
                     <head>
                         <meta charset="UTF-8">
-                        <title>Currently adventuring...</title>
+                        <title>Game start!</title>
                     </head>
                     <body>
-                        <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis ? rows[0].emojis : ''}</h1>`;
-
-            for (const row of connection_rows) {
-                html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
-            };
-                        
-            html += `
-                </body>
-                </html>
-            `;
+                        <h1>Invalid location! Go back to start!</h1>
+                        <button onclick="window.location.href='/location?locID=0'">start</button>
+                    </body>
+                    </html>
+    
+                `;
+            }
         
         } else {
             html = `
