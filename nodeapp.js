@@ -117,7 +117,7 @@ async function requestHandler(req, res) {
             const user_loc = await conn.query(sql_user, [uid]);
 
             if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
-                await conn.query(update_user_location, [id], [uid]);
+                await conn.query(update_user_location, [id, uid]);
 
                 html = `
                     <!DOCTYPE html>
