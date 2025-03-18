@@ -143,11 +143,11 @@ async function requestHandler(req, res) {
                     <html lang="en">
                     <head>
                         <meta charset="UTF-8">
-                        <title>Game start!</title>
+                        <title>Dead end!</title>
                     </head>
                     <body>
-                        <h1>Invalid location! Go back to where you wehre!</h1>
-                        <button onclick="window.location.href='/location?locID=${user_loc[0].loc_id}'">start</button>
+                        <h1>Invalid location! Go back to where you were!</h1>
+                        <button onclick="window.location.href='/location?locID=${user_loc[0].loc_id}'">Go!</button>
                     </body>
                     </html>
     
