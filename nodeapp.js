@@ -81,8 +81,10 @@ sql_user = 'SELECT loc_id FROM user WHERE uid = ?'
 ////////////////////////////////////////////////////////////
 // HELPER FUNCTIONS
 ////////////////////////////////////////////////////////////
-function locationIsValid(connection_rows, user_loc_id) {
-    const isValid = false;
+function locationIsValid(connection_rows, user_loc_id, loc) {
+    if(user_loc_id == loc) { return true; }
+
+    let isValid = false;
     for(const row of connection_rows) {
         console.log(`conn_id: ${row.conn_id}, user_loc_id: ${user_loc_id}`)
         if(row.conn_id == user_loc_id) {
@@ -115,7 +117,8 @@ async function requestHandler(req, res) {
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
             const user_loc = await conn.query(sql_user, [uid]);
-            if(locationIsValid(connection_rows, user_loc)) {
+            console.table(user_loc);             
+if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
                 html = `
                     <!DOCTYPE html>
                         <html lang="en">
