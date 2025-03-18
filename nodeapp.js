@@ -54,6 +54,12 @@ try {
 // 	return conn;
 // }
 
+////////////////////////////////////////////////////////////
+// PREPARED QUERIES
+////////////////////////////////////////////////////////////
+
+sql_loc = 'SELECT * from location WHERE loc_id = ?';
+
 
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
@@ -74,7 +80,7 @@ async function requestHandler(req, res) {
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const rows = await conn.query(`SELECT * from location WHERE loc_id=${id}`); // TODO: select single row
+            const rows = await conn.query(sql_user, [id]); // TODO: select single row
             const connection_rows = await conn.query(`
                 SELECT
                     location_connection.loc_id,
