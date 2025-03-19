@@ -97,8 +97,8 @@ function locationIsValid(connection_rows, user_loc_id, loc) {
 
 async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
     const rows = await conn.query(`SELECT *           
-                                  FROM ${table} 
-                                  WHERE ${whereclause} = ?
+                                  FROM \`${table}\` 
+                                  WHERE \`${whereclause}\` = ?
                                 `, [value]);
     return rows[0] || null;
 }
