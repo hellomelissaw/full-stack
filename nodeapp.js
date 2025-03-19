@@ -59,8 +59,6 @@ try {
 // PREPARED QUERIES
 ////////////////////////////////////////////////////////////
 
-sql_loc = 'SELECT * from location WHERE loc_id = ?';
-
 sql_conn = `SELECT
                 location_connection.loc_id,
                 location_connection.conn_id,
@@ -73,8 +71,6 @@ sql_conn = `SELECT
                 location_connection.conn_id = location.loc_id
             WHERE
                 location_connection.loc_id = ?`;
-
-sql_user = 'SELECT loc_id FROM user WHERE uid = ?';
 
 update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
 
@@ -95,6 +91,15 @@ function locationIsValid(connection_rows, user_loc_id, loc) {
 }
 
 
+async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
+    const rows = await conn.query(`SELECT *           
+                                  FROM \`${table}\` 
+                                  WHERE \`${whereclause}\` = ?
+                                `, [value]);
+    return rows[0] || null;
+}
+
+
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
 ////////////////////////////////////////////////////////////
@@ -109,14 +114,14 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
-        const user_loc = await conn.query(sql_user, [uid]);
+        const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const rows = await conn.query(sql_loc, [id]); // TODO: select single row
+            const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
             const connection_rows = await conn.query(sql_conn, [id]);
 
-            if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
+            if(locationIsValid(connection_rows, user_info.loc_id, id)) {
                 await conn.query(update_user_location, [id, uid]);
 
                 html = `
@@ -127,7 +132,7 @@ async function requestHandler(req, res) {
                             <title>Currently adventuring...</title>
                         </head>
                         <body>
-                            <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis ? rows[0].emojis : ''}</h1>`;
+                            <h1>Welcome to the ${loc.name}. ${loc.emojis ? loc.emojis : ''}</h1>`;
 
                 for (const row of connection_rows) {
                     html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
