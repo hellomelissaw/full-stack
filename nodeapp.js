@@ -95,6 +95,15 @@ function locationIsValid(connection_rows, user_loc_id, loc) {
 }
 
 
+async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
+    const rows = await conn.query(`SELECT *           
+                                  FROM ? 
+                                  WHERE ? = ?
+                                `, [table, whereclause, value]);
+    return rows[0] || null;
+}
+
+
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
 ////////////////////////////////////////////////////////////
@@ -109,14 +118,16 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
-        const user_loc = await conn.query(sql_user, [uid]);
-
+        //const user_loc = await conn.query(sql_user, [uid]);
+        const user_info = await findOne(conn, 'loc_id', 'uid', uid);
+        console.log(`user_info: ${user_info}`);
+        
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
             const rows = await conn.query(sql_loc, [id]); // TODO: select single row
             const connection_rows = await conn.query(sql_conn, [id]);
 
-            if(locationIsValid(connection_rows, user_loc[0].loc_id, id)) {
+            if(locationIsValid(connection_rows, user_info.loc_id, id)) {
                 await conn.query(update_user_location, [id, uid]);
 
                 html = `
