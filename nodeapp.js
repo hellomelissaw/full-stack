@@ -120,11 +120,14 @@ async function requestHandler(req, res) {
         const parsed = url.parse(req.url, true);
         //const user_loc = await conn.query(sql_user, [uid]);
         const user_info = await findOne(conn, 'loc_id', 'uid', uid);
-        console.log(`user_info: ${user_info}`);
-        
+        console.table(`user_info: ${user_info}`);
+
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const rows = await conn.query(sql_loc, [id]); // TODO: select single row
+            //const rows = await conn.query(sql_loc, [id]); // TODO: select single row
+            const loc = await findOne(conn, 'location', 'loc_id', id);
+            console.table(loc);
+
             const connection_rows = await conn.query(sql_conn, [id]);
 
             if(locationIsValid(connection_rows, user_info.loc_id, id)) {
@@ -138,7 +141,7 @@ async function requestHandler(req, res) {
                             <title>Currently adventuring...</title>
                         </head>
                         <body>
-                            <h1>Welcome to the ${rows[0].name}. ${rows[0].emojis ? rows[0].emojis : ''}</h1>`;
+                            <h1>Welcome to the ${loc.name}. ${loc.emojis ? loc.emojis : ''}</h1>`;
 
                 for (const row of connection_rows) {
                     html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
