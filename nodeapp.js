@@ -114,11 +114,11 @@ async function requestHandler(req, res) {
 
         let html;
         const parsed = url.parse(req.url, true);
-        const user_info = await findOne(conn, 'user', 'uid', uid);
+        const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
 
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
-            const loc = await findOne(conn, 'location', 'loc_id', id);
+            const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
             const connection_rows = await conn.query(sql_conn, [id]);
 
             if(locationIsValid(connection_rows, user_info.loc_id, id)) {
