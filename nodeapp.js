@@ -97,9 +97,9 @@ function locationIsValid(connection_rows, user_loc_id, loc) {
 
 async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
     const rows = await conn.query(`SELECT *           
-                                  FROM ? 
-                                  WHERE ? = ?
-                                `, [table, whereclause, value]);
+                                  FROM ${table} 
+                                  WHERE ${whereclause} = ?
+                                `, [value]);
     return rows[0] || null;
 }
 
@@ -119,7 +119,7 @@ async function requestHandler(req, res) {
         let html;
         const parsed = url.parse(req.url, true);
         //const user_loc = await conn.query(sql_user, [uid]);
-        const user_info = await findOne(conn, 'loc_id', 'uid', uid);
+        const user_info = await findOne(conn, 'user', 'uid', uid);
         console.table(`user_info: ${user_info}`);
 
         if(parsed.pathname == '/location') {
