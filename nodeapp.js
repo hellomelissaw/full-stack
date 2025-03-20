@@ -10,7 +10,7 @@ const url = require('url');
 const mariadb = require('mariadb/callback');
 
 // var pool;
-// let conn;
+let conn;
 
 ////////////////////////////////////////////////////////////
 // CREATE DB POOL
@@ -116,7 +116,7 @@ async function requestHandler(req, res) {
         //    throw new Error("Database connection is unavailable");
         // }
 
-        const conn = mariadb.createConnection({
+        conn = mariadb.createConnection({
             host: '127.0.0.1',         // Force usage of IPv4 on localhost
             port: 3306,                // Default port number
             user: 'admin',             // TODO - This might be worth changing
@@ -236,10 +236,10 @@ process.on('SIGINT', async () => {
         console.log("Database connection closed.");
     }
 
-    if(pool) {
-        await pool.end();
-        console.log("Connection pool closed. Summer is over.");
-    }
+    // if(pool) {
+    //   await pool.end();
+    //   console.log("Connection pool closed. Summer is over.");
+    // }
     } catch (err) {
         console.error("Error during shutdown ", err);
   } finally {
@@ -252,7 +252,7 @@ process.on('uncaughtException', (err) => {
     console.error('Uncaught exception: ', err);
     server.close(() => {
         console.log('HTTP server closed due to uncaught exception');
-        pool.end();  // Close database pool
+        // pool.end();  // Close database pool
         process.exit(1);  // Exit the process with error code
     });
 });
