@@ -2,70 +2,21 @@ const uid = 1;
 const hostname = 'localhost';
 const port = 3000;
 
+// Needed external packages
 const http = require('http');
 const url = require('url');
+const mariadb = require('mariadb');
+
+// Process variables
+let conn;
+let debug = false;
 
 // Collect command line arguments
-let debug = false;
 process.argv.forEach(function (value, index) {
-    // console.log(index, value);
     if (value === "debug" || value === "--debug") {
         debug = true;
     }
 })
-
-// Moving away from pools
-// const mariadb = require('mariadb');
-const mariadb = require('mariadb/callback');
-
-// var pool;
-let conn;
-
-////////////////////////////////////////////////////////////
-// CREATE DB POOL
-////////////////////////////////////////////////////////////
-
-// const pool = mariadb.createPool({
-//     host: '127.0.0.1',
-//     port: 3306,
-//     user: 'admin',
-//     password: 'your_password',
-//     database: 'game',
-//     connectionLimit: 5
-// });
-
-// Since we depend on the DB, it needs to be online
-// try {
-//     pool = mariadb.createPool({
-//         host: '127.0.0.1',         // Force usage of IPv4 on localhost
-//         port: '3306',              // Default port number used
-//         user: 'admin',             // This might be worth changing
-//         password: 'your_password', // This is
-//         database: 'game',
-//         connectionLimit: 5
-//     })
-// } catch (err) {
-//     console.log("DB Pool creation error: ", err);
-//     // Non-zero exit code indicates error
-//     process.exit(1);
-// }
-
-////////////////////////////////////////////////////////////
-// INITIALIZE DB CONNECTION
-////////////////////////////////////////////////////////////
-
-// NOT USING FOR NOW, MAYBE NEVER
-// async function initDbConnection() {
-//     try {
-//        console.log("Awaiting connection from pool.");
-//      let conn = await pool.getConnection();
-//         console.log("Database connected.");
-//     } catch (err) {
-//         console.error("Database connection failed:", err);
-//         process.exit(1); 
-//     }
-// 	return conn;
-// }
 
 ////////////////////////////////////////////////////////////
 // PREPARED QUERIES
@@ -117,29 +68,44 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 ////////////////////////////////////////////////////////////
 
 async function requestHandler(req, res) {
+    // The main event loop will try to send out an HTML page or terminate gracefully if uncaught errors arise
     try {
-        // Moving away from pools
-        // conn = await pool.getConnection();
-        // if(!conn) {
-        //    console.error("Database connection is missing!");
-        //    throw new Error("Database connection is unavailable");
-        // }
-
-        conn = mariadb.createConnection({
-            host: '127.0.0.1',         // Force usage of IPv4 on localhost
-            port: 3306,                // Default port number
-            user: 'admin',             // TODO - This might be worth changing
-            password: 'your_password', // TODO - This is
-            database: 'game'
-        });
+        // Obtain a connection to the database or send out an HTTP 500 error page
+        try {
+            conn = await mariadb.createConnection({
+                host: '127.0.0.1',         // Force usage of IPv4 on localhost
+                port: 3306,                // Default port number
+                user: 'admin',             // TODO - This might be worth changing
+                password: 'your_password', // TODO - This is
+                database: 'game'
+            });
+        } catch (err) {
+            console.error("Database connection failed: ", err)
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Cache-Control', 'no-cache');
+            res.end(`<!DOCTYPE html><head><title>Error</title><body><h2>Database error:</h2><p>${err}</p></body></html>`);
+        }
         if (debug) {
             console.log("Database object: ", conn);
         }
-
-        if (!conn) {
-            console.error("Database connection is missing, exiting");
-            process.exit(1);
-        }
+        // if (!conn) {
+        //     console.error("Database connection is missing, exiting");
+        //     process.exit(1);
+        // }
+        // Fetch empty set to test the database
+        // try {
+        //     await conn.query('SELECT 1 FROM dual WHERE FALSE')
+        //     if (debug) {
+        //         console.log("Database ping successful");
+        //     }
+        // } catch (err) {
+        //     console.error("Database ping failed: ", err)
+        //     res.statusCode = 500;
+        //     res.setHeader('Content-Type', 'text/html');
+        //     res.setHeader('Cache-Control', 'no-cache');
+        //     res.end('<!DOCTYPE html><head><title>Error</title><body><p>Database error: ${err}</p></body></html>');
+        // }
 
         let html;
         const parsed = url.parse(req.url, true);
