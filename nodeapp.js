@@ -5,6 +5,15 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 
+// Collect command line arguments
+let debug = false;
+process.argv.forEach(function (value, index) {
+    // console.log(index, value);
+    if (value === "debug" || value === "--debug") {
+        debug = true;
+    }
+})
+
 // Moving away from pools
 // const mariadb = require('mariadb');
 const mariadb = require('mariadb/callback');
@@ -123,8 +132,9 @@ async function requestHandler(req, res) {
             password: 'your_password', // TODO - This is
             database: 'game'
         });
-
-        console.log(conn);
+        if (debug) {
+            console.log("Database object: ", conn);
+        }
 
         if (!conn) {
             console.error("Database connection is missing, exiting");
