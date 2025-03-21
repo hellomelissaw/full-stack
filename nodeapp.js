@@ -124,6 +124,8 @@ async function requestHandler(req, res) {
             database: 'game'
         });
 
+        console.log(conn);
+
         if (!conn) {
             console.error("Database connection is missing, exiting");
             process.exit(1);
