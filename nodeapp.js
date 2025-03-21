@@ -115,7 +115,7 @@ async function requestHandler(req, res) {
         let html;
         const parsed = url.parse(req.url, true);
         const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
-
+        console.table(user_info);
         if(parsed.pathname == '/location') {
             const id = parsed.query.locID;
             const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
@@ -152,7 +152,7 @@ async function requestHandler(req, res) {
                     </head>
                     <body>
                         <h1>Invalid location! Go back to where you were!</h1>
-                        <button onclick="window.location.href='/location?locID=${user_loc[0].loc_id}'">Go!</button>
+                        <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">Go!</button>
                     </body>
                     </html>
     
@@ -169,7 +169,7 @@ async function requestHandler(req, res) {
                 </head>
                 <body>
                     <h1>Welcome to the game, click start to start!</h1>
-                    <button onclick="window.location.href='/location?locID=${user_loc[0].loc_id}'">start</button>
+                    <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">start</button>
                 </body>
                 </html>
 
