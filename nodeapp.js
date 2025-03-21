@@ -4,9 +4,12 @@ const port = 3000;
 
 const http = require('http');
 const url = require('url');
-const mariadb = require('mariadb');
 
-var pool;
+// Moving away from pools
+// const mariadb = require('mariadb');
+const mariadb = require('mariadb/callback');
+
+// var pool;
 let conn;
 
 ////////////////////////////////////////////////////////////
@@ -23,20 +26,20 @@ let conn;
 // });
 
 // Since we depend on the DB, it needs to be online
-try {
-    pool = mariadb.createPool({
-        host: '127.0.0.1',         // Force usage of IPv4 on localhost
-        port: '3306',              // Default port number used
-        user: 'admin',             // This might be worth changing
-        password: 'your_password', // This is
-        database: 'game',
-        connectionLimit: 5
-    })
-} catch (err) {
-    console.log("DB Pool creation error: ", err);
-    // Non-zero exit code indicates error
-    process.exit(1);
-}
+// try {
+//     pool = mariadb.createPool({
+//         host: '127.0.0.1',         // Force usage of IPv4 on localhost
+//         port: '3306',              // Default port number used
+//         user: 'admin',             // This might be worth changing
+//         password: 'your_password', // This is
+//         database: 'game',
+//         connectionLimit: 5
+//     })
+// } catch (err) {
+//     console.log("DB Pool creation error: ", err);
+//     // Non-zero exit code indicates error
+//     process.exit(1);
+// }
 
 ////////////////////////////////////////////////////////////
 // INITIALIZE DB CONNECTION
@@ -106,11 +109,20 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 
 async function requestHandler(req, res) {
     try {
-        conn = await pool.getConnection();
-        if(!conn) {
-            console.error("Database connection is missing!");
-            throw new Error("Database connection is unavailable");
-        }
+        // Moving away from pools
+        // conn = await pool.getConnection();
+        // if(!conn) {
+        //    console.error("Database connection is missing!");
+        //    throw new Error("Database connection is unavailable");
+        // }
+
+        conn = mariadb.createConnection({
+            host: '127.0.0.1',         // Force usage of IPv4 on localhost
+            port: 3306,                // Default port number
+            user: 'admin',             // TODO - This might be worth changing
+            password: 'your_password', // TODO - This is
+            database: 'game'
+        });
 
         let html;
         const parsed = url.parse(req.url, true);
@@ -136,7 +148,7 @@ async function requestHandler(req, res) {
 
                 for (const row of connection_rows) {
                     html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
-                };
+                }
                             
                 html += `
                     </body>
@@ -179,14 +191,16 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       //console.log(html);
+       // console.log(html);
        res.end(html);
     
     } catch (err) {
         throw err;
     
     } finally {
-        if(conn) conn.end();
+        if (conn) {
+            conn.end();
+        }
     }
 
 }
@@ -222,10 +236,10 @@ process.on('SIGINT', async () => {
         console.log("Database connection closed.");
     }
 
-    if(pool) {
-        await pool.end();
-        console.log("Connection pool closed. Summer is over.");
-    }
+    // if(pool) {
+    //   await pool.end();
+    //   console.log("Connection pool closed. Summer is over.");
+    // }
     } catch (err) {
         console.error("Error during shutdown ", err);
   } finally {
@@ -238,7 +252,7 @@ process.on('uncaughtException', (err) => {
     console.error('Uncaught exception: ', err);
     server.close(() => {
         console.log('HTTP server closed due to uncaught exception');
-        pool.end();  // Close database pool
+        // pool.end();  // Close database pool
         process.exit(1);  // Exit the process with error code
     });
 });
