@@ -124,6 +124,11 @@ async function requestHandler(req, res) {
             database: 'game'
         });
 
+        if (!conn) {
+            console.error("Database connection is missing, exiting");
+            process.exit(1);
+        }
+
         let html;
         const parsed = url.parse(req.url, true);
         const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
