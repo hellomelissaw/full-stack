@@ -20,10 +20,10 @@ function locationIsValid(connection_rows, user_loc_id, loc_id) {
 async function requestRoute(conn, req) {
     const parsed = url.parse(req.url, true);
     const path = parsed.pathname;
+    const user_info = getUserData(conn, uid);
     console.log(`parsed and path in requestRoute: ${parsed}, ${path}`);
     switch(path) {
         case '/location':
-            const user_info = getUserData(conn, uid);
             const id = parsed.query.locID;
             const loc = await getLocationPageData(conn, id);
 
@@ -64,3 +64,5 @@ async function requestRoute(conn, req) {
     }
 
 }
+
+module.exports = { requestRoute }
