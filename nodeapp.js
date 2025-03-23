@@ -5,7 +5,7 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const requestRoute = require('./routing');
+const { requestRoute } = require('./routing.js');
 var pool;
 let conn;
 
@@ -175,7 +175,9 @@ async function requestHandler(req, res) {
 
         //     `;
         //}
-       const result = requestRoute(conn, req);
+       const result = await requestRoute(conn, req);
+       console.log(result);
+       console.table(result);
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
