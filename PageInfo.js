@@ -18,7 +18,7 @@ class PageInfo {
 }
 
 
-class LocationPageInfo extends PageInfo () {
+class LocationPageInfo extends PageInfo {
     constructor(title, location, connections) {
         super(title);
         this.location = location;
@@ -28,7 +28,7 @@ class LocationPageInfo extends PageInfo () {
     generateHTML() {
         let html = `<!DOCTYPE html>
                     <html lang="en">
-                        ${generateHead(title)}
+                        ${generateHead(this.title)}
                         ${generateLocationBody(this.location, this.connections)}
                     </html>`;
         return html;
