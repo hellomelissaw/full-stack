@@ -5,7 +5,7 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-
+const requestRoute = require('./routing');
 var pool;
 let conn;
 
@@ -112,75 +112,75 @@ async function requestHandler(req, res) {
             throw new Error("Database connection is unavailable");
         }
 
-        let html;
-        const parsed = url.parse(req.url, true);
-        const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
-        console.table(user_info);
-        if(parsed.pathname == '/location') {
-            const id = parsed.query.locID;
-            const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
-            const connection_rows = await conn.query(sql_conn, [id]);
+        // let html;
+        // const parsed = url.parse(req.url, true);
+        // const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
+        // console.table(user_info);
+        // if(parsed.pathname == '/location') {
+        //     const id = parsed.query.locID;
+        //     const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
+        //     const connection_rows = await conn.query(sql_conn, [id]);
 
-            if(locationIsValid(connection_rows, user_info.loc_id, id)) {
-                await conn.query(update_user_location, [id, uid]);
+        //     if(locationIsValid(connection_rows, user_info.loc_id, id)) {
+        //         await conn.query(update_user_location, [id, uid]);
 
-                html = `
-                    <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <title>Currently adventuring...</title>
-                        </head>
-                        <body>
-                            <h1>Welcome to the ${loc.name}. ${loc.emojis ? loc.emojis : ''}</h1>`;
+        //         html = `
+        //             <!DOCTYPE html>
+        //                 <html lang="en">
+        //                  <head>
+        //                     <meta charset="UTF-8">
+        //                     <title>Currently adventuring...</title>
+        //                 </head>
+        //                 <body>
+        //                     <h1>Welcome to the ${loc.name}. ${loc.emojis ? loc.emojis : ''}</h1>`;
 
-                for (const row of connection_rows) {
-                    html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
-                };
+        //         for (const row of connection_rows) {
+        //             html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
+        //         };
                             
-                html += `
-                    </body>
-                    </html>
-                `;
-            } else {
-                html = `
-                <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Dead end!</title>
-                    </head>
-                    <body>
-                        <h1>Invalid location! Go back to where you were!</h1>
-                        <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">Go!</button>
-                    </body>
-                    </html>
+        //         html += `
+        //             </body>
+        //             </html>
+        //         `;
+        //     } else {
+        //         html = `
+        //         <!DOCTYPE html>
+        //             <html lang="en">
+        //             <head>
+        //                 <meta charset="UTF-8">
+        //                 <title>Dead end!</title>
+        //             </head>
+        //             <body>
+        //                 <h1>Invalid location! Go back to where you were!</h1>
+        //                 <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">Go!</button>
+        //             </body>
+        //             </html>
     
-                `;
-            }
+        //         `;
+        //     }
         
-        } else {
-            html = `
-            <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Game start!</title>
-                </head>
-                <body>
-                    <h1>Welcome to the game, click start to start!</h1>
-                    <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">start</button>
-                </body>
-                </html>
+        // } else {
+        //     html = `
+        //     <!DOCTYPE html>
+        //         <html lang="en">
+        //         <head>
+        //             <meta charset="UTF-8">
+        //             <title>Game start!</title>
+        //         </head>
+        //         <body>
+        //             <h1>Welcome to the game, click start to start!</h1>
+        //             <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">start</button>
+        //         </body>
+        //         </html>
 
-            `;
-        }
-
+        //     `;
+        //}
+       const result = requestRoute(conn, req);
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       //console.log(html);
-       res.end(html);
+       console.log(result);
+       res.end(result);
     
     } catch (err) {
         throw err;
