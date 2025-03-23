@@ -20,15 +20,17 @@ function locationIsValid(connection_rows, user_loc_id, loc_id) {
 async function requestRoute(conn, req) {
     const parsed = url.parse(req.url, true);
     const path = parsed.pathname;
-    const user_info = getUserData(conn, uid);
+    const user_info = await getUserData(conn, uid);
+    
     console.log(`parsed and path in requestRoute: ${parsed}, ${path}`);
     switch(path) {
         case '/location':
             const id = parsed.query.locID;
             const loc = await getLocationPageData(conn, id);
-
+            console.log(user_info.loc_id);
             if(locationIsValid(loc.connections, user_info.loc_id, id)){
-                updateUserLocation(id, uid);
+                updateUserLocation(conn, id, uid);
+                console.log(loc.generateHTML());
                 return loc.generateHTML();
             
             } else { // TODO: make 'generate' functions for all of these
