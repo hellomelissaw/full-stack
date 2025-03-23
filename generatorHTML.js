@@ -35,21 +35,4 @@ function generateLocationBody(location, connections){
     html += `</body>`;
 }
 
-function generateHTML(page_info) {
-    let html;
-
-    html = `<!DOCTYPE html>
-                <html lang="en">
-            `
-    html += generateHead(page_info.title);
-
-    html += generateBody(page_info.page_type);
-
-    html += `</html>`
-
-    return html;
-}
-
-console.log(generateHTML())
-
 module.exports = { generateHead, generateLocationBody }
