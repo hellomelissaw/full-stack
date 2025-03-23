@@ -41,10 +41,13 @@ async function getLocationPageData(conn, id) {
 }
 
 async function getUserData(conn, uid) {
-    return await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
+    let user_data = await findOne(conn, 'user', 'uid', uid);
+    console.log("User data in data service:");
+    console.table(user_data); 	
+    return user_data;
 }
 
-async function updateUserLocation(id, uid) {
+async function updateUserLocation(conn, id, uid) {
     await conn.query(update_user_location, [id, uid]);
 }
 
