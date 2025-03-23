@@ -33,6 +33,8 @@ function generateLocationBody(location, connections){
     };
     
     html += `</body>`;
+
+    return html;
 }
 
 module.exports = { generateHead, generateLocationBody }
