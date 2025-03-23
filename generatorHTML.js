@@ -1,8 +1,3 @@
-// let page_info = {
-//     "page_type": "location",
-//     "title": "Adventure time...",
-//     "location_connections": {}
-// }
 function generateHead(title) {
     return `
             <head>
@@ -10,16 +5,6 @@ function generateHead(title) {
                 <title>${title}</title>
             </head>
            `
-}
-
-function generateBody(page_type, page_info) {
-    let body = '<body>';
-    switch(page_type) {
-        case 'location':
-
-            return;
-
-    }
 }
 
 function generateLocationBody(location, connections){
