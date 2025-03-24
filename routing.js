@@ -44,6 +44,7 @@ async function requestRoute(conn, req) {
                 const params = new URLSearchParams(body);
                 const name = params.get('name');
                 const emojis = params.get('emojis');
+                console.log(`name: ${name} and emojis: ${emojis}`);
                 return insertLocation(name, emojis);
             });
 
