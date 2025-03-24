@@ -32,7 +32,6 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
     return rows[0] || null;
 }
 
-
 async function getLocationPageData(conn, id) {
     const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
