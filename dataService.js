@@ -47,14 +47,15 @@ async function updateUserLocation(conn, id, uid) {
     await conn.query(update_user_location, [id, uid]);
 }
 
-async function insertLocation(name, emojis) {
+async function insertLocation(conn, name, emojis) {
     try{
-        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+        await conn.query("INSERT INTO location  VALUES (10, ?, ?)", [name, emojis]);
         console.log("inserted location");
         return 'Location inserted successfully!';
     
     } catch(err) {
-        return err.message;
+         console.log(`error: ${err.message}`);
+         return err.message;
     }
    
 }
