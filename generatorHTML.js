@@ -34,6 +34,7 @@ function generateStartPage(userLocID) {
     html += `<body>
                 <h1>Welcome to the game, click start to start!</h1>
                 <button onclick="window.location.href='/location?locID=${userLocID}'">start</button>
+                <button onclick="window.location.href='/insert-location-form'">Insert</button>
             </body>`
     html += `</html>`;
 }
