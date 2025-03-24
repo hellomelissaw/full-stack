@@ -45,7 +45,7 @@ async function requestRoute(conn, req) {
                 const name = params.get('name');
                 const emojis = params.get('emojis');
                 console.log(`name: ${name} and emojis: ${emojis}`);
-                return insertLocation(name, emojis);
+                return await insertLocation(conn, name, emojis);
             });
 
         case '/insert-location-form':
