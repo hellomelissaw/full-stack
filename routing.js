@@ -1,7 +1,7 @@
 const uid = 1; // temporary userid until we set up a login system
 const { getUserData, getLocationPageData, updateUserLocation } = require('./dataService');
 const url = require('url');
-const { generateErrorPage, generateStartPage } = require('./generatorHTML');
+const { generateErrorPage, generateStartPage, generateInsertPage } = require('./generatorHTML');
 
 function locationIsValid(connection_rows, user_loc_id, loc_id) {
     if (user_loc_id == loc_id) { 
@@ -34,6 +34,33 @@ async function requestRoute(conn, req) {
             } else {
                 return generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
             }
+        
+        case '/insert-location':
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                const params = new URLSearchParams(body);
+                const name = params.get('name');
+                const emojis = params.get('emojis');
+                try {
+                        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'text/plain');
+                        res.end('Location inserted successfully!');
+
+                } catch (err) {
+                    if (!res.headersSent) {
+                        res.statusCode = 500;
+                        res.setHeader('Content-Type', 'text/plain');
+                        res.end('Database error: ' + err.message);
+                        }
+                    }
+            });
+
+        case '/insert-location-form':
+            return generateInsertPage();
         default: 
             return generateStartPage(user_info.loc_id);
     }
