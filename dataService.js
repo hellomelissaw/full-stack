@@ -24,7 +24,6 @@ const update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
 // QUERYING
 ////////////////////////////////////////////////////////////
 
-
 async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
     const rows = await conn.query(`SELECT *           
                                   FROM \`${table}\` 
@@ -41,9 +40,7 @@ async function getLocationPageData(conn, id) {
 }
 
 async function getUserData(conn, uid) {
-    let user_data = await findOne(conn, 'user', 'uid', uid);
-    console.log("User data in data service:");
-    console.table(user_data); 	
+    let user_data = await findOne(conn, 'user', 'uid', uid);  // TODO Handle if null
     return user_data;
 }
 

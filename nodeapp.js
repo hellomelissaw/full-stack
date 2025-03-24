@@ -55,50 +55,6 @@ try {
 // 	return conn;
 // }
 
-////////////////////////////////////////////////////////////
-// PREPARED QUERIES
-////////////////////////////////////////////////////////////
-
-sql_conn = `SELECT
-                location_connection.loc_id,
-                location_connection.conn_id,
-                location.name AS conn_name
-            FROM
-                location_connection
-            JOIN 
-                location
-            ON 
-                location_connection.conn_id = location.loc_id
-            WHERE
-                location_connection.loc_id = ?`;
-
-update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
-
-////////////////////////////////////////////////////////////
-// HELPER FUNCTIONS
-////////////////////////////////////////////////////////////
-function locationIsValid(connection_rows, user_loc_id, loc) {
-    if(user_loc_id == loc) { return true; }
-
-    let isValid = false;
-    for(const row of connection_rows) {
-        console.log(`conn_id: ${row.conn_id}, user_loc_id: ${user_loc_id}`)
-        if(row.conn_id == user_loc_id) {
-            isValid = true;
-        }
-    }
-    return isValid;
-}
-
-
-async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
-    const rows = await conn.query(`SELECT *           
-                                  FROM \`${table}\` 
-                                  WHERE \`${whereclause}\` = ?
-                                `, [value]);
-    return rows[0] || null;
-}
-
 
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
@@ -112,76 +68,11 @@ async function requestHandler(req, res) {
             throw new Error("Database connection is unavailable");
         }
 
-        // let html;
-        // const parsed = url.parse(req.url, true);
-        // const user_info = await findOne(conn, 'user', 'uid', uid); // TODO Handle if null
-        // console.table(user_info);
-        // if(parsed.pathname == '/location') {
-        //     const id = parsed.query.locID;
-        //     const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
-        //     const connection_rows = await conn.query(sql_conn, [id]);
-
-        //     if(locationIsValid(connection_rows, user_info.loc_id, id)) {
-        //         await conn.query(update_user_location, [id, uid]);
-
-        //         html = `
-        //             <!DOCTYPE html>
-        //                 <html lang="en">
-        //                  <head>
-        //                     <meta charset="UTF-8">
-        //                     <title>Currently adventuring...</title>
-        //                 </head>
-        //                 <body>
-        //                     <h1>Welcome to the ${loc.name}. ${loc.emojis ? loc.emojis : ''}</h1>`;
-
-        //         for (const row of connection_rows) {
-        //             html += `<button onclick="window.location.href='/location?locID=${row.conn_id}'">${row.conn_name}</button>`
-        //         };
-                            
-        //         html += `
-        //             </body>
-        //             </html>
-        //         `;
-        //     } else {
-        //         html = `
-        //         <!DOCTYPE html>
-        //             <html lang="en">
-        //             <head>
-        //                 <meta charset="UTF-8">
-        //                 <title>Dead end!</title>
-        //             </head>
-        //             <body>
-        //                 <h1>Invalid location! Go back to where you were!</h1>
-        //                 <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">Go!</button>
-        //             </body>
-        //             </html>
-    
-        //         `;
-        //     }
-        
-        // } else {
-        //     html = `
-        //     <!DOCTYPE html>
-        //         <html lang="en">
-        //         <head>
-        //             <meta charset="UTF-8">
-        //             <title>Game start!</title>
-        //         </head>
-        //         <body>
-        //             <h1>Welcome to the game, click start to start!</h1>
-        //             <button onclick="window.location.href='/location?locID=${user_info.loc_id}'">start</button>
-        //         </body>
-        //         </html>
-
-        //     `;
-        //}
        const result = await requestRoute(conn, req);
-       console.log(result);
-       console.table(result);
+
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       console.log(result);
        res.end(result);
     
     } catch (err) {
