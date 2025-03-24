@@ -1,3 +1,6 @@
+const { getErrorMessage } = require('./ERROR_MESSAGES')
+
+
 function generateHead(title) {
     return `
             <head>
@@ -22,4 +25,36 @@ function generateLocationBody(location, connections){
     return html;
 }
 
-module.exports = { generateHead, generateLocationBody }
+function generateStartPage(userLocID) {
+    let html = `<!DOCTYPE html>
+                    <html lang="en">`;
+    
+    html += generateHead("Start your adventure here");
+
+    html += `<body>
+                <h1>Welcome to the game, click start to start!</h1>
+                <button onclick="window.location.href='/location?locID=${userLocID}'">start</button>
+            </body>`
+    html += `</html>`;
+}
+
+function generateErrorPage(userLocID, errorCode) {
+    let html = `<!DOCTYPE html>
+                    <html lang="en">`;
+    
+    html += generateHead("Error!");
+    
+    html += `<body>
+                    <h1>${getErrorMessage(errorCode)}</h1>
+                    <button onclick="window.location.href='/location?locID=${userLocID}'">Go!</button>
+                </body>`
+    html += `</html>`;
+
+    return html;
+}
+
+module.exports = { generateHead, 
+                   generateLocationBody, 
+                   generateErrorPage, 
+                   generateStartPage
+                }
