@@ -47,4 +47,19 @@ async function updateUserLocation(conn, id, uid) {
     await conn.query(update_user_location, [id, uid]);
 }
 
-module.exports = { getLocationPageData, getUserData, updateUserLocation }
+async function insertLocation(name, emojis) {
+    try{
+        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+        return 'Location inserted successfully!';
+    
+    } catch(err) {
+        return err.message;
+    }
+   
+}
+
+module.exports = { getLocationPageData, 
+                   getUserData, 
+                   updateUserLocation,
+                   insertLocation
+                 }

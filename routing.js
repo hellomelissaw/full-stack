@@ -1,5 +1,5 @@
 const uid = 1; // temporary userid until we set up a login system
-const { getUserData, getLocationPageData, updateUserLocation } = require('./dataService');
+const { getUserData, getLocationPageData, updateUserLocation, insertLocation } = require('./dataService');
 const url = require('url');
 const { generateErrorPage, generateStartPage, generateInsertPage } = require('./generatorHTML');
 
@@ -44,19 +44,7 @@ async function requestRoute(conn, req) {
                 const params = new URLSearchParams(body);
                 const name = params.get('name');
                 const emojis = params.get('emojis');
-                try {
-                        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
-                        res.statusCode = 200;
-                        res.setHeader('Content-Type', 'text/plain');
-                        res.end('Location inserted successfully!');
-
-                } catch (err) {
-                    if (!res.headersSent) {
-                        res.statusCode = 500;
-                        res.setHeader('Content-Type', 'text/plain');
-                        res.end('Database error: ' + err.message);
-                        }
-                    }
+                return insertLocation(name, emojis);
             });
 
         case '/insert-location-form':
