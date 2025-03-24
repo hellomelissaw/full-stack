@@ -166,9 +166,11 @@ async function requestHandler(req, res) {
                 try {
                         await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
                         res.statusCode = 200;
-                        res.setHeader('Content-Type', 'text/plain');
-                        res.end('Location inserted successfully!');
-
+                        if (!res.headersSent) {
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'text/plain');
+                            res.end('Location inserted successfully!');
+                        }
                 } catch (err) {
                     if (!res.headersSent) {
                         res.statusCode = 500;
@@ -199,9 +201,6 @@ async function requestHandler(req, res) {
             `;
                 if(!res.headersSent) {
                     res.statusCode = 200;
-                    res.setHeader('Content-Type', 'text/html');
-                    res.setHeader('Cache-Control', 'no-cache');
-                    res.end(html);
                 }
         } else {
             html = `
@@ -222,8 +221,10 @@ async function requestHandler(req, res) {
         }
 
        res.statusCode = 200;
-       res.setHeader('Content-Type', 'text/html');
-       res.setHeader('Cache-Control', 'no-cache');
+        if(!res.headersSent) {
+           res.setHeader('Content-Type', 'text/html');
+           res.setHeader('Cache-Control', 'no-cache');
+            }
        // console.log(html);
        res.end(html);
     
