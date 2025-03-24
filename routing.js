@@ -37,19 +37,25 @@ async function requestRoute(conn, req) {
         
         case '/insert-location':
             let body = '';
-            req.on('data', chunk => {
-                body += chunk.toString();
+            await new Promise((resolve) => {
+                req.on('data', chunk => {
+                    body += chunk.toString();
+                })
+
+                req.on('end', resolve);
             });
-            req.on('end', async () => {
-                const params = new URLSearchParams(body);
-                const name = params.get('name');
-                const emojis = params.get('emojis');
-                console.log(`name: ${name} and emojis: ${emojis}`);
-                return await insertLocation(conn, name, emojis);
-            });
+     
+            const params = new URLSearchParams(body);
+            const name = params.get('name');
+            const emojis = params.get('emojis');
+            
+            console.log(`name: ${name} and emojis: ${emojis}`);
+            const result = await insertLocation(conn, name, emojis);
+            return result;
 
         case '/insert-location-form':
             return generateInsertPage();
+            
         default: 
             return generateStartPage(user_info.loc_id);
     }
