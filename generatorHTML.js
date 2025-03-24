@@ -39,6 +39,31 @@ function generateStartPage(userLocID) {
     html += `</html>`;
 }
 
+function generateInsertPage() {
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insert Location</title>
+    </head>
+    <body>
+        <h1>Insert New Location</h1>
+        <form action="/insert-location" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="emojis">Emojis:</label>
+            <input type="text" id="emojis" name="emojis"><br>
+            <button type="submit">Insert</button>
+        </form>
+    </body>
+    </html>
+    `;
+
+    return html;
+
+}
+
 function generateErrorPage(userLocID, errorCode) {
     let html = `<!DOCTYPE html>
                     <html lang="en">`;
@@ -57,5 +82,6 @@ function generateErrorPage(userLocID, errorCode) {
 module.exports = { generateHead, 
                    generateLocationBody, 
                    generateErrorPage, 
-                   generateStartPage
+                   generateStartPage,
+                   generateInsertPage
                 }
