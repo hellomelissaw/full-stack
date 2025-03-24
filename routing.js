@@ -28,7 +28,7 @@ async function requestRoute(conn, req) {
             const loc = await getLocationPageData(conn, id);
  
             if(locationIsValid(loc.connections, user_info.loc_id, id)){
-                updateUserLocation(conn, id, uid);aa
+                updateUserLocation(conn, id, uid);
                 return loc.generateHTML();
             
             } else {
