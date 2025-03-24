@@ -37,6 +37,8 @@ function generateStartPage(userLocID) {
                 <button onclick="window.location.href='/insert-location-form'">Insert</button>
             </body>`
     html += `</html>`;
+    return html;	
+
 }
 
 function generateInsertPage() {

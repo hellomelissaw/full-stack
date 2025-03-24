@@ -6,7 +6,7 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-
+const { requestRoute } = require('./routing.js');
 // Process variables
 let conn;
 let debug = false;
@@ -106,11 +106,11 @@ async function requestHandler(req, res) {
         //     res.setHeader('Cache-Control', 'no-cache');
         //     res.end('<!DOCTYPE html><head><title>Error</title><body><p>Database error: ${err}</p></body></html>');
         // }
-
+       const result = await requestRoute(conn, req);
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       res.end(html);
+       res.end(result);
     
     } catch (err) {
         console.error(err);
