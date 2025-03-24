@@ -110,6 +110,52 @@ async function requestHandler(req, res) {
                 </html>
             `;
         
+        } else if(parsed.pathname == '/insert-location') {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', async () => {
+                const params = new URLSearchParams(body);
+                const name = params.get('name');
+                const emojis = params.get('emojis');
+                try {
+                        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'text/plain');
+                        res.end('Location inserted successfully!');
+
+                } catch (err) {
+                    if (!res.headersSent) {
+                        res.statusCode = 500;
+                        res.setHeader('Content-Type', 'text/plain');
+                        res.end('Database error: ' + err.message);
+                        }
+                    }
+            });
+        } else if (parsed.pathname === '/insert-location-form') {
+            html = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Insert Location</title>
+                </head>
+                <body>
+                    <h1>Insert New Location</h1>
+                    <form action="/insert-location" method="post">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required><br>
+                        <label for="emojis">Emojis:</label>
+                        <input type="text" id="emojis" name="emojis"><br>
+                        <button type="submit">Insert</button>
+                    </form>
+                </body>
+                </html>
+            `;
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html');
+                res.end(html);
         } else {
             html = `
             <!DOCTYPE html>
@@ -121,19 +167,28 @@ async function requestHandler(req, res) {
                 <body>
                     <h1>Welcome to the game, click start to start!</h1>
                     <button onclick="window.location.href='/location?locID=0'">start</button>
+                    <button onclick="window.location.href='/insert-location-form'">Insert</button>
                 </body>
                 </html>
 
             `;
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            res.end(html);
         }
-
-       res.statusCode = 200;
-       res.setHeader('Content-Type', 'text/html');
-       res.setHeader('Cache-Control', 'no-cache');
+        if(!res.headersSent) {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            res.setHeader('Cache-Control', 'no-cache');
        //console.log(html);
-       res.end(html);
+           res.end(html);
+        }
     
     } catch (err) {
+        console.error(err);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end('Database error: ' + err.message);
         throw err;
     
     } finally {
