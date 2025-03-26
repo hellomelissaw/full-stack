@@ -22,28 +22,32 @@ function locationIsValid(connection_rows, user_loc_id, loc_id) {
     return isValid;
 }
 
+async function generateLocationResponse(conn, url) {
+    const user_info = await getUserData(conn, uid);
+    const id = url.query.locID;
+    const loc = await getLocationPageData(conn, id);
 
+    if(locationIsValid(loc.connections, user_info.loc_id, id)){
+        updateUserLocation(conn, id, uid);
+        return loc.generateHTML();
+    
+    } else {
+        return generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
+    }
+    
+}
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
-    const parsed = url.parse(req.url, true);
+    const parsedURL = url.parse(req.url, true);
     const path = parsed.pathname;
-    const user_info = await getUserData(conn, uid);
+    // const user_info = await getUserData(conn, uid);
 
     switch(path) {
         case '/location':
-            const id = parsed.query.locID;
-            const loc = await getLocationPageData(conn, id);
- 
-            if(locationIsValid(loc.connections, user_info.loc_id, id)){
-                updateUserLocation(conn, id, uid);
-                return loc.generateHTML();
-            
-            } else {
-                return generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
-            }
+            return generateLocationResponse(conn, parsedURL);
         
         case '/insert-location':
             let body = '';
