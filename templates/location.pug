@@ -1,0 +1,10 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title = location.name
+  body
+    h1 Welcome to the #{location.name} #{location.emojis || ''}
+    p Where to go next?
+    each conn in location.connections
+      button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
