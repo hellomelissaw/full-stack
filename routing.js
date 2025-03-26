@@ -38,7 +38,7 @@ async function generateLocationResponse(conn, url) {
     
 }
 
-async function generateInsertResponse() {
+async function generateInsertResponse(conn, req) {
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -78,7 +78,7 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/insert_form.pug');
         
         case '/insert-location':
-           return generateInsertResponse()
+           return generateInsertResponse(conn, req);
 
         default: 
             return generateStartResponse(conn, uid);
