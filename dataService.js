@@ -37,10 +37,11 @@ async function getLocationPageData(conn, id) {
     const [connections] = await conn.query(sql_conn, [id]);
     
     const locationData = location.map(loc => ({
-        locID: loc.loc_id,
+        loc_id: loc.loc_id,
         name: loc.name,
         connections: connections
     }));
+    
     console.log(locationData);
     return locationData;
     // const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
