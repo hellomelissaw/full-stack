@@ -33,7 +33,7 @@ async function generateLocationResponse(conn, url) {
         return loc.generateHTML();
     
     } else {
-        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id });// generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
+        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id, buttonLabel: "GO!"});// generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
     }
     
 }
