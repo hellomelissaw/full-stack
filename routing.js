@@ -2,7 +2,6 @@ const url = require('url');
 const pug = require('pug')
 const uid = 1; // temporary userid until we set up a login system
 const { getUserData, getLocationPageData, updateUserLocation, insertLocation } = require('./dataService');
-const { generateErrorPage, generateStartPage, generateInsertPage } = require('./generatorHTML');
 
 
 ////////////////////////////////////////////////////////////
