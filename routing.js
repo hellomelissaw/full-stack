@@ -3,6 +3,11 @@ const { getUserData, getLocationPageData, updateUserLocation, insertLocation } =
 const url = require('url');
 const { generateErrorPage, generateStartPage, generateInsertPage } = require('./generatorHTML');
 
+
+////////////////////////////////////////////////////////////
+// ROUTING FUNCTIONS
+////////////////////////////////////////////////////////////
+
 function locationIsValid(connection_rows, user_loc_id, loc_id) {
     if (user_loc_id == loc_id) { 
         return true; 
@@ -16,6 +21,11 @@ function locationIsValid(connection_rows, user_loc_id, loc_id) {
     }
     return isValid;
 }
+
+
+////////////////////////////////////////////////////////////
+// ROUTER 
+////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
     const parsed = url.parse(req.url, true);
