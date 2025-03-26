@@ -52,12 +52,12 @@ async function generateInsertResponse(conn, req) {
     const emojis = params.get('emojis');
 
     const result = await insertLocation(conn, name, emojis);
-    return pug.renderFile('./templates/show_message.pug', { message: result });
+    return pug.renderFile('./templates/message.pug', { message: result });
 }
 
 async function generateStartResponse(conn) {
     const user_info = await getUserData(conn, uid);
-    return pug.renderFile('./templates/start_page.pug', { userLocID: user_info.loc_id });
+    return pug.renderFile('./templates/start.pug', { userLocID: user_info.loc_id });
 }
 
 
