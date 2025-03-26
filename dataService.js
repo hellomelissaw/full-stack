@@ -39,7 +39,6 @@ async function getLocationPageData(conn, id) {
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
-        emojis: loc.emojis,
         connections: Object.keys(connections).map(key => ({
           conn_id: connections[key].conn_id,
           conn_name: connections[key].conn_name
