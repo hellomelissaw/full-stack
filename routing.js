@@ -56,6 +56,11 @@ async function generateInsertResponse() {
     return result;
 }
 
+async function generateStartResponse() {
+    const user_info = await getUserData(conn, uid);
+    return generateStartPage(user_info.loc_id);
+}
+
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -63,7 +68,7 @@ async function generateInsertResponse() {
 
 async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
-    const path = parsed.pathname;
+    const path = parsedURL.pathname;
 
     switch(path) {
         case '/location':
@@ -76,7 +81,7 @@ async function requestRoute(conn, req) {
            return generateInsertResponse()
 
         default: 
-            return generateStartPage(user_info.loc_id);
+            return generateStartResponse(conn, uid);
     }
 
 }
