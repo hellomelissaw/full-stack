@@ -56,7 +56,7 @@ async function generateInsertResponse() {
     return result;
 }
 
-async function generateStartResponse() {
+async function generateStartResponse(conn) {
     const user_info = await getUserData(conn, uid);
     return generateStartPage(user_info.loc_id);
 }
