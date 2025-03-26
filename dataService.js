@@ -33,9 +33,19 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 }
 
 async function getLocationPageData(conn, id) {
-    const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
-    const connections = await conn.query(sql_conn, [id]);
-    return new LocationPageInfo(loc.name, loc, connections);
+    const [location] =  await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
+    const [connections] = await conn.query(sql_conn, [id]);
+    
+    const locationData = location.map(loc => ({
+        locID: loc.loc_id,
+        name: loc.name,
+        connections: connections
+    }));
+    console.log(locationData);
+    return locationData;
+    // const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
+    // const connections = await conn.query(sql_conn, [id]);
+    // return new LocationPageInfo(loc.name, loc, connections);
 }
 
 async function getUserData(conn, uid) {
