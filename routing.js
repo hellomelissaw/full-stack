@@ -1,6 +1,7 @@
+const url = require('url');
+const pug = require('pug')
 const uid = 1; // temporary userid until we set up a login system
 const { getUserData, getLocationPageData, updateUserLocation, insertLocation } = require('./dataService');
-const url = require('url');
 const { generateErrorPage, generateStartPage, generateInsertPage } = require('./generatorHTML');
 
 
@@ -32,7 +33,7 @@ async function generateLocationResponse(conn, url) {
         return loc.generateHTML();
     
     } else {
-        return generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
+        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id });// generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
     }
     
 }
