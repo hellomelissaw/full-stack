@@ -40,17 +40,16 @@ async function getLocationPageData(conn, id) {
     Object.keys(connections).map(key => {
       console.log(connections[key]);
     });
-
-   
    
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
-        connections: Object.keys(connections).map(key => {
-            key: connections[key];
-        })
-    };
-    
+        connections: Object.keys(connections).map(key => ({
+          conn_id: connections[key].conn_id,
+          conn_name: connections[key].conn_name
+        }))
+      };
+      
     console.table(locationData);
     return locationData;
     // const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
