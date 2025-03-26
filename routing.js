@@ -36,6 +36,26 @@ async function generateLocationResponse(conn, url) {
     }
     
 }
+
+async function generateInsertResponse() {
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+
+        req.on('end', resolve);
+    });
+
+    const params = new URLSearchParams(body);
+    const name = params.get('name');
+    const emojis = params.get('emojis');
+
+    const result = await insertLocation(conn, name, emojis);
+    return result;
+}
+
+
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
@@ -43,33 +63,17 @@ async function generateLocationResponse(conn, url) {
 async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
     const path = parsed.pathname;
-    // const user_info = await getUserData(conn, uid);
 
     switch(path) {
         case '/location':
             return generateLocationResponse(conn, parsedURL);
-        
-        case '/insert-location':
-            let body = '';
-            await new Promise((resolve) => {
-                req.on('data', chunk => {
-                    body += chunk.toString();
-                })
-
-                req.on('end', resolve);
-            });
-     
-            const params = new URLSearchParams(body);
-            const name = params.get('name');
-            const emojis = params.get('emojis');
-            
-            console.log(`name: ${name} and emojis: ${emojis}`);
-            const result = await insertLocation(conn, name, emojis);
-            return result;
 
         case '/insert-location-form':
             return generateInsertPage();
-            
+        
+        case '/insert-location':
+           return generateInsertResponse()
+
         default: 
             return generateStartPage(user_info.loc_id);
     }
