@@ -30,8 +30,8 @@ async function generateLocationResponse(conn, url) {
 
     if(locationIsValid(loc.connections, user_info.loc_id, id)){
         updateUserLocation(conn, id, uid);
-        //return pug.renderFile('./templates/location.pug', { location: loc });
-        return  generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
+        return pug.renderFile('./templates/location.pug', { location: loc });
+        //return  generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
   
     
     } else {

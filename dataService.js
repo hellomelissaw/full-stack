@@ -50,7 +50,7 @@ async function getLocationPageData(conn, id) {
         }))
       };
       
-    console.table(locationData);
+    //console.table(locationData);
     return locationData;
     // const loc = await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
     // const connections = await conn.query(sql_conn, [id]);
