@@ -18,50 +18,6 @@ process.argv.forEach(function (value, index) {
     }
 })
 
-////////////////////////////////////////////////////////////
-// PREPARED QUERIES
-////////////////////////////////////////////////////////////
-
-sql_conn = `SELECT
-                location_connection.loc_id,
-                location_connection.conn_id,
-                location.name AS conn_name
-            FROM
-                location_connection
-            JOIN 
-                location
-            ON 
-                location_connection.conn_id = location.loc_id
-            WHERE
-                location_connection.loc_id = ?`;
-
-update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
-
-////////////////////////////////////////////////////////////
-// HELPER FUNCTIONS
-////////////////////////////////////////////////////////////
-function locationIsValid(connection_rows, user_loc_id, loc) {
-    if(user_loc_id == loc) { return true; }
-
-    let isValid = false;
-    for(const row of connection_rows) {
-        console.log(`conn_id: ${row.conn_id}, user_loc_id: ${user_loc_id}`)
-        if(row.conn_id == user_loc_id) {
-            isValid = true;
-        }
-    }
-    return isValid;
-}
-
-
-async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
-    const rows = await conn.query(`SELECT *           
-                                  FROM \`${table}\` 
-                                  WHERE \`${whereclause}\` = ?
-                                `, [value]);
-    return rows[0] || null;
-}
-
 
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
@@ -86,26 +42,11 @@ async function requestHandler(req, res) {
             res.setHeader('Cache-Control', 'no-cache');
             res.end(`<!DOCTYPE html><head><title>Error</title><body><h2>Database error:</h2><p>${err}</p></body></html>`);
         }
+        
         if (debug) {
             console.log("Database object: ", conn);
         }
-        // if (!conn) {
-        //     console.error("Database connection is missing, exiting");
-        //     process.exit(1);
-        // }
-        // Fetch empty set to test the database
-        // try {
-        //     await conn.query('SELECT 1 FROM dual WHERE FALSE')
-        //     if (debug) {
-        //         console.log("Database ping successful");
-        //     }
-        // } catch (err) {
-        //     console.error("Database ping failed: ", err)
-        //     res.statusCode = 500;
-        //     res.setHeader('Content-Type', 'text/html');
-        //     res.setHeader('Cache-Control', 'no-cache');
-        //     res.end('<!DOCTYPE html><head><title>Error</title><body><p>Database error: ${err}</p></body></html>');
-        // }
+
        const result = await requestRoute(conn, req);
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
