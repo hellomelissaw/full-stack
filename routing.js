@@ -58,7 +58,7 @@ async function generateInsertResponse() {
 
 async function generateStartResponse(conn) {
     const user_info = await getUserData(conn, uid);
-    return generateStartPage(user_info.loc_id);
+    return pug.renderFile('./templates/start_page.pug', { userLocID: user_info.loc_id });
 }
 
 
@@ -75,7 +75,7 @@ async function requestRoute(conn, req) {
             return generateLocationResponse(conn, parsedURL);
 
         case '/insert-location-form':
-            return generateInsertPage();
+            return pug.renderFile('./templates/insert_form.pug');
         
         case '/insert-location':
            return generateInsertResponse()
