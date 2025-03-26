@@ -1,11 +1,11 @@
 doctype html
-  html 
-    head 
-      meta(charset="UTF-8")
-      title = "Insert Location"
-    body 
-      h1 Insert New Location 
-      form(action="/insert-location" method="post")
+html 
+  head 
+    meta(charset="UTF-8")
+    title = "Insert Location"
+  body 
+    h1 Insert New Location 
+    form(action="/insert-location" method="post")
       label(for="name") Name:
       input(type="text" id="name" name="name" required)
       br
@@ -13,4 +13,3 @@ doctype html
       input(type="text" id="emojis" name="emojis")
       br
       button(type="submit") Insert
-   
