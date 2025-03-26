@@ -30,12 +30,10 @@ async function generateLocationResponse(conn, url) {
 
     if(locationIsValid(loc.connections, user_info.loc_id, id)){
         updateUserLocation(conn, id, uid);
-        return pug.renderFile('./templates/location.pug', { location: loc });
-        //return  generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
-  
+        return pug.renderFile('./templates/location.pug', { location: loc });   
     
     } else {
-        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id, buttonLabel: "GO!"});// generateErrorPage(user_info.loc_id, 'INVALID_MOVE')
+        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id, buttonLabel: "GO!"});
     }
     
 }
@@ -55,7 +53,7 @@ async function generateInsertResponse() {
     const emojis = params.get('emojis');
 
     const result = await insertLocation(conn, name, emojis);
-    return result;
+    return pug.renderFile('./templates/show_message.pug', { message: result });
 }
 
 async function generateStartResponse(conn) {
