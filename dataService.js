@@ -55,9 +55,16 @@ async function updateUserLocation(conn, id, uid) {
     await conn.query(update_user_location, [id, uid]);
 }
 
-async function insertLocation(conn, name, emojis) {
+async function insertLocation(conn, name, emojis, connections) {
     try{
-        await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+        const result = await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
+        const loc_id = result.insertId;
+        if (connections) {
+            const connectionIds = connections.split(',').map(id => id.trim());
+            for (const connId of connectionIds) {
+                await conn.query("INSERT INTO location_connection (loc_id, conn_id) VALUES (?, ?)", [loc_id, connId]);
+            }
+        }
         return 'Location inserted successfully!';
     
     } catch(err) {
