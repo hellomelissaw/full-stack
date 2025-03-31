@@ -1,9 +1,21 @@
-doctype html 
-html 
-  head 
+doctype html
+html(lang="en")
+  head
     meta(charset="UTF-8")
-    title = "Adventure time..."
-  body 
-    h1 Welcome to the game, click the start button to begin! 
-    button(onclick=`window.location.href='/location?locID=${userLocID}'`) Start
-    button(onclick="window.location.href='/insert-location-form'") Insert
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="startpage.css")
+    title HL3
+    //- The second title tag is redundant and has been removed.
+  body
+    .screen
+      .menu
+        h1 Best game ever
+        h3 A group 16 creation
+        ul
+          li
+            a(href="gamepage.html") New Game
+          li
+            a(href="#") Load Game
+          li
+            a(href="#" id="quit-btn") Quit
+    script(src="logic.js")
