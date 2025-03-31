@@ -1,0 +1,91 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+body {
+    padding: 0;
+    margin: 0px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(65, 52, 52);    
+}
+
+.image-box{
+    padding: 10px;
+    margin-top: 0px; 
+    margin-bottom: 20px;  /* Space between the image and the sign */
+    border-radius: 12px;
+    max-height: 500px; /* Set a maximum height for the image box */
+    max-width: 300px;
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+}
+.image-box img {
+    max-width: 100%; /* Make sure the image resizes responsively */
+    height: auto; /* Maintain aspect ratio */
+    
+}
+.sign {
+    background: #d8a45c;
+    border: 8px solid #8b5a2b;
+    padding: 20px;
+    min-width: 500px;
+    min-height: 115px;
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    color: #5a2d18;
+    text-transform: uppercase;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), 
+                4px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+button {
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;  
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+button:hover {
+    background-color: #d8a45c;
+    transform: scale(1.05);
+}
+
+
+#username {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 2px solid #8b5a2b;
+    width: 250px;
+    text-align: center;
+}
+
+
+.login {
+    margin-bottom: 20px;
+}
+
+
+#gameFiles {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}

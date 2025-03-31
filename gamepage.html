@@ -1,0 +1,44 @@
+<!DOCTYPE html> 
+<html lang = "en">
+<head>
+    <meta charset="UTF-8">
+    <meta name ="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Comtatible" content="ie=edge">
+    <link href ="gamepage.css" rel ="stylesheet">
+    <title>Best game ever</title>
+</head>
+<body> 
+    <div class="location-box"></div> 
+    <div class="picture-box">
+        <img src="forest.jpeg" alt="Picture" />
+    </div>
+    <div class="top-left-buttons">
+        <button id="save-button" class="btn">Save Game</button>
+        <button id="exit-button" class="btn">Exit Game</button>
+    </div>
+
+    <div class="lower-left-button">
+        <button id="inventory-button" class ="btn">Inventory</button>
+    </div>
+
+    <div class ="wrapper"> 
+        <canvas id="pixelCanvas" width="600" height="400"></canvas>
+
+        <div class ="textbox">text</div>
+        <div class = "container">      
+            <div id = "option-buttons" class ="btn-grid">
+                <button class = "btn">Option 1</button>
+                <button class = "btn">Option 2</button>
+                <button class = "btn">Option 3</button>
+                <button class = "btn">Option 4</button>
+            </div>
+        </div>
+    </div>  
+    <div id="inventory-container" class="inventory-container">
+        <h3>Player inventory</h3>
+        <p>No items in inventory</p>
+    </div> 
+
+    <script src="logic.js"></script>         
+</body>    
+</html>
