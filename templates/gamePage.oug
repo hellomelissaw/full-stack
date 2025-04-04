@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet", href="gamepage.css")
+    title Best game ever
+  body
+    .location-box
+
+    .picture-box
+      img(src="forest.jpeg", alt="Picture")
+
+    .top-left-buttons
+      button#save-button.btn Save Game
+      button#exit-button.btn Exit Game
+
+    .lower-left-button
+      button#inventory-button.btn Inventory
+
+    .wrapper
+      canvas#pixelCanvas(width="600", height="400")
+      .textbox text
+      .container
+        #option-buttons.btn-grid
+          button.btn Option 1
+          button.btn Option 2
+          button.btn Option 3
+          button.btn Option 4
+
+    #inventory-container.inventory-container
+      h3 Player inventory
+      p No items in inventory
+
+    script(src="logic.js")
