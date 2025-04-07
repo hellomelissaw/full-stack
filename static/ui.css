@@ -1,0 +1,44 @@
+/* ui.css */
+body {
+  display: flex;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+nav {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  padding: 8px 16px;
+  text-align: left;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+nav ul li a:hover {
+  background-color: #575757;
+}
+
+main {
+  margin-left: 200px;
+  padding: 20px;
+  flex-grow: 1;
+}
