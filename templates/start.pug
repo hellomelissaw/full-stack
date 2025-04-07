@@ -13,9 +13,9 @@ html(lang="en")
         h3 A group 16 creation
         ul
           li
-            a(href="gamepage.html") New Game
+            a(href=`/location?locID=${userLocID}`) New Game
           li
-            a(href="#") Load Game
+            a(href=`/location?locID=${userLocID}`) Load Game
           li
             a(href="#" id="quit-btn") Quit
     script(src="logic.js")
