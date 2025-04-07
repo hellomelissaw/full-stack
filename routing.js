@@ -50,8 +50,9 @@ async function generateInsertResponse(conn, req) {
     const params = new URLSearchParams(body);
     const name = params.get('name');
     const emojis = params.get('emojis');
+    const connections = params.get('connections');
 
-    const result = await insertLocation(conn, name, emojis);
+    const result = await insertLocation(conn, name, emojis,connections);
     return pug.renderFile('./templates/message.pug', { message: result });
 }
 
