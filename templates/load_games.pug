@@ -7,5 +7,5 @@ html
   body
     main
       h1 Select a player from the list:
-      each id in player_ids
+      each id in pids
         button(onclick=`window.location.href='/load-game?pid=${id}'`) #{id}

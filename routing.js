@@ -70,8 +70,8 @@ async function generateStartResponse(conn, uid) {
 
 async function generateLoadPageResponse(conn, url) {
     const uid = url.query.uid;
-    const user_player_ids = await getUserPlayers(conn, uid);
-    return pug.renderFile('./templates/load_games.pug', {playerIDs: user_player_ids});
+    const userPlayerIDs = await getUserPlayers(conn, uid);
+    return pug.renderFile('./templates/load_games.pug', {pids: userPlayerIDs});
 }
 
 async function loadGame(conn, pid) {
