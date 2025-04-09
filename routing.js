@@ -61,6 +61,11 @@ async function generateStartResponse(conn) {
     return pug.renderFile('./templates/start.pug', { playerLocID: player_info.loc_id });
 }
 
+async function generateLoadPageResponse(conn, uid) {
+    const user_player_ids = await getUserPlayers(conn, uid)
+    return pug.renderFile('./templates/load.pug', {playerIDs: user_player_ids})
+}
+
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -79,6 +84,12 @@ async function requestRoute(conn, req) {
         
         case '/insert-location':
            return generateInsertResponse(conn, req);
+
+        case '/load-game-page':
+            return generateLoadPageResponse(conn, req);
+        
+        case '/load-game':
+            return 
 
         default: 
             return generateStartResponse(conn, pid);
