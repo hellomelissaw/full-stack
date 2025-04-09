@@ -62,9 +62,9 @@ async function generateInsertResponse(conn, req) {
     return pug.renderFile('./templates/message.pug', { message: result });
 }
 
-async function generateStartResponse(conn) {
-    const player_info = await getPlayerData(conn, pid);
-    return pug.renderFile('./templates/start.pug', { playerLocID: player_info.loc_id });
+async function generateStartResponse(conn, uid) {
+    // const player_info = await getPlayerData(conn, pid);
+    return pug.renderFile('./templates/start.pug', { uid: uid });
 }
 
 async function generateLoadPageResponse(conn, url) {
@@ -119,7 +119,7 @@ async function requestRoute(conn, req) {
             return createNewGame(conn, parsedURL.query.uid)
 
         default: 
-            return generateStartResponse(conn, pid);
+            return generateStartResponse(conn, uid);
     }
 
 }

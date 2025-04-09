@@ -1,3 +1,4 @@
+const uid = 1;
 const pid = 1;
 const hostname = 'localhost';
 const port = 3000;
