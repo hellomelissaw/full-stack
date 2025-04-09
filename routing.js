@@ -87,9 +87,6 @@ async function requestRoute(conn, req) {
 
         case '/load-game-page':
             return generateLoadPageResponse(conn, req);
-        
-        case '/load-game':
-            return 
 
         default: 
             return generateStartResponse(conn, pid);
