@@ -15,7 +15,7 @@ const sql_conn = `SELECT
             WHERE
                 location_connection.loc_id = ?`;
 
-const update_user_location = 'UPDATE user SET loc_id = ? WHERE uid = ?';
+const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 
 ////////////////////////////////////////////////////////////
@@ -46,13 +46,13 @@ async function getLocationPageData(conn, id) {
     return locationData;
 }
 
-async function getUserData(conn, uid) {
-    let user_data = await findOne(conn, 'user', 'uid', uid);  // TODO Handle if null
-    return user_data;
+async function getPlayerData(conn, pid) {
+    let player_data = await findOne(conn, 'player', 'pid', pid);  // TODO Handle if null
+    return player_data;
 }
 
-async function updateUserLocation(conn, id, uid) {
-    await conn.query(update_user_location, [id, uid]);
+async function updatePlayerLocation(conn, id, pid) {
+    await conn.query(update_player_loc_id, [id, pid]);
 }
 
 async function insertLocation(conn, name, emojis, connections) {
@@ -74,7 +74,7 @@ async function insertLocation(conn, name, emojis, connections) {
 }
 
 module.exports = { getLocationPageData, 
-                   getUserData, 
-                   updateUserLocation,
+                   getPlayerData: getPlayerData,
+                   updatePlayerLocation: updatePlayerLocation,
                    insertLocation
                  }

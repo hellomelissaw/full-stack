@@ -1,21 +1,21 @@
 const url = require('url');
 const pug = require('pug')
-const uid = 1; // temporary userid until we set up a login system
-const { getUserData, getLocationPageData, updateUserLocation, insertLocation } = require('./dataService');
+const pid = 1; // temporary player id until we set up a login system
+const { getPlayerData, getLocationPageData, updatePlayerLocation, insertLocation } = require('./dataService');
 
 
 ////////////////////////////////////////////////////////////
 // ROUTING FUNCTIONS
 ////////////////////////////////////////////////////////////
 
-function locationIsValid(connection_rows, user_loc_id, loc_id) {
-    if (user_loc_id == loc_id) { 
+function locationIsValid(connection_rows, player_loc_id, loc_id) {
+    if (player_loc_id == loc_id) { 
         return true; 
     }
 
     let isValid = false;
     for (const row of connection_rows) {
-        if(row.conn_id == user_loc_id) {
+        if(row.conn_id == player_loc_id) {
             isValid = true;
         }
     }
@@ -23,16 +23,16 @@ function locationIsValid(connection_rows, user_loc_id, loc_id) {
 }
 
 async function generateLocationResponse(conn, url) {
-    const user_info = await getUserData(conn, uid);
+    const player_info = await getPlayerData(conn, pid);
     const id = url.query.locID;
     const loc = await getLocationPageData(conn, id);
 
-    if(locationIsValid(loc.connections, user_info.loc_id, id)){
-        updateUserLocation(conn, id, uid);
+    if(locationIsValid(loc.connections, player_info.loc_id, id)){
+        updatePlayerLocation(conn, id, pid);
         return pug.renderFile('./templates/location.pug', { location: loc });   
     
     } else {
-        return pug.renderFile('./templates/location_error.pug', { userLocID: user_info.loc_id, buttonLabel: "GO!"});
+        return pug.renderFile('./templates/location_error.pug', { playerLocID: player_info.loc_id, buttonLabel: "GO!"});
     }
     
 }
@@ -57,8 +57,8 @@ async function generateInsertResponse(conn, req) {
 }
 
 async function generateStartResponse(conn) {
-    const user_info = await getUserData(conn, uid);
-    return pug.renderFile('./templates/start.pug', { userLocID: user_info.loc_id });
+    const player_info = await getPlayerData(conn, pid);
+    return pug.renderFile('./templates/start.pug', { playerLocID: player_info.loc_id });
 }
 
 
@@ -81,7 +81,7 @@ async function requestRoute(conn, req) {
            return generateInsertResponse(conn, req);
 
         default: 
-            return generateStartResponse(conn, uid);
+            return generateStartResponse(conn, pid);
     }
 
 }
