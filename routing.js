@@ -20,13 +20,12 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
         return true; 
     }
 
-    let isValid = false;
     for (const row of connection_rows) {
         if(row.conn_id == player_loc_id) {
-            isValid = true;
+            return true;
         }
     }
-    return isValid;
+    return false;
 }
 
 async function generateLocationResponse(conn, url) {
