@@ -1,5 +1,6 @@
 const url = require('url');
-const pug = require('pug')
+const pug = require('pug');
+const uid = 1;
 const pid = 1; // temporary player id until we set up a login system
 const { getPlayerData, 
         getLocationPageData, 
@@ -70,7 +71,7 @@ async function generateStartResponse(conn, uid) {
 async function generateLoadPageResponse(conn, url) {
     const uid = url.query.uid;
     const user_player_ids = await getUserPlayers(conn, uid);
-    return pug.renderFile('./templates/load.pug', {playerIDs: user_player_ids});
+    return pug.renderFile('./templates/load_games.pug', {playerIDs: user_player_ids});
 }
 
 async function loadGame(conn, pid) {
@@ -110,7 +111,7 @@ async function requestRoute(conn, req) {
            return generateInsertResponse(conn, parsedURL);
 
         case '/load-game-page':
-            return generateLoadPageResponse(conn, req);
+            return generateLoadPageResponse(conn, parsedURL);
 
         case '/load-game':
             return loadGame(conn, parsedURL.query.pid);
