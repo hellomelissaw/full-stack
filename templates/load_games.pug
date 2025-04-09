@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Load game
+    link(rel="stylesheet", href="static/ui.css")
+  body
+    main
+      h1 Select a player from the list:
+      each id in player_ids
+        button(onclick=`window.location.href='/load-game?pid=${id}'`) #{id}
