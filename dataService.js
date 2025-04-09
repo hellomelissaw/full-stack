@@ -43,7 +43,7 @@ async function getPlayerData(conn, pid) {
         return { success: true, player_data: pd}
     
     } catch(err) {
-        return { sucess: false, error: err.message }
+        return { success: false, error: err.message }
     }
 
 }
