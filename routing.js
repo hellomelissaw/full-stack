@@ -30,17 +30,22 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 }
 
 async function generateLocationResponse(conn, url) {
-    const player_info = await getPlayerData(conn, pid);
-    
-    const id = url.query.locID;
-    const loc = await getLocationPageData(conn, id);
+    const result = await getPlayerData(conn, pid);
 
-    if(locationIsValid(loc.connections, player_info.loc_id, id)){
-        updatePlayerLocation(conn, id, pid);
-        return pug.renderFile('./templates/location.pug', { location: loc });   
+    if(result.success) {
+        const id = url.query.locID;
+        const loc = await getLocationPageData(conn, id);
+    
+        if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
+            updatePlayerLocation(conn, id, pid);
+            return pug.renderFile('./templates/location.pug', { location: loc });   
+        
+        } else {
+            return pug.renderFile('./templates/location_error.pug', { playerLocID: result.player_data.loc_id, buttonLabel: "GO!"});
+        }
     
     } else {
-        return pug.renderFile('./templates/location_error.pug', { playerLocID: player_info.loc_id, buttonLabel: "GO!"});
+        return pug.renderFile('./templates/message', { message: result.error } )
     }
     
 }
@@ -79,7 +84,7 @@ async function loadGame(conn, pid) {
     const result = await getPlayerData(conn, pid);
 
     if(result.success){
-        const loc = await getLocationPageData(conn, result.loc_id);
+        const loc = await getLocationPageData(conn, result.player_data.loc_id);
         return pug.renderFile('./templates/location.pug', { location: loc });  
     
     } else {
