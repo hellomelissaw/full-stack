@@ -38,8 +38,14 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 ////////////////////////////////////////////////////////////
 
 async function getPlayerData(conn, pid) {
-    let player_data = await findOne(conn, 'player', 'pid', pid);  // TODO Handle if null
-    return player_data;
+    try {
+        const pd = await findOne(conn, 'player', 'pid', pid);
+        return { success: true, player_data: pd}
+    
+    } catch(err) {
+        return { sucess: false, error: err.message }
+    }
+
 }
 
 async function getUserPlayers(conn, uid) {
