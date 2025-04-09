@@ -1,7 +1,13 @@
 const url = require('url');
 const pug = require('pug')
 const pid = 1; // temporary player id until we set up a login system
-const { getPlayerData, getLocationPageData, updatePlayerLocation, insertLocation } = require('./dataService');
+const { getPlayerData, 
+        getLocationPageData, 
+        updatePlayerLocation, 
+        insertLocation, 
+        createNewPlayer,
+        getUserPlayers 
+    } = require('./dataService');
 
 
 ////////////////////////////////////////////////////////////
@@ -67,10 +73,21 @@ async function generateLoadPageResponse(conn, url) {
     return pug.renderFile('./templates/load.pug', {playerIDs: user_player_ids});
 }
 
-async function loadGame(conn, url) {
-    const player_data = await getPlayerData(conn, url.query.pid);
+async function loadGame(conn, pid) {
+    const player_data = await getPlayerData(conn, pid);
     const loc = await getLocationPageData(conn, player_data.loc_id);
     return pug.renderFile('./templates/location.pug', { location: loc });   
+}
+
+async function createNewGame(conn, uid) {
+    const result = await createNewPlayer(conn, uid);
+
+    if(result.success) {
+        return loadGame(conn, result.pid);
+
+    } else {
+        return pug.renderFile('./templates/message', { message: result.error } )
+    }
 }
 
 
@@ -96,7 +113,10 @@ async function requestRoute(conn, req) {
             return generateLoadPageResponse(conn, req);
 
         case '/load-game':
-            return loadGame(conn, parsedURL);
+            return loadGame(conn, parsedURL.query.pid);
+
+        case '/new-game':
+            return createNewGame(conn, parsedURL.query.uid)
 
         default: 
             return generateStartResponse(conn, pid);

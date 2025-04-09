@@ -17,6 +17,8 @@ const sql_conn = `SELECT
 
 const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
+const create_player = 'INSERT INTO player (uid, loc_id) values (?, ?)';
+
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
@@ -43,6 +45,19 @@ async function getPlayerData(conn, pid) {
 async function getUserPlayers(conn, uid) {
     let player_ids = await conn.query("SELECT * FROM player WHERE uid = ?", [uid])
     return player_ids
+}
+
+async function createNewPlayer(conn, uid) {
+    try {
+        const newPlayer = await conn.query(create_player, [uid, 0])
+
+        return { success: true, pid: newPlayer.pid };
+    
+    } catch(err) {
+        return { success: false, error: err.message };
+
+    }
+    
 }
 
 
@@ -92,5 +107,6 @@ module.exports = { getLocationPageData,
                    getPlayerData: getPlayerData,
                    updatePlayerLocation: updatePlayerLocation,
                    insertLocation,
-                   getUserPlayers
+                   getUserPlayers,
+                   createNewPlayer
                  }
