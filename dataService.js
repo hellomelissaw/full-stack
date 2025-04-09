@@ -19,7 +19,7 @@ const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 
 ////////////////////////////////////////////////////////////
-// QUERYING
+// GENERAL QUERYING
 ////////////////////////////////////////////////////////////
 
 async function findOne(conn, table, whereclause, value) {  // TODO return error if more than one row
@@ -29,6 +29,26 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
                                 `, [value]);
     return rows[0] || null;
 }
+
+
+////////////////////////////////////////////////////////////
+// USER AND PLAYER DATA QUERIES
+////////////////////////////////////////////////////////////
+
+async function getPlayerData(conn, pid) {
+    let player_data = await findOne(conn, 'player', 'pid', pid);  // TODO Handle if null
+    return player_data;
+}
+
+async function getUserPlayers(conn, uid) {
+    let player_ids = await conn.query("SELECT * FROM player WHERE uid = ?", [uid])
+    return player_ids
+}
+
+
+////////////////////////////////////////////////////////////
+// LOCATION DATA QUERIES
+////////////////////////////////////////////////////////////
 
 async function getLocationPageData(conn, id) {
     const loc =  await findOne(conn, 'location', 'loc_id', id);  // TODO Handle if null
@@ -44,11 +64,6 @@ async function getLocationPageData(conn, id) {
       };
 
     return locationData;
-}
-
-async function getPlayerData(conn, pid) {
-    let player_data = await findOne(conn, 'player', 'pid', pid);  // TODO Handle if null
-    return player_data;
 }
 
 async function updatePlayerLocation(conn, id, pid) {
@@ -76,5 +91,6 @@ async function insertLocation(conn, name, emojis, connections) {
 module.exports = { getLocationPageData, 
                    getPlayerData: getPlayerData,
                    updatePlayerLocation: updatePlayerLocation,
-                   insertLocation
+                   insertLocation,
+                   getUserPlayers
                  }
