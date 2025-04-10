@@ -44,7 +44,7 @@ async function generateLocationResponse(conn, url) {
         }
     
     } else {
-        return pug.renderFile('./templates/message', { message: result.error } )
+        return pug.renderFile('./templates/message.pug', { message: result.error } )
     }
     
 }
@@ -88,7 +88,7 @@ async function loadGame(conn, pid) {
         return pug.renderFile('./templates/location.pug', { location: loc });  
     
     } else {
-        return pug.renderFile('./templates/message', { message: result.error } ) 
+        return pug.renderFile('./templates/message.pug', { message: result.error } ) 
     }
  
 }
