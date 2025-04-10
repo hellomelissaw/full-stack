@@ -45,7 +45,7 @@ async function requestHandler(req, res) {
         if (debug) {
             console.log("Database object: ", conn);
         }
-       req.cookie.sessionID = "temp-sesh-123456"; 
+
        const result = await requestRoute(conn, req);
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');

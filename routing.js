@@ -1,5 +1,6 @@
 const url = require('url');
 const pug = require('pug');
+const temp_token = "temp-sesh-123456"; 
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
@@ -70,7 +71,7 @@ async function generateInsertResponse(conn, req) {
 }
 
 async function generateStartResponse(conn, req) {
-    const sessionId = req.cookie.sessionID;
+    const sessionId = temp_token; // Hard-coded. This should be gotten from the response I guess?? 
     console.log(`session id start page: ${sessionId}`);
     const uid = await getSessionUser(conn, sessionId);
     // const player_info = await getPlayerData(conn, pid);
