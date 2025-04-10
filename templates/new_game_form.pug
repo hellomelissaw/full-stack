@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="static/startpage.css")
+    title New game - player creation
+  body
+    include menu.pug
+    .screen
+      .menu
+      main  
+        h1 Create new character
+          form(action="/new-game" method="post")
+          label(for="name") Name:
+          input(type="text" id="name" name="name" required)
+          button(type="submit") Insert
