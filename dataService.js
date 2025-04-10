@@ -33,9 +33,32 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
     return rows[0] || null;
 }
 
+async function userIsActive(conn, uid) {
+    const active = await conn.query('SELECT * FROM session WHERE uid = ?', [uid]);
+    return active.length > 0;
+}
+
 async function createSession(conn, sessionID, uid) {
-    console.log(`sessionID: ${sessionID}, uid: ${uid}`); 
-    const result = await conn.query(create_session, [sessionID, uid]);
+    console.log(`sessionID: ${sessionID}, uid: ${uid}`);
+    if (await userIsActive()) {
+        try {
+            await conn.query('DELETE FROM session WHERE uid = ?', [uid]);
+
+        } catch(err) {
+            return { success: false, error: err.message }
+
+        }
+    } 
+
+    try {
+        await conn.query('INSERT INTO session (session_id, uid) VALUES (?, ?)', [sessionID, uid]);
+        return { success: true }
+        
+    } catch {
+        return { success: false, error: err.message }
+
+    }
+   
 
 }
 

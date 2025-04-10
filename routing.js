@@ -50,9 +50,15 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const result = await getUserData(conn, username);
 
     if(result.success && result.user_data.password == password) {
-        const sessionResult = createSession(conn, temp_token, result.user_data.uid);
-        return generateStartResponse(conn, req)
+        const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
 
+        if (sessionResult.success) {
+            return generateStartResponse(conn, req)
+
+        } else {
+            return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
+
+        }
     } else {
         return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
     }
