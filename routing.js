@@ -1,6 +1,7 @@
 const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
+const pid = 1; // maybe add it to the cookie? 
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
@@ -67,14 +68,14 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 }
 
 async function generateLocationResponse(conn, url) {
-    const result = await getPlayerData(conn, pid);
+    const result = await getPlayerData(conn, pid); // hard-coded temporarily
 
     if(result.success) {
         const id = url.query.locID;
         const loc = await getLocationPageData(conn, id);
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
-            updatePlayerLocation(conn, id, pid);
+            updatePlayerLocation(conn, id, pid);  // hard-coded temporarily
             return pug.renderFile('./templates/location.pug', { location: loc });   
         
         } else {
@@ -113,7 +114,7 @@ async function generateLoadPageResponse(conn, req) { // Hard-coded token. This s
 }
 
 async function loadGame(conn, pid) {
-    const result = await getPlayerData(conn, pid);
+    const result = await getPlayerData(conn, pid); // hard-coded temporarily
     if(result.success){
         const loc = await getLocationPageData(conn, result.player_data.loc_id);
         return pug.renderFile('./templates/location.pug', { location: loc });  
