@@ -51,7 +51,7 @@ async function createSession(conn, sessionID, uid) {
     } 
 
     try {
-        await conn.query('INSERT INTO session (session_id, uid) VALUES (?, ?)', [sessionID, uid]);
+        await conn.query(create_session, [sessionID, uid]);
         return { success: true }
         
     } catch {
@@ -63,13 +63,8 @@ async function createSession(conn, sessionID, uid) {
 }
 
 async function getSessionUser(conn, sessionID) {
-    const session = await findOne(conn, 'session', 'session_id', sessionID);
-    if (session) {
-        return session.uid;
-    
-    } else {
-        return null;
-    }
+    const sessionUser = await findOne(conn, 'session', 'session_id', sessionID);
+    return sessionUser;
 }
 
 async function deleteSession(conn, sessionID) {

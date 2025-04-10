@@ -153,9 +153,14 @@ async function createNewGame(conn, req) {
 }
 
 async function generateStartResponse(conn, req) {
-    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
-    // const player_info = await getPlayerData(conn, pid);
-    return pug.renderFile('./templates/start.pug', { uid: uid });
+    const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    if(user) {
+        return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
+
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "User not found." })
+    }
+   
 }
 
 async function generateLandingPage(conn, req) {
