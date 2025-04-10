@@ -118,7 +118,7 @@ async function createNewGame(conn, req, uid) {
     }
 }
 
-async function validateLoginResponse(conn, req) {
+async function validateLoginResponse(conn, temp_token) { // TODO: get token from browser
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -136,7 +136,7 @@ async function validateLoginResponse(conn, req) {
 
     if(user) {
         if(user.password == password) {
-            const sessionResult = createSession(conn, req.cookie.sessionID, user.uid);
+            const sessionResult = createSession(conn, temp_token, user.uid);
         }
 
     } else {
