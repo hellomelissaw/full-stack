@@ -72,6 +72,15 @@ async function getSessionUser(conn, sessionID) {
     }
 }
 
+async function deleteSession(conn, sessionID) {
+    try {
+        await conn.query("DELETE FROM session WHERE session_id = ?", [sessionID]);
+    
+    } catch(err) {
+        console.log(err.message);  
+}
+}
+
 ////////////////////////////////////////////////////////////
 // USER AND PLAYER DATA QUERIES
 ////////////////////////////////////////////////////////////
@@ -187,5 +196,6 @@ module.exports = { getLocationPageData,
                    createSession,
                    getUserData,
                    getSessionUser,
-                   getSessionStatus
+                   getSessionStatus,
+                   deleteSession
                  }

@@ -1,6 +1,6 @@
 const url = require('url');
 const pug = require('pug');
-const temp_token = "temp-sesh-78910"; 
+const temp_token = "temp-sesh-12345"; 
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
@@ -10,7 +10,8 @@ const { getPlayerData,
         createSession,
         getUserData,
         getSessionUser,
-        getSessionStatus
+        getSessionStatus,
+        deleteSession
     } = require('./dataService');
 
 
@@ -169,6 +170,11 @@ if(!sessionExists) {
     }
 }
 
+
+async function quitGame(conn, req) {
+    await deleteSession(conn, temp_token); // Hard-coded session token
+    return pug.renderFile('./templates/temp_login.pug', { showError: false });
+}
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
@@ -204,6 +210,9 @@ async function requestRoute(conn, req) {
 
         case '/new-game':
             return createNewGame(conn, req)
+
+        case '/quit':
+            return quitGame(conn, req)
 
         default: 
             return generateLandingPage(conn, req);
