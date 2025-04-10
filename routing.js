@@ -118,7 +118,7 @@ async function createNewGame(conn, req, uid) {
     }
 }
 
-async function validateLoginResponse(conn, temp_token) { // TODO: get token from browser
+async function validateLoginResponse(conn, req, temp_token) { // TODO: get token from browser
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -159,7 +159,7 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/temp_login.pug', { showError: false });
 
         case '/log-in':
-            return validateLoginResponse(conn, temp_token);
+            return validateLoginResponse(conn, req, temp_token);
 
         case '/location':
             return generateLocationResponse(conn, parsedURL);
