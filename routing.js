@@ -135,6 +135,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const result = await getUserData(conn, username);
     console.table(result.user_data);
     if(result) {
+        console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
         if(result.user_data.password == password) {
             const sessionResult = createSession(conn, temp_token, result.user_data.uid);
         return pug.renderFile('./templates/message.pug', { message: "Password was correct..." } )
