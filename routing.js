@@ -153,6 +153,16 @@ async function generateStartResponse(conn, req) {
     return pug.renderFile('./templates/start.pug', { uid: uid });
 }
 
+async function generateLandingPage(conn, req) {
+    const sessionExists = await getSessionStatus(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    if(sessionExists) {
+        return generateStartResponse(conn, req);
+    
+    } else {
+        return pug.renderFile('./templates/temp_login.pug', { showError: false });
+    }
+}
+
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
@@ -190,7 +200,7 @@ async function requestRoute(conn, req) {
             return createNewGame(conn, req)
 
         default: 
-            return generateStartResponse(conn, req);
+            return generateLandingPage(conn, req);
     }
 
 }
