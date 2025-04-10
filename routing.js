@@ -128,6 +128,9 @@ async function requestRoute(conn, req) {
         case '/load-game':
             return loadGame(conn, parsedURL.query.pid);
 
+        case '/new-game-page':
+            return pug.renderFile('./templates/new_game_form.pug');
+
         case '/new-game':
             return createNewGame(conn, parsedURL.query.uid)
 
