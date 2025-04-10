@@ -7,7 +7,9 @@ const { getPlayerData,
         updatePlayerLocation, 
         insertLocation, 
         createNewPlayer,
-        getUserPlayers 
+        getUserPlayers,
+        createSession ,
+        getUserData
     } = require('./dataService');
 
 
@@ -113,9 +115,19 @@ async function createNewGame(conn, req, uid) {
     }
 }
 
-async function validateUserResponse(conn, req, url) {
-    const username = url.query.username;
-    const password = url.query.password;
+async function validateLoginResponse(conn, req, url) {
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+
+        req.on('end', resolve);
+    });
+
+    const params = new URLSearchParams(body);
+    const username = params.get('username');
+    const password = params.get('password');
 
     const user = await getUserData(conn, username);
 
@@ -144,7 +156,7 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/temp_login.pug', { showError: false });
 
         case '/log-in':
-            return validateUserResponse(conn, parsedURL);
+            return validateLoginResponse(conn, parsedURL);
 
         case '/location':
             return generateLocationResponse(conn, parsedURL);
