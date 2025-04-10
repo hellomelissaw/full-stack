@@ -1,6 +1,6 @@
 const url = require('url');
 const pug = require('pug');
-const temp_token = "temp-sesh-123456"; 
+const temp_token = "temp-sesh-78910"; 
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
@@ -53,7 +53,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
         console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
         if(result.user_data.password == password) {
             const sessionResult = createSession(conn, temp_token, result.user_data.uid);
-        return pug.renderFile('./templates/message.pug', { message: "Password was correct..." } )
+        return generateStartResponse(conn, req)
         }
 
     } else {
@@ -156,11 +156,13 @@ async function generateStartResponse(conn, req) {
 
 async function generateLandingPage(conn, req) {
     const sessionExists = await getSessionStatus(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
-    if(sessionExists) {
-        return generateStartResponse(conn, req);
+    console.table(sessionExists);    
+if(!sessionExists) {
+        return pug.renderFile('./templates/temp_login.pug', { showError: false });
     
     } else {
-        return pug.renderFile('./templates/temp_login.pug', { showError: false });
+        console.log("session active");
+        return generateStartResponse(conn, req);
     }
 }
 
