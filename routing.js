@@ -119,6 +119,11 @@ async function loadGame(conn, pid) {
  
 }
 
+async function generateNewGamePageResponse(conn, req) {
+    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    return pug.renderFile('./templates/new_game_form.pug', { uid: uid } );
+}
+
 async function createNewGame(conn, req) {
     const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
     let body = '';
@@ -179,8 +184,7 @@ async function requestRoute(conn, req) {
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':
-            const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
-            return pug.renderFile('./templates/new_game_form.pug', { uid: uid } );
+           return generateNewGamePageResponse(conn, req);
 
         case '/new-game':
             return createNewGame(conn, req)
