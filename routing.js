@@ -94,7 +94,18 @@ async function loadGame(conn, pid) {
 }
 
 async function createNewGame(conn, uid) {
-    const result = await createNewPlayer(conn, uid);
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+
+        req.on('end', resolve);
+    });
+
+    const params = new URLSearchParams(body);
+    const name = params.get('name');
+    const result = await createNewPlayer(conn, uid, name);
 
     if(result.success) {
         return loadGame(conn, result.pid);
