@@ -49,12 +49,10 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 
     const result = await getUserData(conn, username);
     console.table(result.user_data);
-    if(result) {
+    if(result.success && result.user_data.password == password) {
         console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
-        if(result.user_data.password == password) {
-            const sessionResult = createSession(conn, temp_token, result.user_data.uid);
+        const sessionResult = createSession(conn, temp_token, result.user_data.uid);
         return generateStartResponse(conn, req)
-        }
 
     } else {
         return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
