@@ -48,9 +48,8 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const password = params.get('password');
 
     const result = await getUserData(conn, username);
-    console.table(result.user_data);
+
     if(result.success && result.user_data.password == password) {
-        console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
         const sessionResult = createSession(conn, temp_token, result.user_data.uid);
         return generateStartResponse(conn, req)
 
