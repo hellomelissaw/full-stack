@@ -14,7 +14,7 @@ html(lang="en")
         // I know this is not encrypted, it's just for testing
         if showError 
           p Username or password incorrect 
-        form(action=`/log-in?username=${name}?password=${password}` method="post") 
+        form(action=`/log-in` method="post") 
           label(for="name") Username:
           input(type="text" id="username" name="username" required)
           label(for="password") Password:
