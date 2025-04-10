@@ -111,7 +111,7 @@ async function createNewGame(conn, req, uid) {
         return loadGame(conn, result.pid);
 
     } else {
-        return pug.renderFile('./templates/message', { message: result.error } )
+        return pug.renderFile('./templates/message.pug', { message: result.error } )
     }
 }
 
