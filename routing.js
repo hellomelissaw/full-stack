@@ -113,6 +113,23 @@ async function createNewGame(conn, req, uid) {
     }
 }
 
+async function validateUserResponse(conn, req, url) {
+    const username = url.query.username;
+    const password = url.query.password;
+
+    const user = await getUserData(conn, username);
+
+    if(user) {
+        if(user.password == password) {
+            const sessionResult = createSession(conn, req.cookie.sessionID, user.uid);
+        }
+
+    } else {
+        return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
+    }
+
+}
+
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -123,6 +140,12 @@ async function requestRoute(conn, req) {
     const path = parsedURL.pathname;
 
     switch(path) {
+        case '/log-in-page':
+            return pug.renderFile('./templates/temp_login.pug', { showError: false });
+
+        case '/log-in':
+            return validateUserResponse(conn, parsedURL);
+
         case '/location':
             return generateLocationResponse(conn, parsedURL);
 

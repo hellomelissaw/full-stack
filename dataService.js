@@ -63,8 +63,6 @@ async function getUserPlayers(conn, uid) {
 async function createNewPlayer(conn, uid, name) {
     try {
         const newPlayer = await conn.query(create_player, [uid, name, 0])
-        console.table(newPlayer);
-        console.log(`new player pid: ${newPlayer.insertId}`);
         return { success: true, pid: newPlayer.insertId };
     
     } catch(err) {
