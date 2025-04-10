@@ -150,6 +150,11 @@ async function insertLocation(conn, name, emojis, connections) {
    
 }
 
+async function getSessionStatus(conn, sessionID) {
+    const result = await conn.query("SELECT * FROM session WHERE session_id = ?", [sessionID]);
+    return result;
+}
+
 module.exports = { getLocationPageData, 
                    getPlayerData: getPlayerData,
                    updatePlayerLocation: updatePlayerLocation,
@@ -158,5 +163,6 @@ module.exports = { getLocationPageData,
                    createNewPlayer,
                    createSession,
                    getUserData,
-                   getSessionUser
+                   getSessionUser,
+                   getSessionStatus
                  }
