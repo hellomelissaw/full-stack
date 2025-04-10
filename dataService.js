@@ -40,9 +40,12 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 async function getPlayerData(conn, pid) {
     try {
         const pd = await findOne(conn, 'player', 'pid', pid);
-        console.table(pd);
-        return { success: true, player_data: pd}
-    
+        if (pd) {
+            return { success: true, player_data: pd}
+        
+        } else {
+            console.log(`Player with pid ${pid} not found.`);
+            return {success: false, error: "Player not found" }
     } catch(err) {
         return { success: false, error: err.message }
     }
