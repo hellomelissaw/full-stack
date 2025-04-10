@@ -9,7 +9,8 @@ const { getPlayerData,
         getUserPlayers,
         createSession,
         getUserData,
-        getSessionUser
+        getSessionUser,
+        getSessionStatus
     } = require('./dataService');
 
 
