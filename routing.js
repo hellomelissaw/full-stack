@@ -81,9 +81,10 @@ async function generateLoadPageResponse(conn, url) {
 
 async function loadGame(conn, pid) {
     const result = await getPlayerData(conn, pid);
-
     if(result.success){
+        console.log(result.player_data.loc_id)
         const loc = await getLocationPageData(conn, result.player_data.loc_id);
+        console.table(loc);
         return pug.renderFile('./templates/location.pug', { location: loc });  
     
     } else {

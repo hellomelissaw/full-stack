@@ -40,6 +40,7 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 async function getPlayerData(conn, pid) {
     try {
         const pd = await findOne(conn, 'player', 'pid', pid);
+        console.table(pd);
         return { success: true, player_data: pd}
     
     } catch(err) {
@@ -56,7 +57,7 @@ async function getUserPlayers(conn, uid) {
 async function createNewPlayer(conn, uid, name) {
     try {
         const newPlayer = await conn.query(create_player, [uid, name, 0])
-
+        console.log(`new player pid: ${newPlayer.pid}`);
         return { success: true, pid: newPlayer.pid };
     
     } catch(err) {
