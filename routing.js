@@ -30,6 +30,37 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     return false;
 }
 
+
+
+async function validateLoginResponse(conn, req, temp_token) { // TODO: get token from browser
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+
+        req.on('end', resolve);
+    });
+
+    const params = new URLSearchParams(body);
+    const username = params.get('username');
+    const password = params.get('password');
+
+    const result = await getUserData(conn, username);
+    console.table(result.user_data);
+    if(result) {
+        console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
+        if(result.user_data.password == password) {
+            const sessionResult = createSession(conn, temp_token, result.user_data.uid);
+        return pug.renderFile('./templates/message.pug', { message: "Password was correct..." } )
+        }
+
+    } else {
+        return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
+    }
+
+}
+
 async function generateLocationResponse(conn, url) {
     const result = await getPlayerData(conn, pid);
 
@@ -70,16 +101,8 @@ async function generateInsertResponse(conn, req) {
     return pug.renderFile('./templates/message.pug', { message: result });
 }
 
-async function generateStartResponse(conn, req) {
-    const sessionId = temp_token; // Hard-coded. This should be gotten from the response I guess?? 
-    console.log(`session id start page: ${sessionId}`);
-    const uid = await getSessionUser(conn, sessionId);
-    // const player_info = await getPlayerData(conn, pid);
-    return pug.renderFile('./templates/start.pug', { uid: uid });
-}
-
-async function generateLoadPageResponse(conn, url) {
-    const uid = url.query.uid;
+async function generateLoadPageResponse(conn, req) { // Hard-coded token. This should be gotten from the req I guess?? 
+    const uid = await getSessionUser(conn, temp_token);
     const userPlayers = await getUserPlayers(conn, uid);
     return pug.renderFile('./templates/load_games.pug', {players: userPlayers});
 }
@@ -96,7 +119,8 @@ async function loadGame(conn, pid) {
  
 }
 
-async function createNewGame(conn, req, uid) {
+async function createNewGame(conn, req) {
+    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -118,35 +142,11 @@ async function createNewGame(conn, req, uid) {
     }
 }
 
-async function validateLoginResponse(conn, req, temp_token) { // TODO: get token from browser
-    let body = '';
-    await new Promise((resolve) => {
-        req.on('data', chunk => {
-            body += chunk.toString();
-        })
-
-        req.on('end', resolve);
-    });
-
-    const params = new URLSearchParams(body);
-    const username = params.get('username');
-    const password = params.get('password');
-
-    const result = await getUserData(conn, username);
-    console.table(result.user_data);
-    if(result) {
-        console.log(`result.user_data.password: ${result.user_data.password}, password: ${password}`);
-        if(result.user_data.password == password) {
-            const sessionResult = createSession(conn, temp_token, result.user_data.uid);
-        return pug.renderFile('./templates/message.pug', { message: "Password was correct..." } )
-        }
-
-    } else {
-        return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
-    }
-
+async function generateStartResponse(conn, req) {
+    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    // const player_info = await getPlayerData(conn, pid);
+    return pug.renderFile('./templates/start.pug', { uid: uid });
 }
-
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -179,10 +179,11 @@ async function requestRoute(conn, req) {
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':
-            return pug.renderFile('./templates/new_game_form.pug', { uid: parsedURL.query.uid } );
+            const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+            return pug.renderFile('./templates/new_game_form.pug', { uid: uid } );
 
         case '/new-game':
-            return createNewGame(conn, req, parsedURL.query.uid)
+            return createNewGame(conn, req)
 
         default: 
             return generateStartResponse(conn, req);
