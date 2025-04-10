@@ -107,8 +107,8 @@ async function generateInsertResponse(conn, req) {
 }
 
 async function generateLoadPageResponse(conn, req) { // Hard-coded token. This should be gotten from the req I guess?? 
-    const uid = await getSessionUser(conn, temp_token);
-    const userPlayers = await getUserPlayers(conn, uid);
+    const user = await getSessionUser(conn, temp_token);
+    const userPlayers = await getUserPlayers(conn, user.uid);
     return pug.renderFile('./templates/load_games.pug', {players: userPlayers});
 }
 
@@ -125,12 +125,13 @@ async function loadGame(conn, pid) {
 }
 
 async function generateNewGamePageResponse(conn, req) {
-    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
-    return pug.renderFile('./templates/new_game_form.pug', { uid: uid } );
+    const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    return pug.renderFile('./templates/new_game_form.pug', { uid: user.uid } );
 }
 
 async function createNewGame(conn, req) {
-    const uid = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+    const uid = user.uid;
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -148,7 +149,8 @@ async function createNewGame(conn, req) {
         return loadGame(conn, result.pid);
 
     } else {
-        return pug.renderFile('./templates/message.pug', { message: result.error } )
+        console.log(result.error);
+        return pug.renderFile('./templates/message.pug', { message: "Problem loading game, please try again." } )
     }
 }
 
