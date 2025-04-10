@@ -156,5 +156,6 @@ module.exports = { getLocationPageData,
                    getUserPlayers,
                    createNewPlayer,
                    createSession,
-                   getUserData
+                   getUserData,
+                   getSessionUser
                  }

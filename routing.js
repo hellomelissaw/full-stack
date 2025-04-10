@@ -6,8 +6,9 @@ const { getPlayerData,
         insertLocation, 
         createNewPlayer,
         getUserPlayers,
-        createSession ,
-        getUserData
+        createSession,
+        getUserData,
+        getSessionUser
     } = require('./dataService');
 
 
@@ -68,7 +69,10 @@ async function generateInsertResponse(conn, req) {
     return pug.renderFile('./templates/message.pug', { message: result });
 }
 
-async function generateStartResponse(conn, uid) {
+async function generateStartResponse(conn, req) {
+    const sessionId = req.cookie.sessionID;
+    console.log(`session id start page: ${sessionId}`);
+    const uid = await getSessionUser(conn, sessionId);
     // const player_info = await getPlayerData(conn, pid);
     return pug.renderFile('./templates/start.pug', { uid: uid });
 }
@@ -178,7 +182,7 @@ async function requestRoute(conn, req) {
             return createNewGame(conn, req, parsedURL.query.uid)
 
         default: 
-            return generateStartResponse(conn, uid);
+            return generateStartResponse(conn, req);
     }
 
 }
