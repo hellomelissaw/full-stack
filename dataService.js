@@ -65,7 +65,7 @@ async function createSession(conn, sessionID, uid) {
 async function getSessionUser(conn, sessionID) {
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
-        return await findOne(conn, 'user', uid, session.uid)
+        return await findOne(conn, 'user', 'uid', session.uid)
     }
     return null;
 }
