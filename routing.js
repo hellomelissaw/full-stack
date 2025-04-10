@@ -159,7 +159,7 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/temp_login.pug', { showError: false });
 
         case '/log-in':
-            return validateLoginResponse(conn, req);
+            return validateLoginResponse(conn, temp_token);
 
         case '/location':
             return generateLocationResponse(conn, parsedURL);
