@@ -82,7 +82,7 @@ async function generateLoadPageResponse(conn, url) {
 async function loadGame(conn, pid) {
     const result = await getPlayerData(conn, pid);
     if(result.success){
-        console.log(result.player_data.loc_id)
+        console.table(result.player_data);
         const loc = await getLocationPageData(conn, result.player_data.loc_id);
         console.table(loc);
         return pug.renderFile('./templates/location.pug', { location: loc });  
@@ -93,7 +93,7 @@ async function loadGame(conn, pid) {
  
 }
 
-async function createNewGame(conn, uid) {
+async function createNewGame(conn, req, uid) {
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -144,7 +144,7 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/new_game_form.pug', { uid: parsedURL.query.uid } );
 
         case '/new-game':
-            return createNewGame(conn, parsedURL.query.uid)
+            return createNewGame(conn, req, parsedURL.query.uid)
 
         default: 
             return generateStartResponse(conn, uid);
