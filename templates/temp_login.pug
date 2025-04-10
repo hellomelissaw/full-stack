@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="static/startpage.css")
+    title Log in to continue playing
+  body
+    include menu.pug
+    .screen
+      .menu
+      main  
+        h1 Log in
+        // I know this is not encrypted, it's just for testing
+        if showError 
+          p Username or password incorrect 
+        form(action=`/log-in?username=${name}?password=${password}` method="post") 
+          label(for="name") Username:
+          input(type="text" id="username" name="username" required)
+          label(for="password") Password:
+          input(type="text" id="name" name="name" required)
+          button(type="submit") Log in
