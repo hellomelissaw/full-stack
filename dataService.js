@@ -17,7 +17,7 @@ const sql_conn = `SELECT
 
 const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
-const create_player = 'INSERT INTO player (uid, loc_id) values (?, ?)';
+const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 
 ////////////////////////////////////////////////////////////
@@ -53,9 +53,9 @@ async function getUserPlayers(conn, uid) {
     return player_ids
 }
 
-async function createNewPlayer(conn, uid) {
+async function createNewPlayer(conn, uid, name) {
     try {
-        const newPlayer = await conn.query(create_player, [uid, 0])
+        const newPlayer = await conn.query(create_player, [uid, name, 0])
 
         return { success: true, pid: newPlayer.pid };
     
