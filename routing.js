@@ -1,7 +1,5 @@
 const url = require('url');
 const pug = require('pug');
-const uid = 1;
-const pid = 1; // temporary player id until we set up a login system
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
