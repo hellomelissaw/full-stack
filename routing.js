@@ -129,7 +129,7 @@ async function requestRoute(conn, req) {
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':
-            return pug.renderFile('./templates/new_game_form.pug');
+            return pug.renderFile('./templates/new_game_form.pug', { uid: uid } );
 
         case '/new-game':
             return createNewGame(conn, parsedURL.query.uid)
