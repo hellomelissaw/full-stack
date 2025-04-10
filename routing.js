@@ -132,11 +132,12 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const username = params.get('username');
     const password = params.get('password');
 
-    const user = await getUserData(conn, username);
-
-    if(user) {
-        if(user.password == password) {
-            const sessionResult = createSession(conn, temp_token, user.uid);
+    const result = await getUserData(conn, username);
+    console.table(result.user_data);
+    if(result) {
+        if(result.user_data.password == password) {
+            const sessionResult = createSession(conn, temp_token, result.user_data.uid);
+        return pug.renderFile('./templates/message.pug', { message: "Password was correct..." } )
         }
 
     } else {

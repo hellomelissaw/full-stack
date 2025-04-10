@@ -19,7 +19,7 @@ const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
-const create_session = 'INSERT INTO session (session_idm uid) values (?, ?)';
+const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
@@ -34,6 +34,7 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
 }
 
 async function createSession(conn, sessionID, uid) {
+    console.log(`sessionID: ${sessionID}, uid: ${uid}`); 
     const result = await conn.query(create_session, [sessionID, uid]);
 
 }
@@ -57,7 +58,7 @@ async function getUserData(conn, username) { // should refactor to reuse code
         const ud = await findOne(conn, 'user', 'username', username);
         
         if (ud) {
-            return { success: true, player_data: pd}
+            return { success: true, user_data: ud}
         
         } else {
             console.log(`User with username ${username} not found.`);
