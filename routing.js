@@ -2,7 +2,8 @@ const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
 const pid = 1; // maybe add it to the cookie? 
-const { getPlayerData, 
+const { setCookie, getCookie, delCookie } = require('./cookie.js');
+const { getPlayerData,
         getLocationPageData, 
         updatePlayerLocation, 
         insertLocation, 
@@ -52,6 +53,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const result = await getUserData(conn, username);
 
     if(result.success && result.user_data.password == password) {
+
         const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
 
         if (sessionResult.success) {
