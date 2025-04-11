@@ -205,10 +205,10 @@ async function requestRoute(conn, req) {
             return pug.renderFile('./templates/insert_form.pug');
         
         case '/insert-location':
-           return generateInsertResponse(conn, parsedURL);
+           return generateInsertResponse(conn, req, parsedURL);
 
         case '/load-game-page':
-            return generateLoadPageResponse(conn, parsedURL);
+            return generateLoadPageResponse(conn, req);
 
         case '/load-game':
             return loadGame(conn, parsedURL.query.pid);
