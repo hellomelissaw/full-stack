@@ -50,7 +50,7 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       res.setCookie('session', 'jfjwefiwjfij',  3*24*60*60*1000);
+       res.setHeader('Set-Cookie', 'session=jfjwefiwjfij;HttpOnly');
        res.end(result);
     
     } catch (err) {
