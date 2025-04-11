@@ -19,7 +19,7 @@ const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
-const create_session = 'INSERT INTO session (session_idm uid) values (?, ?)';
+const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
@@ -33,19 +33,50 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
     return rows[0] || null;
 }
 
+async function userIsActive(conn, uid) {
+    const active = await conn.query('SELECT * FROM session WHERE uid = ?', [uid]);
+    return active.length > 0;
+}
+
 async function createSession(conn, sessionID, uid) {
-    const result = await conn.query(create_session, [sessionID, uid]);
+    console.log(`sessionID: ${sessionID}, uid: ${uid}`);
+    if (await userIsActive(conn, uid)) {
+        try {
+            await conn.query('DELETE FROM session WHERE uid = ?', [uid]);
+
+        } catch(err) {
+            return { success: false, error: err.message }
+
+        }
+    } 
+
+    try {
+        await conn.query(create_session, [sessionID, uid]);
+        return { success: true }
+        
+    } catch {
+        return { success: false, error: err.message }
+
+    }
+   
 
 }
 
 async function getSessionUser(conn, sessionID) {
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
-        return session.uid;
-    
-    } else {
-        return null;
+        return await findOne(conn, 'user', 'uid', session.uid)
     }
+    return null;
+}
+
+async function deleteSession(conn, sessionID) {
+    try {
+        await conn.query("DELETE FROM session WHERE session_id = ?", [sessionID]);
+    
+    } catch(err) {
+        console.log(err.message);  
+}
 }
 
 ////////////////////////////////////////////////////////////
@@ -57,7 +88,7 @@ async function getUserData(conn, username) { // should refactor to reuse code
         const ud = await findOne(conn, 'user', 'username', username);
         
         if (ud) {
-            return { success: true, player_data: pd}
+            return { success: true, user_data: ud}
         
         } else {
             console.log(`User with username ${username} not found.`);
@@ -149,6 +180,11 @@ async function insertLocation(conn, name, emojis, connections) {
    
 }
 
+async function getSessionStatus(conn, sessionID) {
+    const result = await conn.query("SELECT * FROM session WHERE session_id = ?", [sessionID]);
+    return result.length > 0;
+}
+
 module.exports = { getLocationPageData, 
                    getPlayerData: getPlayerData,
                    updatePlayerLocation: updatePlayerLocation,
@@ -157,5 +193,7 @@ module.exports = { getLocationPageData,
                    createNewPlayer,
                    createSession,
                    getUserData,
-                   getSessionUser
+                   getSessionUser,
+                   getSessionStatus,
+                   deleteSession
                  }

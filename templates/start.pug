@@ -4,18 +4,21 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet" href="static/startpage.css")
-    title HL3
+    title Hello #{username}
     //- The second title tag is redundant and has been removed.
   body
     .screen
       .menu
         h1 Best game ever
         h3 A group 16 creation
+        p Welcome, #{username}. We hope you're ready for an adventure.
         ul
           li
             a(href=`/new-game-page?uid=${uid}`) New Game
           li
             a(href=`/load-game-page?uid=${uid}`) Load Game
           li
-            a(href="#" id="quit-btn") Quit
+            a(href=`/insert-location-form`) Insert New Location 
+          li
+            a(href="/quit" id="quit-btn") Quit
     script(src="logic.js")

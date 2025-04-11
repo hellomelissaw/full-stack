@@ -8,9 +8,10 @@ html(lang="en")
     title Best game ever
   body
     .location-box
+      h1 Welcome to the #{location.name}
 
     .picture-box
-      img(src="forest.jpeg", alt="Picture")
+      img(src="apple.JPG", alt="Picture")
 
     .top-left-buttons
       button#save-button.btn Save Game
@@ -23,11 +24,11 @@ html(lang="en")
       canvas#pixelCanvas(width="600", height="400")
       .textbox text
       .container
+        p Where to go next?
         #option-buttons.btn-grid
-          button.btn Option 1
-          button.btn Option 2
-          button.btn Option 3
-          button.btn Option 4
+          each conn in location.connections
+            button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+
 
     #inventory-container.inventory-container
       h3 Player inventory
