@@ -19,6 +19,7 @@ const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
+const create_session = 'INSERT INTO session (session_idm uid) values (?, ?)';
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
@@ -32,10 +33,43 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
     return rows[0] || null;
 }
 
+async function createSession(conn, sessionID, uid) {
+    const result = await conn.query(create_session, [sessionID, uid]);
+
+}
+
+async function getSessionUser(conn, sessionID) {
+    const session = await findOne(conn, 'session', 'session_id', sessionID);
+    if (session) {
+        return session.uid;
+    
+    } else {
+        return null;
+    }
+}
 
 ////////////////////////////////////////////////////////////
 // USER AND PLAYER DATA QUERIES
 ////////////////////////////////////////////////////////////
+
+async function getUserData(conn, username) { // should refactor to reuse code
+    try {
+        const ud = await findOne(conn, 'user', 'username', username);
+        
+        if (ud) {
+            return { success: true, player_data: pd}
+        
+        } else {
+            console.log(`User with username ${username} not found.`);
+            return {success: false, error: "User not found" }
+
+        }
+    } catch(err) {
+        return { success: false, error: err.message }
+
+    }
+
+}
 
 async function getPlayerData(conn, pid) {
     try {
@@ -63,8 +97,6 @@ async function getUserPlayers(conn, uid) {
 async function createNewPlayer(conn, uid, name) {
     try {
         const newPlayer = await conn.query(create_player, [uid, name, 0])
-        console.table(newPlayer);
-        console.log(`new player pid: ${newPlayer.insertId}`);
         return { success: true, pid: newPlayer.insertId };
     
     } catch(err) {
@@ -122,5 +154,8 @@ module.exports = { getLocationPageData,
                    updatePlayerLocation: updatePlayerLocation,
                    insertLocation,
                    getUserPlayers,
-                   createNewPlayer
+                   createNewPlayer,
+                   createSession,
+                   getUserData,
+                   getSessionUser
                  }
