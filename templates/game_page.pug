@@ -4,14 +4,14 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    link(rel="stylesheet", href="gamepage.css")
-    title Welcome to the #{location.name}
+    link(rel="stylesheet", href="/static/gamepage.css")
+    title Best game ever
   body
     .location-box
       h1 Welcome to the #{location.name}
 
     .picture-box
-      img(src="apple.JPG", alt="Picture")
+      img(src="/static/img/apple.jpg", alt="Picture")
 
     .top-left-buttons
       button#save-button.btn Save Game
@@ -34,4 +34,4 @@ html(lang="en")
       h3 Player inventory
       p No items in inventory
 
-    script(src="logic.js")
+    script(src="/static/logic.js")

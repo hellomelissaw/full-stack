@@ -3,7 +3,7 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet" href="static/startpage.css")
+    link(rel="stylesheet" href="/static/startpage.css")
     title Hello #{username}
     //- The second title tag is redundant and has been removed.
   body
@@ -21,4 +21,4 @@ html(lang="en")
             a(href=`/insert-location-form`) Insert New Location 
           li
             a(href="/quit" id="quit-btn") Quit
-    script(src="logic.js")
+    script(src="/static/logic.js")
