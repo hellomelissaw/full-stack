@@ -2,7 +2,7 @@ const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
 const pid = 1; // maybe add it to the cookie? 
-const { setCookie, getCookie, delCookie } = require('./cookie.js');
+// const { setCookie, getCookie, delCookie } = require('./cookie.js');
 const { getPlayerData,
         getLocationPageData, 
         updatePlayerLocation, 
