@@ -79,7 +79,7 @@ async function generateLocationResponse(conn, url) {
             return pug.renderFile('./templates/game_page.pug', { location: loc });   
         
         } else {
-            return pug.renderFile('./templates/location_error.pug', { playerLocID: result.player_data.loc_id, buttonLabel: "GO!"});
+            return pug.renderFile('./templates/location_error.pug', { locID: result.player_data.loc_id, buttonLabel: "GO!"});
         }
     
     } else {
