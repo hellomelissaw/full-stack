@@ -76,7 +76,7 @@ async function generateLocationResponse(conn, url) {
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
             updatePlayerLocation(conn, id, pid);  // hard-coded temporarily
-            return pug.renderFile('./templates/location.pug', { location: loc });   
+            return pug.renderFile('./templates/game_page.pug', { location: loc });   
         
         } else {
             return pug.renderFile('./templates/location_error.pug', { playerLocID: result.player_data.loc_id, buttonLabel: "GO!"});
@@ -117,7 +117,7 @@ async function loadGame(conn, pid) {
     const result = await getPlayerData(conn, pid); // hard-coded temporarily
     if(result.success){
         const loc = await getLocationPageData(conn, result.player_data.loc_id);
-        return pug.renderFile('./templates/location.pug', { location: loc });  
+        return pug.renderFile('./templates/game_page.pug', { location: loc });  
     
     } else {
         return pug.renderFile('./templates/message.pug', { message: result.error } ) 
