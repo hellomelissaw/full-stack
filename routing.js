@@ -1,8 +1,8 @@
 const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
-const pid = 1; // maybe add it to the cookie? 
-const { setCookie, getCookie, delCookie } = require('./cookie.js');
+ 
+//const { setCookie, getCookie, delCookie } = require('./cookie.js');
 const { getPlayerData,
         getLocationPageData, 
         updatePlayerLocation, 
@@ -13,7 +13,10 @@ const { getPlayerData,
         getUserData,
         getSessionUser,
         getSessionStatus,
-        deleteSession
+        deleteSession,
+        loadGames,
+        addPidToSession,
+        getSessionPid
     } = require('./dataService');
 
 
@@ -33,8 +36,6 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     }
     return false;
 }
-
-
 
 async function validateLoginResponse(conn, req, temp_token) { // TODO: get token from browser
     let body = '';
@@ -70,18 +71,19 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 }
 
 async function generateLocationResponse(conn, url) {
-    const result = await getPlayerData(conn, pid); // hard-coded temporarily
+    const pid = await getSessionPid(conn, temp_token);
+    const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
         const id = url.query.locID;
         const loc = await getLocationPageData(conn, id);
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
-            updatePlayerLocation(conn, id, pid);  // hard-coded temporarily
+            updatePlayerLocation(conn, id, pid); 
             return pug.renderFile('./templates/game_page.pug', { location: loc });   
         
         } else {
-            return pug.renderFile('./templates/location_error.pug', { playerLocID: result.player_data.loc_id, buttonLabel: "GO!"});
+            return pug.renderFile('./templates/location_error.pug', { locID: result.player_data.loc_id, buttonLabel: "GO!"});
         }
     
     } else {
@@ -111,15 +113,23 @@ async function generateInsertResponse(conn, req) {
 
 async function generateLoadPageResponse(conn, req) { // Hard-coded token. This should be gotten from the req I guess?? 
     const user = await getSessionUser(conn, temp_token);
-    const userPlayers = await getUserPlayers(conn, user.uid);
-    return pug.renderFile('./templates/load_games.pug', {players: userPlayers});
+    const games = await loadGames(conn, user.uid); 
+    return pug.renderFile('./templates/load_games.pug', {players: games});
 }
 
 async function loadGame(conn, pid) {
-    const result = await getPlayerData(conn, pid); // hard-coded temporarily
+    console.log(pid);
+    const result = await getPlayerData(conn, pid);
     if(result.success){
-        const loc = await getLocationPageData(conn, result.player_data.loc_id);
-        return pug.renderFile('./templates/game_page.pug', { location: loc });  
+        const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
+        if (addedPid) {
+            const loc = await getLocationPageData(conn, result.player_data.loc_id);
+            return pug.renderFile('./templates/game_page.pug', { location: loc });  
+        } else {
+            return pug.renderFile('./templates/message.pug', 
+                { message: "Problem adding game to session, please try again." } 
+            )
+        }
     
     } else {
         return pug.renderFile('./templates/message.pug', { message: result.error } ) 
@@ -148,8 +158,13 @@ async function createNewGame(conn, req) {
     const name = params.get('name');
     const result = await createNewPlayer(conn, uid, name);
 
-    if(result.success) {
-        return loadGame(conn, result.pid);
+    if (result.success) {
+        const addedPid = await addPidToSession(conn, result.pid, uid);
+        if (addedPid) {
+            return loadGame(conn, result.pid);
+        }
+        return pug.renderFile('./templates/message.pug', { message: "Problem adding game to session, please try again." } )
+
 
     } else {
         console.log(result.error);
@@ -180,11 +195,12 @@ if(!sessionExists) {
     }
 }
 
-
 async function quitGame(conn, req) {
     await deleteSession(conn, temp_token); // Hard-coded session token
     return pug.renderFile('./templates/temp_login.pug', { showError: false });
 }
+
+
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
@@ -213,6 +229,7 @@ async function requestRoute(conn, req) {
             return generateLoadPageResponse(conn, req);
 
         case '/load-game':
+            console.log(parsedURL.query.pid);
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':

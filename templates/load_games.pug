@@ -6,6 +6,15 @@ html
     link(rel="stylesheet", href="/static/ui.css")
   body
     main
-      h1 Select a player from the list:
-      each player in players
-        button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) #{player.pid}
+      .top-left-buttons
+        button#exit-button.btn Back to main menu
+      .wrapper
+        .container
+          #option-buttons.btn-grid
+            h1 Select a player from the list:
+            each player in players
+              p Player: #{player.name}
+              p Location: #{player.loc_name}
+              button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) Go
+
+    script(src="/static/logic.js")

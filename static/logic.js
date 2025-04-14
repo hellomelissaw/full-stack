@@ -3,7 +3,7 @@ document.getElementById("quit-btn")?.addEventListener("click", function (event) 
     event.preventDefault();
     let confirmExit = confirm("Are you sure you want to quit?");
     if (confirmExit) {
-        window.close();
+        window.location.href = "/quit"; 
     }
 })
 
@@ -63,6 +63,6 @@ document.getElementById("inventory-button")?.addEventListener("click", function 
 document.getElementById("exit-button")?.addEventListener("click", function () {
     let confirmExit = confirm("Are you sure you want to exit?");
     if (confirmExit) {
-        window.location.href = "startpage.html"; // Change this to your actual start page file
+        window.location.href = "/"; 
     }
 });
