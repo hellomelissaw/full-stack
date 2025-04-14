@@ -21,7 +21,7 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
-const location_names = `SELECT 
+const get_user_players = `SELECT 
                             player.pid, 
                             player.name, 
                             location.name AS loc_name 
@@ -199,8 +199,8 @@ async function insertLocation(conn, name, emojis, connections) {
 ////////////////////////////////////////////////////////////
 
 async function loadGames(conn, uid) {
-    const location_names = await conn.query(location_names, [uid]);
-    return location_names;
+    const games = await conn.query(get_user_players, [uid]);
+    return games;
 }
 
 async function getSessionStatus(conn, sessionID) {
