@@ -68,7 +68,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 }
 
 async function generateLocationResponse(conn, url) {
-    const pid = getSessionPid(conn, temp_token);
+    const pid = await getSessionPid(conn, temp_token);
     const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
