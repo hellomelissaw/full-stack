@@ -3,7 +3,7 @@ document.getElementById("quit-btn")?.addEventListener("click", function (event) 
     event.preventDefault();
     let confirmExit = confirm("Are you sure you want to quit?");
     if (confirmExit) {
-        window.close();
+        window.location.href = "/quit"; 
     }
 })
 
