@@ -117,7 +117,7 @@ async function generateLoadPageResponse(conn, req) { // Hard-coded token. This s
 async function loadGame(conn, pid) {
     const result = await getPlayerData(conn, pid);
     if(result.success){
-        const addedPid = await addPidToSession(result.pid);
+        const addedPid = await addPidToSession(result.pid, result.uid);
         if (addedPid) {
             const loc = await getLocationPageData(conn, result.player_data.loc_id);
             return pug.renderFile('./templates/game_page.pug', { location: loc });  
@@ -155,7 +155,7 @@ async function createNewGame(conn, req) {
     const result = await createNewPlayer(conn, uid, name);
 
     if (result.success) {
-        const addedPid = await addPidToSession(result.pid);
+        const addedPid = await addPidToSession(result.pid, uid);
         if (addedPid) {
             return loadGame(conn, result.pid);
         }
