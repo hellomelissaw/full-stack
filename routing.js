@@ -12,7 +12,8 @@ const { getPlayerData,
         getUserData,
         getSessionUser,
         getSessionStatus,
-        deleteSession
+        deleteSession,
+        loadGames
     } = require('./dataService');
 
 
@@ -107,8 +108,8 @@ async function generateInsertResponse(conn, req) {
 
 async function generateLoadPageResponse(conn, req) { // Hard-coded token. This should be gotten from the req I guess?? 
     const user = await getSessionUser(conn, temp_token);
-    const userPlayers = await getUserPlayers(conn, user.uid);
-    return pug.renderFile('./templates/load_games.pug', {players: userPlayers});
+    const games = await loadGames(conn, user.uid); 
+    return pug.renderFile('./templates/load_games.pug', {players: games});
 }
 
 async function loadGame(conn, pid) {
