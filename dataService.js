@@ -193,7 +193,12 @@ async function insertLocation(conn, name, emojis, connections) {
    
 }
 
-async function getLocationNames(conn) {
+
+////////////////////////////////////////////////////////////
+// SESSION-SPECIFIC INFO
+////////////////////////////////////////////////////////////
+
+async function loadGames(conn, uid) {
     const location_names = await conn.query(location_names, [uid]);
     return location_names;
 }
@@ -214,5 +219,5 @@ module.exports = { getLocationPageData,
                    getSessionUser,
                    getSessionStatus,
                    deleteSession,
-                   getLocationNames
+                   loadGames
                  }
