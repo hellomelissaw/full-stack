@@ -205,5 +205,6 @@ module.exports = { getLocationPageData,
                    getUserData,
                    getSessionUser,
                    getSessionStatus,
-                   deleteSession
+                   deleteSession,
+                   getLocationNames
                  }
