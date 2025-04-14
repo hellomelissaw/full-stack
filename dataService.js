@@ -21,7 +21,7 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
-const location_names = `SELECT location.name 
+const location_names = `SELECT player.pid, player.name, location.name AS loc_name 
                         FROM location JOIN player
                         ON location.loc_id = player.loc_id
                         ORDER BY player.pid`;
