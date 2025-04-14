@@ -21,6 +21,8 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
+const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
+
 const get_user_players = `SELECT 
                             player.pid, 
                             player.name, 
@@ -209,6 +211,10 @@ async function getSessionStatus(conn, sessionID) {
     return result.length > 0;
 }
 
+async function addPidToSession(conn, pid, uid) {
+    const result = await conn.query(add_pid_to_session, [pid, uid]);
+}
+
 
 module.exports = { getLocationPageData, 
                    getPlayerData: getPlayerData,
@@ -221,5 +227,6 @@ module.exports = { getLocationPageData,
                    getSessionUser,
                    getSessionStatus,
                    deleteSession,
-                   loadGames
+                   loadGames,
+                   addPidToSession
                  }
