@@ -63,6 +63,6 @@ document.getElementById("inventory-button")?.addEventListener("click", function 
 document.getElementById("exit-button")?.addEventListener("click", function () {
     let confirmExit = confirm("Are you sure you want to exit?");
     if (confirmExit) {
-        window.location.href = "/quit"; 
+        window.location.href = "/"; 
     }
 });
