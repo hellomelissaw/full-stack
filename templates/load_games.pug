@@ -3,9 +3,11 @@ html
   head
     meta(charset="UTF-8")
     title Load game
-    link(rel="stylesheet", href="/static/ui.css")
+    link(rel="stylesheet", href="/static/gamepage.css")
   body
     main
+      .top-left-buttons
+        button#exit-button.btn Back to main menu
       .wrapper
         .container
           #option-buttons.btn-grid
@@ -14,3 +16,5 @@ html
               p Player: #{player.name}
               p Location: #{player.loc_name}
               button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) Go
+
+    script(src="/static/logic.js")
