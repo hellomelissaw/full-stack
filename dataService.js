@@ -212,7 +212,16 @@ async function getSessionStatus(conn, sessionID) {
 }
 
 async function addPidToSession(conn, pid, uid) {
-    const result = await conn.query(add_pid_to_session, [pid, uid]);
+    try {
+        const result = await conn.query(add_pid_to_session, [pid, uid]);
+        return true;
+    
+    } catch(err) {
+        console.log(err.message);
+        return false;
+    }
+
+
 }
 
 
