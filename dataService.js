@@ -21,6 +21,11 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
+const location_names = `SELECT location.name 
+                        FROM location JOIN player
+                        ON location.loc_id = player.loc_id
+                        ORDER BY player.pid`;
+
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
 ////////////////////////////////////////////////////////////
@@ -178,6 +183,11 @@ async function insertLocation(conn, name, emojis, connections) {
          return err.message;
     }
    
+}
+
+async function getLocationNames(conn) {
+    const location_names = await conn.query(location_names);
+    return location_names;
 }
 
 async function getSessionStatus(conn, sessionID) {
