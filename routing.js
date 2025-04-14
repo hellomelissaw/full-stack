@@ -1,7 +1,6 @@
 const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
-const pid = 1; // maybe add it to the cookie? 
 const { getPlayerData, 
         getLocationPageData, 
         updatePlayerLocation, 
@@ -13,7 +12,9 @@ const { getPlayerData,
         getSessionUser,
         getSessionStatus,
         deleteSession,
-        loadGames
+        loadGames,
+        addPidToSession,
+        getSessionPid
     } = require('./dataService');
 
 
@@ -67,14 +68,15 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 }
 
 async function generateLocationResponse(conn, url) {
-    const result = await getPlayerData(conn, pid); // hard-coded temporarily
+    const pid = getSessionPid(conn, temp_token);
+    const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
         const id = url.query.locID;
         const loc = await getLocationPageData(conn, id);
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
-            updatePlayerLocation(conn, id, pid);  // hard-coded temporarily
+            updatePlayerLocation(conn, id, pid); 
             return pug.renderFile('./templates/game_page.pug', { location: loc });   
         
         } else {
@@ -113,10 +115,17 @@ async function generateLoadPageResponse(conn, req) { // Hard-coded token. This s
 }
 
 async function loadGame(conn, pid) {
-    const result = await getPlayerData(conn, pid); // hard-coded temporarily
+    const result = await getPlayerData(conn, pid);
     if(result.success){
-        const loc = await getLocationPageData(conn, result.player_data.loc_id);
-        return pug.renderFile('./templates/game_page.pug', { location: loc });  
+        const addedPid = await addPidToSession(result.pid);
+        if (addedPid) {
+            const loc = await getLocationPageData(conn, result.player_data.loc_id);
+            return pug.renderFile('./templates/game_page.pug', { location: loc });  
+        } else {
+            return pug.renderFile('./templates/message.pug', 
+                { message: "Problem adding game to session, please try again." } 
+            )
+        }
     
     } else {
         return pug.renderFile('./templates/message.pug', { message: result.error } ) 
@@ -145,8 +154,13 @@ async function createNewGame(conn, req) {
     const name = params.get('name');
     const result = await createNewPlayer(conn, uid, name);
 
-    if(result.success) {
-        return loadGame(conn, result.pid);
+    if (result.success) {
+        const addedPid = await addPidToSession(result.pid);
+        if (addedPid) {
+            return loadGame(conn, result.pid);
+        }
+        return pug.renderFile('./templates/message.pug', { message: "Problem adding game to session, please try again." } )
+
 
     } else {
         console.log(result.error);
@@ -177,11 +191,12 @@ if(!sessionExists) {
     }
 }
 
-
 async function quitGame(conn, req) {
     await deleteSession(conn, temp_token); // Hard-coded session token
     return pug.renderFile('./templates/temp_login.pug', { showError: false });
 }
+
+
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////

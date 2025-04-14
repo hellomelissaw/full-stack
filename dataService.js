@@ -220,8 +220,11 @@ async function addPidToSession(conn, pid, uid) {
         console.log(err.message);
         return false;
     }
+}
 
-
+async function getSessionPid(conn, sessionID) {
+    const result = await conn.query("SELECT pid FROM session WHERE session_id = ?", [sessionID]);
+    return result[0].pid;
 }
 
 
@@ -237,5 +240,6 @@ module.exports = { getLocationPageData,
                    getSessionStatus,
                    deleteSession,
                    loadGames,
-                   addPidToSession
+                   addPidToSession,
+                   getSessionPid
                  }
