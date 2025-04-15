@@ -1,10 +1,8 @@
 const { findOne, create_player, get_user_players } = require("./utilities");
 
-
 ////////////////////////////////////////////////////////////
 // USER AND PLAYER DATA QUERIES
 ////////////////////////////////////////////////////////////
-
 
 async function getUserData(conn, username) {
     try {
@@ -42,7 +40,6 @@ async function getPlayerData(conn, pid) {
 
     }
 }
-exports.getPlayerData = getPlayerData;
 
 async function getUserPlayers(conn, uid) {
     let player_ids = await conn.query("SELECT * FROM player WHERE uid = ?", [uid]);
@@ -64,3 +61,11 @@ async function createNewPlayer(conn, uid, name) {
     return games;
 }
 
+
+module.exports = { 
+                    getUserData,
+                    getPlayerData,
+                    getUserPlayers,
+                    createNewPlayer,
+                    loadGames
+                 }

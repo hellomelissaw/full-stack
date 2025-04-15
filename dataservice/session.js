@@ -1,10 +1,8 @@
 const { create_session, findOne, add_pid_to_session } = require("./utilities");
 
-
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
 ////////////////////////////////////////////////////////////
-
 
 async function userIsActive(conn, uid) {
     const active = await conn.query('SELECT * FROM session WHERE uid = ?', [uid]);
@@ -72,3 +70,13 @@ async function getSessionPid(conn, sessionID) {
     const result = await conn.query("SELECT pid FROM session WHERE session_id = ?", [sessionID]);
     return result[0].pid;
 }
+
+
+module.exports = { 
+                    createSession,
+                    getSessionUser,
+                    deleteSession,
+                    getSessionStatus,
+                    addPidToSession,
+                    getSessionPid
+                 }

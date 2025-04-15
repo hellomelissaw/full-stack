@@ -3,21 +3,30 @@ const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
  
 //const { setCookie, getCookie, delCookie } = require('./cookie.js');
-const { getPlayerData,
-        getLocationPageData, 
-        updatePlayerLocation, 
-        insertLocation, 
-        createNewPlayer,
-        getUserPlayers,
-        createSession,
-        getUserData,
-        getSessionUser,
-        getSessionStatus,
-        deleteSession,
-        loadGames,
-        addPidToSession,
-        getSessionPid
-    } = require('./dataservice/utilities');
+
+
+const {
+    createSession,
+    getSessionUser,
+    getSessionStatus,
+    deleteSession,
+    addPidToSession,
+    getSessionPid
+} = require('./dataservice/session');
+
+const {
+    getPlayerData, 
+    createNewPlayer,
+    getUserPlayers,
+    getUserData,
+    loadGames
+} = require('./dataservice/user');
+
+const {
+    getLocationPageData,
+    updatePlayerLocation,
+    insertLocation
+} = require('./dataservice/location');
 
 
 ////////////////////////////////////////////////////////////

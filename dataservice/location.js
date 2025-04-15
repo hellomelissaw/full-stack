@@ -4,7 +4,6 @@ const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
 // LOCATION DATA QUERIES
 ////////////////////////////////////////////////////////////
 
-
 async function getLocationPageData(conn, id) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
@@ -24,7 +23,7 @@ async function getLocationPageData(conn, id) {
 async function updatePlayerLocation(conn, id, pid) {
     await conn.query(update_player_loc_id, [id, pid]);
 }
-exports.updatePlayerLocation = updatePlayerLocation;
+
 
 async function insertLocation(conn, name, emojis, connections) {
     try {
@@ -43,3 +42,10 @@ async function insertLocation(conn, name, emojis, connections) {
     }
 
 }
+
+
+module.exports = { 
+                    getLocationPageData,
+                    updatePlayerLocation,
+                    insertLocation
+                 }
