@@ -17,7 +17,7 @@ const { getPlayerData,
         loadGames,
         addPidToSession,
         getSessionPid
-    } = require('./dataService');
+    } = require('./dataservice/utilities');
 
 
 ////////////////////////////////////////////////////////////
