@@ -81,6 +81,9 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
 
 async function generateLocationResponse(conn, url) {
     const pid = await getSessionPid(conn, temp_token);
+    if (!pid) {
+        return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
+    }
     const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
@@ -127,7 +130,9 @@ async function generateLoadPageResponse(conn, req) { // Hard-coded token. This s
 }
 
 async function loadGame(conn, pid) {
-    console.log(pid);
+    if (!pid) {
+        return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
+    }
     const result = await getPlayerData(conn, pid);
     if(result.success){
         const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
