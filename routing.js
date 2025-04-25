@@ -58,27 +58,27 @@ function setTestUsersPasswordHash(conn) {
 
 });
 
-// Generate hash for Toby Bikemeister password
-bcrypt.genSalt(saltRounds, (err, salt) => {
-    if (err) {
-        return pug.renderFile('./templates/message.pug', { message: err.message })
-    }
+// // Generate hash for Toby Bikemeister password
+// bcrypt.genSalt(saltRounds, (err, salt) => {
+//     if (err) {
+//         return pug.renderFile('./templates/message.pug', { message: err.message })
+//     }
 
-    const tobypassword = "brucepassword"; // testing if the salt is working
-    bcrypt.hash(tobypassword, salt, (err, hash) => {
-        if (err) {
-            return pug.renderFile('./templates/message.pug', { message: err.message })
-        }
+//     const tobypassword = "brucepassword"; // testing if the salt is working
+//     bcrypt.hash(tobypassword, salt, (err, hash) => {
+//         if (err) {
+//             return pug.renderFile('./templates/message.pug', { message: err.message })
+//         }
     
-        console.log('Hashed password:', hash);
-        const result = updatePassword(conn, hash, 2);
-        if(!result.success) {
-            return pug.renderFile('./templates/message.pug', { message: result.error })
+//         console.log('Hashed password:', hash);
+//         const result = updatePassword(conn, hash, 2);
+//         if(!result.success) {
+//             return pug.renderFile('./templates/message.pug', { message: result.error })
 
-        }
-    });
+//         }
+//     });
 
-});
+// });
 
 return pug.renderFile('./templates/message.pug', { message: "Sucessfully setting of hash in db" })
 

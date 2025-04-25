@@ -67,7 +67,7 @@ async function updatePassword(conn, hash, uid) {
     try {
         //console.log(`conn: ${conn}, hash: ${hash} , uid: ${uid}`);
         const result = await conn.query("UPDATE user SET password = ? WHERE uid = ?", [hash, uid]);
-	return { success: true }
+	    return { success: true }
     
     } catch (err) {
         console.table(err);
