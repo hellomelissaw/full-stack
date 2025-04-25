@@ -103,7 +103,7 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     return false;
 }
 
-async function createSession(conn, req, temp_token, uid) {
+async function createSessionInDB(conn, req, temp_token, uid) {
     const sessionResult = await createSession(conn, temp_token, uid);
 
     if (sessionResult.success) {     
@@ -140,7 +140,7 @@ async function validateLoginResponse(conn, req, temp_token) {
             if (isMatch) {
                 console.log('Passwords match! User authenticated.');
 
-                const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
+                const sessionResult = await createSessionInDB(conn, req, temp_token, result.user_data.uid);
 
                 if (sessionResult.success) {
                     return generateStartResponse(conn, req);
@@ -278,6 +278,7 @@ async function createNewGame(conn, req) {
 }
 
 async function generateStartResponse(conn, req) {
+    console.log("Generating start response.");
     const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
     if(user) {
         return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
