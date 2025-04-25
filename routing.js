@@ -37,33 +37,23 @@ const {
 // Run this once to set the test hashes in the database
 // Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
 async function getTestUserPasswordHash(password) {
-    console.log(`password in get hash: ${password}`);
-    
     try {
         const salt = await bcrypt.genSalt(saltRounds); 
         const hash = await bcrypt.hash(password, salt); 
-        
-        console.log("Returning hash");
         return hash; 
     } catch (err) {
-        console.log(`Error in hash generation: ${err}`);
         return null; 
     }
 }
 
 
 async function setTestUserPasswordHash(conn, url) {
-    console.log(`query pass: ${url.query.password}, query uid ${url.query.uid}`);
     const hash = await getTestUserPasswordHash(url.query.password);
-    console.log(`generated hash: ${hash}`);
     if(hash){ 
-        console.log('Hashed password:', hash);
-
         const result = await updatePassword(conn, hash, url.query.uid);
         if(!result.success) {
             return pug.renderFile('./templates/message.pug', { message: result.error })
         } 
-
             return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
     }
 
@@ -132,7 +122,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const result = await getUserData(conn, username);
 
     if(result.success && result.user_data.password == password) {
-
+        
         const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
 
         if (sessionResult.success) {
