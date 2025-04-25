@@ -40,21 +40,19 @@ function setTestUsersPasswordHash(conn) {
     // Generate hash for Bruce Springsteen's password
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
-            console.error(err);
-            return;
+            return pug.renderFile('./templates/message.pug', { message: err.message })
         }
 
         const brucepassword = "brucepassword";
         bcrypt.hash(brucepassword, salt, (err, hash) => {
             if (err) {
-                console.log(`Hashing error: ${err.message}`)
-                return;
+                return pug.renderFile('./templates/message.pug', { message: err.message })
             }
         
             console.log('Hashed password:', hash);
             const result = updatePassword(conn, hash, 1);
             if(!result.success) {
-                console.log(`Update password error: ${result.error}`);
+                return pug.renderFile('./templates/message.pug', { message: result.error })
             }
         });
 
@@ -63,25 +61,26 @@ function setTestUsersPasswordHash(conn) {
 // Generate hash for Toby Bikemeister password
 bcrypt.genSalt(saltRounds, (err, salt) => {
     if (err) {
-        console.error(err);
-        return;
+        return pug.renderFile('./templates/message.pug', { message: err.message })
     }
 
     const tobypassword = "brucepassword"; // testing if the salt is working
     bcrypt.hash(tobypassword, salt, (err, hash) => {
         if (err) {
-            console.log(err.message)
-            return;
+            return pug.renderFile('./templates/message.pug', { message: err.message })
         }
     
         console.log('Hashed password:', hash);
         const result = updatePassword(conn, hash, 2);
         if(!result.success) {
-            console.log(result.error);
+            return pug.renderFile('./templates/message.pug', { message: result.error })
+
         }
     });
 
 });
+
+return pug.renderFile('./templates/message.pug', { message: "Sucessfully setting of hash in db" })
 
 }
 
@@ -316,7 +315,7 @@ async function requestRoute(conn, req) {
             return quitGame(conn, req)
 	
 	case '/set-hash':
-	    setTestUsersPasswordHash(conn);
+	        return setTestUsersPasswordHash(conn);
 
         default: 
             return generateLandingPage(conn, req);
