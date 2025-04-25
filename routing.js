@@ -37,6 +37,7 @@ const {
 // Run this once to set the test hashes in the database
 // Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
 async function getTestUserPasswordHash(password) {
+    console.log(`password in get hash: ${password}`);
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
             return null;
@@ -56,17 +57,19 @@ async function getTestUserPasswordHash(password) {
 }
 
 async function setTestUserPasswordHash(conn, url) {
+    console.log(`query pass: ${url.query.password}, query uid ${url.query.uid}`);
     const hash = await getTestUserPasswordHash(url.query.password);
     if(hash){ 
-    console.log('Hashed password:', hash);
+        console.log('Hashed password:', hash);
 
-    const result = await updatePassword(conn, hash, url.query.uid);
-    if(!result.success) {
-        return pug.renderFile('./templates/message.pug', { message: result.error })
-    } 
+        const result = await updatePassword(conn, hash, url.query.uid);
+        if(!result.success) {
+            return pug.renderFile('./templates/message.pug', { message: result.error })
+        } 
 
-        return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
+            return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
     }
+
     return pug.renderFile('./templates/message.pug', { message: "Failed to get hash" })
 
 }
