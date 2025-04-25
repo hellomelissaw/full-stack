@@ -40,17 +40,17 @@ async function getTestUserPasswordHash(password) {
     console.log(`password in get hash: ${password}`);
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
-		console.log(err);
+		console.log(`salt generation error: ${err}`);
             return null;
         }
 
-        bcrypt.hash("brucepassword", salt, (err, hash) => {
+        bcrypt.hash(password, salt, (err, hash) => {
             if (err) {
-               console.log(err);
+               console.log(`hash generation err: ${err}`);
                return null;
 
             }
-        
+            console.log("Returning hash");
             return hash;
         });
 
@@ -61,6 +61,7 @@ async function getTestUserPasswordHash(password) {
 async function setTestUserPasswordHash(conn, url) {
     console.log(`query pass: ${url.query.password}, query uid ${url.query.uid}`);
     const hash = await getTestUserPasswordHash(url.query.password);
+    console.log(`generated hash: ${hash}`);
     if(hash){ 
         console.log('Hashed password:', hash);
 
