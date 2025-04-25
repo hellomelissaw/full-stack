@@ -1,7 +1,7 @@
 const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
- 
+const bcrypt = require('bcrypt');
 //const { setCookie, getCookie, delCookie } = require('./cookie.js');
 
 
