@@ -40,11 +40,13 @@ async function getTestUserPasswordHash(password) {
     console.log(`password in get hash: ${password}`);
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
+		console.log(err);
             return null;
         }
 
-        bcrypt.hash(password, salt, (err, hash) => {
+        bcrypt.hash("brucepassword", salt, (err, hash) => {
             if (err) {
+               console.log(err);
                return null;
 
             }
