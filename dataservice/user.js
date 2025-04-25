@@ -1,4 +1,8 @@
-const { findOne, create_player, get_user_players } = require("./utilities");
+const { findOne, 
+        create_player, 
+        get_user_players,
+        update_password 
+      } = require("./utilities");
 
 ////////////////////////////////////////////////////////////
 // USER AND PLAYER DATA QUERIES
@@ -56,6 +60,16 @@ async function createNewPlayer(conn, uid, name) {
 
     }
 
+}
+
+async function updatePassword(conn, hash, uid) {
+    try {
+        const result = await conn.query(updatePassword, [hash, uid]);
+        return { success: true }
+    
+    } catch (err) {
+        return { success: false, error: err.nessage };
+    }
 }
 
 async function loadGames(conn, uid) {
