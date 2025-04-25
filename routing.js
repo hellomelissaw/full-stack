@@ -314,6 +314,9 @@ async function requestRoute(conn, req) {
 
         case '/quit':
             return quitGame(conn, req)
+	
+	case '/set-hash':
+	    setTestUsersPasswordHash(conn);
 
         default: 
             return generateLandingPage(conn, req);
@@ -321,4 +324,4 @@ async function requestRoute(conn, req) {
 
 }
 
-module.exports = { requestRoute, setTestUsersPasswordHash }
+module.exports = { requestRoute }
