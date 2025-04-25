@@ -56,7 +56,9 @@ async function createNewPlayer(conn, uid, name) {
 
     }
 
-}async function loadGames(conn, uid) {
+}
+
+async function loadGames(conn, uid) {
     const games = await conn.query(get_user_players, [uid]);
     return games;
 }
