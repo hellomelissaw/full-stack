@@ -37,6 +37,10 @@ const get_user_players = `SELECT
                         ORDER BY 
                             player.pid`;
 
+const update_password = `UPDATE user
+                        SET password = ?
+                        WHERE uid = ?`;
+
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
