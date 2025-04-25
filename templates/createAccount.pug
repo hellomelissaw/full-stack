@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login & Game Files
+    link(rel="stylesheet", href="createAccount.css")
+  body
+    .image-box
+      img.image-box-img(src="logintree.png", alt="Forest Image")
+    .sign
+      span Please create an account
+    .login
+    input(type="text", id="username", placeholder="Enter username")
+    input(type="text", id="password", placeholder="Enter password")
+    button(onclick="login()") Create account
+    ul#gameFiles
+    script(src="createAccount.js")
