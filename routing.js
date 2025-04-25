@@ -36,27 +36,37 @@ const {
 ////////////////////////////////////////////////////////////
 // Run this once to set the test hashes in the database
 // Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
-function setTestUsersPasswordHash(conn) {
+async function getTestUserPasswordHash(password) {
     // Generate hash for Bruce Springsteen's password
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
             return pug.renderFile('./templates/message.pug', { message: err.message })
         }
 
-        const brucepassword = "brucepassword";
-        bcrypt.hash(brucepassword, salt, (err, hash) => {
+        bcrypt.hash(password, salt, (err, hash) => {
             if (err) {
                 return pug.renderFile('./templates/message.pug', { message: err.message })
             }
         
-            console.log('Hashed password:', hash);
-            const result = updatePassword(conn, hash, 1);
-            if(!result.success) {
-                return pug.renderFile('./templates/message.pug', { message: result.error })
-            }
+            return hash;
         });
 
 });
+
+}
+
+async function setTestUserPasswordHash(conn, url) {
+    const hash = await getTestUserPasswordHash(url.query.password);
+
+    console.log('Hashed password:', hash);
+
+    const result = await updatePassword(conn, hash, url.query.uid);
+    if(!result.success) {
+        return pug.renderFile('./templates/message.pug', { message: result.error })
+    } 
+
+    return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
+}
 
 // // Generate hash for Toby Bikemeister password
 // bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -315,7 +325,7 @@ async function requestRoute(conn, req) {
             return quitGame(conn, req)
 	
 	case '/set-hash':
-	        return setTestUsersPasswordHash(conn);
+	        return setTestUserPasswordHash(conn, parsedURL);
 
         default: 
             return generateLandingPage(conn, req);
