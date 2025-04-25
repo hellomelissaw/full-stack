@@ -67,7 +67,7 @@ async function setTestUserPasswordHash(conn, url) {
 
         return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
     }
-    return pug.renderFule('./templates/message.pug', { message: "Failed to get hash" }
+    return pug.renderFile('./templates/message.pug', { message: "Failed to get hash" })
 
 }
 
