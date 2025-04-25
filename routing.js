@@ -36,7 +36,7 @@ const {
 ////////////////////////////////////////////////////////////
 // Run this once to set the test hashes in the database
 // Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
-function setTestUsersPasswordHash(conn) {
+async function setTestUsersPasswordHash(conn) {
     // Generate hash for Bruce Springsteen's password
     bcrypt.genSalt(saltRounds, (err, salt) => {
         if (err) {
