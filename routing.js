@@ -47,14 +47,14 @@ function setTestUsersPasswordHash(conn) {
         const brucepassword = "brucepassword";
         bcrypt.hash(brucepassword, salt, (err, hash) => {
             if (err) {
-                console.log(err.message)
+                console.log(`Hashing error: ${err.message}`)
                 return;
             }
         
             console.log('Hashed password:', hash);
             const result = updatePassword(conn, hash, 1);
             if(!result.success) {
-                console.log(result.error);
+                console.log(`Update password error: ${result.error}`);
             }
         });
 
