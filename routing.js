@@ -60,31 +60,6 @@ async function setTestUserPasswordHash(conn, url) {
 
 }
 
-// // Generate hash for Toby Bikemeister password
-// bcrypt.genSalt(saltRounds, (err, salt) => {
-//     if (err) {
-//         return pug.renderFile('./templates/message.pug', { message: err.message })
-//     }
-
-//     const tobypassword = "brucepassword"; // testing if the salt is working
-//     bcrypt.hash(tobypassword, salt, (err, hash) => {
-//         if (err) {
-//             return pug.renderFile('./templates/message.pug', { message: err.message })
-//         }
-    
-//         console.log('Hashed password:', hash);
-//         const result = updatePassword(conn, hash, 2);
-//         if(!result.success) {
-//             return pug.renderFile('./templates/message.pug', { message: result.error })
-
-//         }
-//     });
-
-// });
-
-// return pug.renderFile('./templates/message.pug', { message: "Sucessfully setting of hash in db" })
-
-// }
 
 ////////////////////////////////////////////////////////////
 // ROUTING FUNCTIONS
@@ -141,14 +116,7 @@ async function validateLoginResponse(conn, req, temp_token) {
                 console.log('Passwords match! User authenticated.');
 
                 const sessionResult = await createSessionInDB(conn, req, temp_token, result.user_data.uid);
-
-                if (sessionResult.success) {
-                    return generateStartResponse(conn, req);
-                } else {
-                    return pug.renderFile('./templates/message.pug', {
-                        message: sessionResult.error
-                    });
-                }
+		return sessionResult;
 
             } else {
                 console.log('Passwords do not match! Authentication failed.');
@@ -278,7 +246,6 @@ async function createNewGame(conn, req) {
 }
 
 async function generateStartResponse(conn, req) {
-    console.log("Generating start response.");
     const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
     if(user) {
         return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
@@ -291,8 +258,7 @@ async function generateStartResponse(conn, req) {
 
 async function generateLandingPage(conn, req) {
     const sessionExists = await getSessionStatus(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
-    console.table(sessionExists);    
-if(!sessionExists) {
+    if(!sessionExists) {
         return pug.renderFile('./templates/temp_login.pug', { showError: false });
     
     } else {
