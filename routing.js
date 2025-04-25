@@ -90,9 +90,9 @@ async function setTestUserPasswordHash(conn, url) {
 
 // });
 
-return pug.renderFile('./templates/message.pug', { message: "Sucessfully setting of hash in db" })
+// return pug.renderFile('./templates/message.pug', { message: "Sucessfully setting of hash in db" })
 
-}
+// }
 
 ////////////////////////////////////////////////////////////
 // ROUTING FUNCTIONS
