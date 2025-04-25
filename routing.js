@@ -321,4 +321,4 @@ async function requestRoute(conn, req) {
 
 }
 
-module.exports = { requestRoute }
+module.exports = { requestRoute, setTestUsersPasswordHash }

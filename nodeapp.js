@@ -5,7 +5,7 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const { requestRoute } = require('./routing.js');
+const { requestRoute, setTestUsersPasswordHash } = require('./routing.js');
 // Process variables
 let conn;
 let debug = false;
@@ -34,6 +34,7 @@ async function requestHandler(req, res) {
                 password: 'your_password', // TODO - This is
                 database: 'game'
             });
+            setTestUsersPasswordHash(conn);
         } catch (err) {
             console.error("Database connection failed: ", err)
             res.statusCode = 500;
