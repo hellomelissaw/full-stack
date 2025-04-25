@@ -2,6 +2,7 @@ const url = require('url');
 const pug = require('pug');
 const temp_token = "temp-sesh-12345"; 
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 //const { setCookie, getCookie, delCookie } = require('./cookie.js');
 
 
@@ -59,6 +60,7 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const params = new URLSearchParams(body);
     const username = params.get('username');
     const password = params.get('password');
+
 
     const result = await getUserData(conn, username);
 
