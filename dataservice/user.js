@@ -64,11 +64,11 @@ async function createNewPlayer(conn, uid, name) {
 
 async function updatePassword(conn, hash, uid) {
     try {
-        const result = await conn.query(updatePassword, [hash, uid]);
+        await conn.query(update_password, [hash, uid]);
         return { success: true }
     
     } catch (err) {
-        return { success: false, error: err.nessage };
+        return { success: false, error: err.message };
     }
 }
 
