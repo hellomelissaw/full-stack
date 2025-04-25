@@ -83,5 +83,6 @@ module.exports = {
                     getPlayerData,
                     getUserPlayers,
                     createNewPlayer,
-                    loadGames
+                    loadGames,
+                    updatePassword
                  }
