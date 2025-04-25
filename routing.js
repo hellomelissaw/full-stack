@@ -38,25 +38,19 @@ const {
 // Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
 async function getTestUserPasswordHash(password) {
     console.log(`password in get hash: ${password}`);
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-        if (err) {
-		console.log(`salt generation error: ${err}`);
-            return null;
-        }
-
-        bcrypt.hash(password, salt, (err, hash) => {
-            if (err) {
-               console.log(`hash generation err: ${err}`);
-               return null;
-
-            }
-            console.log("Returning hash");
-            return hash;
-        });
-
-});
-
+    
+    try {
+        const salt = await bcrypt.genSalt(saltRounds); 
+        const hash = await bcrypt.hash(password, salt); 
+        
+        console.log("Returning hash");
+        return hash; 
+    } catch (err) {
+        console.log(`Error in hash generation: ${err}`);
+        return null; 
+    }
 }
+
 
 async function setTestUserPasswordHash(conn, url) {
     console.log(`query pass: ${url.query.password}, query uid ${url.query.uid}`);
