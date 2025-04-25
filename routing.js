@@ -20,7 +20,8 @@ const {
     createNewPlayer,
     getUserPlayers,
     getUserData,
-    loadGames
+    loadGames,
+    updatePassword
 } = require('./dataservice/user');
 
 const {
@@ -29,6 +30,60 @@ const {
     insertLocation
 } = require('./dataservice/location');
 
+
+////////////////////////////////////////////////////////////
+// TEMP FUNCTIONS
+////////////////////////////////////////////////////////////
+// Run this once to set the test hashes in the database
+// Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
+function setTestUsersPasswordHash(conn) {
+    // Generate hash for Bruce Springsteen's password
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        const brucepassword = "brucepassword";
+        bcrypt.hash(brucepassword, salt, (err, hash) => {
+            if (err) {
+                console.log(err.message)
+                return;
+            }
+        
+            console.log('Hashed password:', hash);
+            const result = updatePassword(conn, hash, 1);
+            if(!result.success) {
+                console.log(result.error);
+            }
+        });
+
+});
+
+// Generate hash for Toby Bikemeister password
+bcrypt.genSalt(saltRounds, (err, salt) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+
+    const tobypassword = "brucepassword"; // testing if the salt is working
+    bcrypt.hash(tobypassword, salt, (err, hash) => {
+        if (err) {
+            console.log(err.message)
+            return;
+        }
+    
+        console.log('Hashed password:', hash);
+        const result = updatePassword(conn, hash, 2);
+        if(!result.success) {
+            console.log(result.error);
+        }
+    });
+
+});
+
+}
 
 ////////////////////////////////////////////////////////////
 // ROUTING FUNCTIONS
