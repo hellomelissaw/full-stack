@@ -118,22 +118,24 @@ async function validateLoginResponse(conn, req, temp_token) { // TODO: get token
     const username = params.get('username');
     const password = params.get('password');
 
-
     const result = await getUserData(conn, username);
 
-    if(result.success && result.user_data.password == password) {
-        
-        const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
+    if(result.success) {
+        const passwordIsValid = bcrypt.compare(password, result.user_data.password);
 
-        if (sessionResult.success) {
-            return generateStartResponse(conn, req)
+        if(passwordIsValid) {
+            const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
 
+            if (sessionResult.success) {
+                return generateStartResponse(conn, req)
+
+            } else {
+                return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
+
+            }
         } else {
-            return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
-
+            return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
         }
-    } else {
-        return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
     }
 
 }
