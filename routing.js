@@ -35,7 +35,6 @@ const {
 // TEMP FUNCTIONS
 ////////////////////////////////////////////////////////////
 // Run this once to set the test hashes in the database
-// Tutorial: https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs/
 async function getTestUserPasswordHash(password) {
     try {
         const salt = await bcrypt.genSalt(saltRounds); 
@@ -104,41 +103,69 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     return false;
 }
 
-async function validateLoginResponse(conn, req, temp_token) { // TODO: get token from browser
+async function createSession(conn, req, temp_token, uid) {
+    const sessionResult = await createSession(conn, temp_token, uid);
+
+    if (sessionResult.success) {     
+        return generateStartResponse(conn, req)
+
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
+
+    }
+
+}
+
+async function validateLoginResponse(conn, req, temp_token) {
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
             body += chunk.toString();
-        })
-
+        });
         req.on('end', resolve);
     });
 
     const params = new URLSearchParams(body);
     const username = params.get('username');
-    const password = params.get('password');
+    const userInputPassword = params.get('password');
 
     const result = await getUserData(conn, username);
 
-    if(result.success) {
-        const passwordIsValid = bcrypt.compare(password, result.user_data.password);
+    if (result.success) {
+        const storedHashedPassword = result.user_data.password;
 
-        if(passwordIsValid) {
-            const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
+        try {
+            const isMatch = await bcrypt.compare(userInputPassword, storedHashedPassword);
 
-            if (sessionResult.success) {
-                return generateStartResponse(conn, req)
+            if (isMatch) {
+                console.log('Passwords match! User authenticated.');
+
+                const sessionResult = await createSession(conn, temp_token, result.user_data.uid);
+
+                if (sessionResult.success) {
+                    return generateStartResponse(conn, req);
+                } else {
+                    return pug.renderFile('./templates/message.pug', {
+                        message: sessionResult.error
+                    });
+                }
 
             } else {
-                return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
-
+                console.log('Passwords do not match! Authentication failed.');
+                return pug.renderFile('./templates/temp_login.pug', {
+                    showError: true
+                });
             }
-        } else {
-            return pug.renderFile('./templates/temp_login.pug', { showError: true } ) 
+
+        } catch (err) {
+            console.error('Error comparing passwords:', err);
+            return pug.renderFile('./templates/message.pug', {
+                message: 'Something went wrong when checking the password.'
+            });
         }
     }
-
 }
+
 
 async function generateLocationResponse(conn, url) {
     const pid = await getSessionPid(conn, temp_token);
