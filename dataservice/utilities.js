@@ -37,6 +37,10 @@ const get_user_players = `SELECT
                         ORDER BY 
                             player.pid`;
 
+const update_password = `UPDATE user
+                        SET password = ?
+                        WHERE uid = ?`;
+
 
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
@@ -59,5 +63,6 @@ module.exports = {
                     create_player,
                     create_session,
                     add_pid_to_session,
-                    get_user_players
+                    get_user_players,
+                    update_password
                  }

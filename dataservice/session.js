@@ -10,7 +10,6 @@ async function userIsActive(conn, uid) {
 }
 
 async function createSession(conn, sessionID, uid) {
-    console.log(`sessionID: ${sessionID}, uid: ${uid}`);
     if (await userIsActive(conn, uid)) {
         try {
             await conn.query('DELETE FROM session WHERE uid = ?', [uid]);
