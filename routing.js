@@ -313,7 +313,7 @@ async function requestRoute(conn, req) {
         case '/quit':
             return quitGame(conn, req)
 	
-	case '/set-hash':
+	    case '/set-hash':
 	        return setTestUserPasswordHash(conn, parsedURL);
 
         default: 
