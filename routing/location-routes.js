@@ -13,6 +13,9 @@ const {
     updatePlayerLocation,
 } = require('../dataservice/location');
 
+const {
+    getSessionPid
+} = require('../dataservice/session')
 
 ///////////////////////////////////////////////////////////////////////////////
 // Checks is location of the player has a connection to the location
