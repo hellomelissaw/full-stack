@@ -1,3 +1,7 @@
+///////////////////////////////////////////////////////////////////////////////
+// ALL THE ROUTING FUNCTIONS RELATED TO LOCATION PAGES
+///////////////////////////////////////////////////////////////////////////////
+
 const pug = require('pug');
 
 const {
@@ -9,6 +13,11 @@ const {
     updatePlayerLocation,
 } = require('../dataservice/location');
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Checks is location of the player has a connection to the location
+// they are requesting to move to
+///////////////////////////////////////////////////////////////////////////////
 
 function locationIsValid(connection_rows, player_loc_id, loc_id) {
     if (player_loc_id == loc_id) { 
@@ -23,6 +32,12 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     return false;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Gets the data of the requested location and if the location has a valid 
+// connections to the player's location, generates the location page,
+// otherwise generates an error page.
+///////////////////////////////////////////////////////////////////////////////
 
 async function generateLocationResponse(conn, url) {
     const pid = await getSessionPid(conn, temp_token);
