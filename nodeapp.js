@@ -5,7 +5,7 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const { requestRoute } = require('./routing/routing.js');
+const { requestRoute } = require('./routing/router.js');
 // Process variables
 let conn;
 let debug = false;
