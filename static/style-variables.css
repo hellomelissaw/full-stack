@@ -1,0 +1,9 @@
+:root {
+    --test-color: rgb(255,0,0);
+    --background-color: rgb(9,9,9);
+    --text-color: rgb(215, 189, 150);
+    --border-color: rgb(99,76,51);
+    --button-color: rgb(9,9,9);
+    --button-hover-color: rgb(65,76,63);
+  }
+  
