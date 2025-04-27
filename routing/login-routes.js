@@ -1,3 +1,5 @@
+const temp_token = "temp-sesh-12345"; 
+
 const {
     createSession
 } = require('../dataservice/session');
