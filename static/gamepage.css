@@ -1,3 +1,5 @@
+@import url('/static/style-variables.css');
+
 @font-face {
     font-family: "w95fa";
     src:
@@ -19,7 +21,7 @@ body {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #3d3232; 
+    background-color: var(--test-color); 
 }
 
 .location-box {
@@ -118,33 +120,32 @@ body {
 }
 
 .btn {
-    background: linear-gradient(to bottom, #c49a6c, #8b5a2b);
-    color: #f1d7b6;
+    background: var(--background-color);
+    color: var(--text-color);
     font-size: 18px;
     font-weight: bold;
     text-transform: capitalize;
-    border: 2px solid #5a2d18;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     padding: 12px;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background: linear-gradient(to bottom, #d1ae83, #a0632b);
+    background: var(--button-hover-color);
     transform: translateY(-2px);
 }
 
 #inventory-button {
-    background: linear-gradient(to bottom, #c49a6c, #8b5a2b);
-    color: #f1d7b6;
+    background: var(--background-color);
+    color: var(--text-color);
     width: 300px;
     font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
-    border: 2px solid #5a2d18;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     padding: 15px 25px;
     text-align: center;
@@ -153,12 +154,12 @@ body {
     bottom: 20px;
     left: 50px;
     z-index: 11;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); */
     transition: background 0.3s, transform 0.3s;
 }
 
 #inventory-button:hover {
-    background: linear-gradient(to bottom, #d1ae83, #a0632b);
+    background:  var(--button-color);
     transform: translateY(-2px);
 }
 
@@ -168,8 +169,8 @@ body {
     bottom: 70px;
     left: 50px;
     width: 300px;
-    background-color: rgba(61, 32, 32, 0.95);
-    color: #f1d7b6;
+    background-color: var(--background-color);
+    color: var(--text-color);
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
