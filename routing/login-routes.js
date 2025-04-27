@@ -1,4 +1,5 @@
-const temp_token = "temp-sesh-12345"; 
+const pug = require('pug');
+const bcrypt = require('bcrypt');
 
 const {
     createSession
