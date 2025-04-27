@@ -1,6 +1,12 @@
+@font-face {
+    font-family: arcade;
+    src: url(/static/arcade_classic_2/ARCADECLASSIC.TTF);
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
-    font-family: 'Georgia', serif; 
+    /* font-family: 'Georgia', serif;  */
+    font-family: arcade, serif; 
 }
 
 body {
