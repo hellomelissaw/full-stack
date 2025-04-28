@@ -78,6 +78,16 @@ button:hover {
     text-align: center;
 }
 
+#password {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 2px solid #8b5a2b;
+    width: 250px;
+    text-align: center;
+}
+
 
 .login {
     margin-bottom: 20px;
@@ -89,3 +99,5 @@ button:hover {
     list-style-type: none;
     padding: 0;
 }
+
+
