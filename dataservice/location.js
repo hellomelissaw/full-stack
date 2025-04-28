@@ -8,10 +8,11 @@ const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
 async function getLocationPageData(conn, id) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
-
+    
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
+        description: loc.description,
         connections: Object.keys(connections).map(key => ({
             conn_id: connections[key].conn_id,
             conn_name: connections[key].conn_name

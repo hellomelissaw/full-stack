@@ -13,6 +13,10 @@
     font-family: w95fa, monospace; 
 }
 
+body {
+    background-color: var(--background-color-light);
+}
+
 .container {
     position: fixed;
     left: 50%;
@@ -86,6 +90,7 @@
 
 .btn-grid {
     display: grid;
+    grid-template-colums: 1fr 1fr;
     gap: 12px;
     margin-top: 20px;
     width: 100%;
