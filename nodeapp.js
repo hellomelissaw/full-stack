@@ -65,7 +65,7 @@ async function requestHandler(req, res) {
         throw err;
     } finally {
         if (conn) {
-            conn.end();
+            await conn.end();
         }
     }
 
