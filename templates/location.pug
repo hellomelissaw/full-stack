@@ -17,8 +17,9 @@ html
             button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
 
       .inventory
-        button#inventory-button.btn Inventory
+        p #{message}
         button#explore-button.btn(onclick="window.location.href='/explore'") Explore
+        button#inventory-button.btn Inventory
         #inventory-container.inventory-container
           h3 Player inventory
           p No items in inventory
