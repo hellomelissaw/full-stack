@@ -9,10 +9,10 @@ html
       .description 
         p #{location.description}
       .image
-        img(src=`'${location.name}.png'`)
+        img(src=`/static/img/${location.name}.png`)
       .actions
           each conn in location.connections
-            button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+            button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
 
       .inventory
         button#inventory-button.btn Inventory
