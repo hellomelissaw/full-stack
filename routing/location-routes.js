@@ -55,7 +55,7 @@ async function generateLocationResponse(conn, url) {
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
             updatePlayerLocation(conn, id, pid); 
-            return pug.renderFile('./templates/game_page.pug', { location: loc });   
+            return pug.renderFile('./templates/location.pug', { location: loc });   
         
         } else {
             return pug.renderFile('./templates/location_error.pug', { locID: result.player_data.loc_id, buttonLabel: "GO!"});
