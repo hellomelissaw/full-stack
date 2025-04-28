@@ -80,6 +80,9 @@ async function generateExplore(conn, req) {
         "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
         [pid, currentLocationId]
     );
+    console.log("Discovered connections:");
+    console.table(discoveredConnections);
+
     const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
 
     // Filter connections to find undiscovered ones
@@ -87,6 +90,9 @@ async function generateExplore(conn, req) {
         !discoveredConnectionIds.includes(conn.conn_id)
     );
 
+    console.log("UUndiscovered connections:");
+    console.table(undiscoveredConnections);
+    
     if (undiscoveredConnections.length === 0) {
         return pug.renderFile('./templates/location.pug', {
             location: locationData,
@@ -103,7 +109,7 @@ async function generateExplore(conn, req) {
         [pid, currentLocationId, randomConnection.conn_id]
     );
 
-
+    console.log("Inserted discovered location in db.");
     // Refresh the location data to include the new connection
     const updatedLocationData = await getLocationPageData(conn, currentLocationId);
 
