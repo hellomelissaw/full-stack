@@ -102,7 +102,7 @@
     font-size: 18px;
     font-weight: bold;
     text-transform: capitalize;
-    border: 2px solid var(--border-color);
+    border: 3px solid var(--button-border);
     border-radius: 10px;
     padding: 12px;
     text-align: center;
