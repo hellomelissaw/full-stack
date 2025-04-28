@@ -2,7 +2,7 @@
 const { findOne, 
         create_player, 
         get_user_players,
-        update_password,
+        update_password, 
         create_account
       } = require("./utilities");
 
