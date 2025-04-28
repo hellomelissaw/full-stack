@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login & Game Files
+    link(rel="stylesheet", href="loginPage.css")
+  body
+    .image-box
+      img.image-box-img(src="logintree.png", alt="Forest Image")
+    .sign
+      span welcome to the forest
+    .login
+    input(type="text", id="username", placeholder="Username")
+    input(type="text", id="password", placeholder="Password")
+    button(onclick="login()") Login
+
+    h3(style="margin-bottom: 5px;") Welcome
+    h3(style="margin-top: 5px;") please login using your username
+    button(onclick="createAccount()") Create Account
+    ul#gameFiles
+    script(src="logicLoginPage.js")
