@@ -19,8 +19,12 @@ html(lang="en")
 
     .lower-left-button
       button#inventory-button.btn Inventory
+      button#explore-button.btn(onclick="window.location.href='/explore'") Explore
 
     .wrapper
+      if message
+        .message-box
+          p= message
       canvas#pixelCanvas(width="600", height="400")
       .textbox text
       .container
