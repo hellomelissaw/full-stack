@@ -19,7 +19,8 @@ const {
 } = require('./login-routes');
 
 const {
-    generateLocationResponse
+    generateLocationResponse,
+    generateExplore
 } = require('./location-routes');
 
 const {
