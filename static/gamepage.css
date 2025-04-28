@@ -25,6 +25,10 @@ body {
     gap: 10px;
 }
 
+.top-left-buttons > button {
+    border: 3px solid var(--text-color);
+}
+
 .container {
     position: fixed;
     left: 50%;
