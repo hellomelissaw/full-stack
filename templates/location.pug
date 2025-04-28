@@ -1,13 +1,27 @@
-doctype html
 html
   head
-    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/static/gamepage.css")
     title #{location.name}
-    link(rel="stylesheet", href="/static/ui.css")
   body
-    include menu.pug
-    main
-      h1 Welcome to the #{location.name} #{location.emojis || ''}
-      p Where to go next?
-      each conn in location.connections
-        button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+    .container
+      .title
+        h1 Welcome to the #{location.name}
+      .description 
+        p #{location.description}
+      .image
+        img(src=`#{location.name}.png`)
+      .actions
+          each conn in location.connections
+            button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+
+      .inventory
+        button#inventory-button.btn Inventory
+        #inventory-container.inventory-container
+          h3 Player inventory
+          p No items in inventory
+      .stats
+        p HP: 
+        p XP: 
+        p Level:
+
+script(src="/static/logic.js")
