@@ -101,7 +101,9 @@ async function requestRoute(conn, req) {
 	    case '/set-hash':
 	        return setTestUserPasswordHash(conn, parsedURL);
         case '/explore':
-            return generateExplore(conn, req);
+            const template = generateExplore(conn, req);
+            console.log(template);
+            return template;
         default: 
             return generateLandingPage(conn, req);
     }
