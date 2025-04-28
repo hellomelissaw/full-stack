@@ -55,7 +55,7 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       res.setCookie('session', sessionCook, sessionDate);
+       res.setCookie('session', `${sessionCook}`, `${sessionDate}`);
        res.end(result);
     } catch (err) {
         console.error(err);
