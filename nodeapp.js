@@ -10,6 +10,11 @@ const { requestRoute } = require('./routing/router.js');
 let conn;
 let debug = false;
 
+// Create testing session cookie
+let sessionDate = new Date();
+sessionDate = sessionDate.setDate(sessionDate.getDate() + 3)
+let sessionCook = 'eqctlv3u';
+
 // Collect command line arguments
 process.argv.forEach(function (value, index) {
     if (value === "debug" || value === "--debug") {
@@ -50,9 +55,8 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       res.setCookie('session', 'ktxqm7vt', date.getTime() + (3+24*60*60*1000))
+       res.setCookie('session', sessionCook, sessionDate);
        res.end(result);
-    
     } catch (err) {
         console.error(err);
         res.statusCode = 500;
