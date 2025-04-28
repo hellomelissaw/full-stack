@@ -13,7 +13,7 @@ let debug = false;
 // Create testing session cookie
 let sessionDate = new Date();
 sessionDate = sessionDate.setDate(sessionDate.getDate() + 3)
-let sessionCook = 'eqctlv3u';
+let sessionCook = 'session=eqctlv3u';
 
 // Collect command line arguments
 process.argv.forEach(function (value, index) {
@@ -55,7 +55,7 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', 'text/html');
        res.setHeader('Cache-Control', 'no-cache');
-       res.setCookie('session', `${sessionCook}`, `${sessionDate}`);
+       res.setHeader('Set-Cookie', sessionCook);
        res.end(result);
     } catch (err) {
         console.error(err);
