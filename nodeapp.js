@@ -13,7 +13,7 @@ let debug = false;
 // Create testing session cookie
 let sessionDate = new Date();
 sessionDate = sessionDate.setDate(sessionDate.getDate() + 3)
-let sessionCook = 'session=eqctlv3u';
+let sessionCook = 'session=' + 'eqctlv3u' + '; Expires=' + sessionDate + '; HttpOnly';
 
 // Collect command line arguments
 process.argv.forEach(function (value, index) {
