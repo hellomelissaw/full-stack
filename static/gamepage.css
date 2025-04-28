@@ -17,6 +17,14 @@ body {
     background-color: var(--background-color-light);
 }
 
+.top-left-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
 .container {
     position: fixed;
     left: 50%;
