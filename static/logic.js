@@ -47,7 +47,7 @@ document.getElementById("inventory-button")?.addEventListener("click", function 
     if (inventoryContainer.style.height === "0px" || inventoryContainer.style.height === "") {
         inventoryContainer.style.display = "block";
         setTimeout(() => {
-            inventoryContainer.style.height = "300px";
+            inventoryContainer.style.height = "150px";
         }, 10);
         this.textContent = "Close Inventory";
     } else {
