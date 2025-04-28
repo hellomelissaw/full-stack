@@ -24,8 +24,8 @@ body {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: fit-content(100px) 
-                        fit-content(100px) 
                         auto 
+                        fit-content(50px) 
                         fit-content(75px);
     grid-template-areas:
         'title title'
