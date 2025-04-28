@@ -3,6 +3,7 @@ const { findOne,
         create_player, 
         get_user_players,
         update_password 
+        create_account
       } = require("./utilities");
 
 ////////////////////////////////////////////////////////////
@@ -62,6 +63,14 @@ async function createNewPlayer(conn, uid, name) {
     }
 
 }
+async function createAccount(conn, uid, name) {
+    try {
+        const newAccount = await conn.query(create_account, [uid, name]);
+        return {success: true, uid: newAccount.insertId};
+    } catch (err) {
+        return { success: false, error: err.message};
+    }
+}
 
 async function updatePassword(conn, hash, uid) {
     try {
@@ -87,5 +96,6 @@ module.exports = {
                     getUserPlayers,
                     createNewPlayer,
                     loadGames,
-                    updatePassword
+                    updatePassword,
+                    createAccount
                  }
