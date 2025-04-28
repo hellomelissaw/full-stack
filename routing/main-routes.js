@@ -137,7 +137,7 @@ async function loadGame(conn, pid) {
         const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
         if (addedPid) {
             const loc = await getLocationPageData(conn, result.player_data.loc_id);
-            return pug.renderFile('./templates/game_page.pug', { location: loc });  
+            return pug.renderFile('./templates/location.pug', { location: loc });  
         } else {
             return pug.renderFile('./templates/message.pug', 
                 { message: "Problem adding game to session, please try again." } 
