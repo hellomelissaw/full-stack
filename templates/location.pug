@@ -9,7 +9,7 @@ html
       .description 
         p #{location.description}
       .image
-        img(src=`#{location.name}.png`)
+        img(src=`'${location.name}.png'`)
       .actions
           each conn in location.connections
             button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
