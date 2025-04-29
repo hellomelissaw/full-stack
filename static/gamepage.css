@@ -10,7 +10,9 @@
 
 .top-left-buttons > button {
     border: 3px solid var(--text-color);
+    background-color: var(--text-color);
     font: w95fa, monospace;
+    color: var(--background-color);
 }
 
 .container {
