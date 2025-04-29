@@ -27,6 +27,7 @@ body {
 
 .top-left-buttons > button {
     border: 3px solid var(--text-color);
+    font: w95fa, monospace;
 }
 
 .container {
