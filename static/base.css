@@ -18,7 +18,6 @@ body {
 }
 
 h1 {
-    color: red;
     font-size: 90px;
     font-weight: bold;
 }
@@ -29,7 +28,7 @@ h2 {
 }
 
 h3 {
-    font-size: 45px;
+    font-size: 30px;
 }
 
 .btn {
@@ -52,7 +51,7 @@ h3 {
 }
 
 .outlined-text {
-    color: white;
+    color: var(--text-color);;
     text-shadow:
       -2px -2px 0 var(--border-color),
        2px -2px 0 var(--border-color),

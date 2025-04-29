@@ -5,11 +5,12 @@
     left: 50%;
     transform: translate(-50%);
     width: 500px;
-    min-height: 600px;
+    min-height: 670px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     z-index: 1;
 
     background-image: url('/static/img/start-page-graphic.png');
@@ -19,7 +20,7 @@
 
 .menu {
     color: var(--text-color);
-    margin-left: 4em;
+/*    margin-left: 4em;   */
     text-transform: uppercase;
 }
 
