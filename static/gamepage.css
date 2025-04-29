@@ -1,22 +1,5 @@
 @import url('/static/style-variables.css');
 
-@font-face {
-    font-family: "w95fa";
-    src:
-      local("w95fa"),
-      url("/static/w95fa/w95fa.woff") format("woff");
-  }
-
-*, *::before, *::after {
-    box-sizing: border-box;
-    /* font-family: 'Georgia', serif;  */
-    font-family: w95fa, monospace; 
-}
-
-body {
-    background-color: var(--background-color-light);
-}
-
 .top-left-buttons {
     position: absolute;
     top: 10px;
@@ -62,10 +45,6 @@ body {
     border: 3px solid var(--border-color);
 }
 
-.h1 {
-    font-size: 40px;
-}
-
 .title {
     grid-area: title;
 }
@@ -100,7 +79,6 @@ body {
     flex-direction: column;
 }
 
-
 .btn-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -111,25 +89,6 @@ body {
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
-}
-
-.btn {
-    background: var(--background-color);
-    color: var(--text-color);
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: capitalize;
-    border: 3px solid var(--button-border);
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-    background: var(--button-hover-color);
-    transform: translateY(-2px);
 }
 
 #inventory-button {
