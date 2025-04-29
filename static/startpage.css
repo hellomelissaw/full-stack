@@ -13,45 +13,14 @@
     z-index: 1;
 
     background-image: url('/static/img/start-page-graphic.png');
+    background-size: cover;
+    background-position: center;
 } /* Places the menu in the middle/left of the screen */
 
 .menu {
-    color: #7e0a0a;
+    color: var(--text-color);
     margin-left: 4em;
     text-transform: uppercase;
-}
-.menu h1 {
-    font-size: 2em;
-    letter-spacing: 30px;
-    display: block;
-    margin-bottom: 0.5em;
-}  /* */
-
-
-.menu h3 {
-    font-weight: 300;
-    font-size: 1.5em;
-    text-align: center;
-    letter-spacing: 10px;
-    position: relative;
-}
-
-.menu h3::before,
-.menu h3::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #1d0909;
-    width: 3em;
-    height: 3px;
-} /* stregerne ved h3*/
-
-.menu h3::before {
-    left: 0;
-}
-.menu h3::after {
-    right: 0;
 }
 
 .menu ul {
