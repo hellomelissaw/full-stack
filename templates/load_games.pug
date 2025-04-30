@@ -12,7 +12,7 @@ html
           div
             h1 Select a player from the list:
           each player in players
-            .div
+            .player-card
               p Player: #{player.name}
               p Location: #{player.loc_name}
               button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) Go
