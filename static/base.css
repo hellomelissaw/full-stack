@@ -17,6 +17,9 @@ body {
     background-color: var(--background-color-light);
 }
 
+
+/* TEXT STYLING */
+
 h1 {
     margin: 0px;
     font-size: 90px;
@@ -31,6 +34,22 @@ h2 {
 h3 {
     font-size: 30px;
 }
+
+.outlined-text {
+    color: var(--text-color);;
+    text-shadow:
+      -2px -2px 0 var(--border-color),
+       2px -2px 0 var(--border-color),
+      -2px  2px 0 var(--border-color),
+       2px  2px 0 var(--border-color),
+       0   -2px 0 var(--border-color),
+       0    2px 0 var(--border-color),
+      -2px  0   0 var(--border-color),
+       2px  0   0 var(--border-color);
+}
+
+
+/* BUTTON STYLING AND ACCESSIBILITY */
 
 .btn {
     background: var(--background-color);
@@ -65,17 +84,4 @@ h3 {
     font: w95fa, monospace;
     color: var(--background-color);
 }
-
-.outlined-text {
-    color: var(--text-color);;
-    text-shadow:
-      -2px -2px 0 var(--border-color),
-       2px -2px 0 var(--border-color),
-      -2px  2px 0 var(--border-color),
-       2px  2px 0 var(--border-color),
-       0   -2px 0 var(--border-color),
-       0    2px 0 var(--border-color),
-      -2px  0   0 var(--border-color),
-       2px  0   0 var(--border-color);
-  }
   
