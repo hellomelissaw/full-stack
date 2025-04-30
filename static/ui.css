@@ -27,3 +27,7 @@ body {
 .player-card {
   border: 5px solid var(--button-border);
 }
+
+.player-card:hover {
+  background-color: rgba(var(--border-color), 0.5);
+}
