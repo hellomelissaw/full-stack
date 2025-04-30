@@ -12,16 +12,16 @@
   width: 500px;
   min-height: 600px;
   
-  border: 3px solid var(--border-color);
+  border: 5px solid var(--border-color);
+  background-color: var(--background-color);
   color: var(--text-color);
 }
 
 .container > * {
   margin: 13px;
-  padding: 40px;
-  background-color: var(--background-color);
+  padding: 13px;
 }
 
 .player-card {
-  border: 3px solid var(--button-border);
+  border: 5px solid var(--button-border);
 }

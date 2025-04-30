@@ -12,8 +12,8 @@ html
           h1 Select a player from the list:
           each player in players
             .player-card
-              p Player: #{player.name}
-              p Location: #{player.loc_name}
+              h3 Player: #{player.name}
+              h3 Location: #{player.loc_name}
               button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) Go
 
     script(src="/static/logic.js")
