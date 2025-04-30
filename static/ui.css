@@ -1,8 +1,4 @@
-body {
-  display: flex;
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
+@import url('/static/base.css');
 
 nav {
   width: 200px;

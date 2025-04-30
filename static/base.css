@@ -50,6 +50,21 @@ h3 {
     transform: translateY(-2px);
 }
 
+.top-left-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.top-left-buttons > button {
+    border: 3px solid var(--text-color);
+    background-color: var(--text-color);
+    font: w95fa, monospace;
+    color: var(--background-color);
+}
+
 .outlined-text {
     color: var(--text-color);;
     text-shadow:
