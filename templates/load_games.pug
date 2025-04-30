@@ -14,6 +14,6 @@ html
             .player-card
               h3 Player: #{player.name}
               h3 Location: #{player.loc_name}
-              button(onclick=`window.location.href='/load-game?pid=${player.pid}'`) Go
+              div.player-card.clickable(role="button" tabindex="0" onclick=`handleClick(${player.pid})`) Load Game
 
-    script(src="/static/logic.js")
+    script(src="/static/logic/clickable.js")

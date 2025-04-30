@@ -84,4 +84,13 @@ h3 {
     font: w95fa, monospace;
     color: var(--background-color);
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:focus {
+    outline: 2px dashed yellow;
+    outline-offset: 4px;
+}
   
