@@ -1,5 +1,21 @@
 @import url('/static/base.css');
 
+.container {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+  width: 500px;
+  min-height: 600px;
+  
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 20px;
+  
+}
+
 nav {
   width: 200px;
   background-color: #333;
