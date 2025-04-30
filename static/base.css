@@ -36,7 +36,7 @@ h3 {
     color: var(--text-color);
     font-size: 18px;
     font-weight: bold;
-    text-transform: capitalize;
+    text-transform: uppercase;
     border: 3px solid var(--button-border);
     border-radius: 10px;
     padding: 12px;
