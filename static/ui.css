@@ -17,6 +17,7 @@
 }
 
 .container > * {
+  margin: 13px;
   padding: 40px;
   background-color: var(--background-color);
 }
