@@ -5,7 +5,7 @@
   left: 50%;
   transform: translate(-50%);
   display: grid;
-  grid-template-column: 1fr;
+  grid-template-columns: 1fr;
   gap: 3px
   width: 500px;
   min-height: 600px;
