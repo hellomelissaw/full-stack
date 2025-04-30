@@ -11,9 +11,9 @@ html
         .container
           h1 Select a player from the list:
           each player in players
-            .player-card
+            div.player-card.clickable(role="button" tabindex="0" onclick=handleClick(`#{player.pid}`))
               h3 Player: #{player.name}
               h3 Location: #{player.loc_name}
-              div.player-card.clickable(role="button" tabindex="0" onclick=`handleClick(${player.pid})`) Load Game
 
     script(src="/static/logic/clickable.js")
+    script(src"/static/logic.js")
