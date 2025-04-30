@@ -67,11 +67,11 @@ h3 {
 
 .btn:hover {
     background: var(--button-hover-color);
-    transform: translateY(-2px);
+    transform: translateX(-1px) translateY(-2px);
 }
 
 .top-left-buttons {
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
     display: flex;
@@ -80,9 +80,8 @@ h3 {
 
 .top-left-buttons > button {
     border: 3px solid var(--text-color);
-    background-color: var(--text-color);
+    background-color: var(--button-border);
     font: w95fa, monospace;
-    color: var(--background-color);
 }
 
 .clickable {
