@@ -93,4 +93,8 @@ h3 {
     outline: 2px dashed yellow;
     outline-offset: 4px;
 }
+
+.clickable:focus:not(:focus-visible) {
+    outline: none;
+}
   
