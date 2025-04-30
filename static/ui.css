@@ -1,11 +1,13 @@
 @import url('/static/base.css');
 
-.container {
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%);
-  display: grid;
+body {
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+}
 
+.container {
+  display: grid;
   grid-template-rows: auto 1fr;
   gap: 3px;
   padding: 3px;
