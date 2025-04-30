@@ -26,8 +26,10 @@ body {
 
 .player-card {
   border: 5px solid var(--button-border);
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .player-card:hover {
-  background-color: rgba(var(--border-color), 0.5);
+  background-color: var(--button-hover-color);
+  transform: translateX(-1px) translateY(-2px);
 }
