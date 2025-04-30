@@ -4,16 +4,21 @@
   position: fixed;
   left: 50%;
   transform: translate(-50%);
-  display: flex;
-  flex-direction: column;
-  padding: 3px;
+  display: grid;
+  grid-template-column: 1fr;
+  gap: 3px
   width: 500px;
   min-height: 600px;
   
-  background-color: var(--background-color);
+  background-color: var(--border-color);
   color: var(--text-color);
   font-size: 20px;
   
+}
+
+.container > * {
+  background-color: var(--background-color);
+  border: 3px solid var(button-border);
 }
 
 nav {
@@ -34,6 +39,7 @@ nav ul {
 }
 
 nav ul li {
+  border: var(--border-color);
   padding: 8px 16px;
   text-align: left;
 }
