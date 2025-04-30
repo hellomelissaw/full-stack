@@ -16,11 +16,11 @@ html(lang="en")
         h3 We hope you're ready for an adventure.
         ul
           li
-            a(href=`/new-game-page?uid=${uid}`) New Game
+            button(onclick=`window.location.href='/new-game-page?uid=${uid}'`) New Game
           li
-            a(href=`/load-game-page?uid=${uid}`) Load Game
+            button(onclick=`window.location.href='/load-game-page?uid=${uid}'`) Load Game
           li
-            a(href=`/insert-location-form`) Insert New Location 
+            button(onclick=`window.location.href='/insert-location-form'`) Insert New Location 
           li
-            a(href="/quit" id="quit-btn") Quit
+            button(onclick=`window.location.href='/quit'` id="quit-btn") Quit
     script(src="/static/logic.js")
