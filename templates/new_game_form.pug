@@ -2,14 +2,13 @@ doctype html
 html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet" href="/static/startpage.css")
+    link(rel="stylesheet" href="/static/ui.css")
     title New game - player creation
   body
-    include menu.pug
-    .screen
-      .menu
-      main  
+    main 
+      .top-left-buttons 
+        button.btn Back to main menu
+      .container 
         h1 Create new character
         form(action=`/new-game?uid=${uid}` method="post")
           h3  
