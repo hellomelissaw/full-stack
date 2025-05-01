@@ -7,7 +7,7 @@ html(lang="en")
   body
     main 
       .top-left-buttons 
-        button.btn Back to main menu
+        button#exit-button.btn Back to main menu
       .container 
         h1 Create new character
         form(action=`/new-game?uid=${uid}` method="post")
@@ -15,3 +15,4 @@ html(lang="en")
             label(for="name") Name:
           input(type="text" id="name" name="name" required)
           button(type="submit").btn Create
+    script(src="/static/logic.js")
