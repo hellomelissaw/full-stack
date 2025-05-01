@@ -95,6 +95,21 @@ async function createNewPlayer(conn, uid, name) {
 
 }
 
+async function getPlayerStats(conn, pid) {
+    try {
+        const stats = await findOne(conn, 'player', 'pid', pid);
+        if (stats) {
+            return { success: true, player_stats: stats};
+        
+        } else {
+            return { success: false, message: "Error getting player stats."}
+        }
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+
+}
+
 module.exports = { 
                     getUserData,
                     getPlayerData,
