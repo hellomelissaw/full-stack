@@ -55,16 +55,14 @@ async function generateLocationResponse(conn, url) {
         const loc = await getLocationPageData(conn, id);
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
-            const stats = await getPlayerStats(conn, result.player_data.pid);
-
-            if(stats.success) {
-                updatePlayerLocation(conn, id, pid); 
-                return pug.renderFile('./templates/location.pug', { location: loc, stats: stats.player_stats });  
-            
-            } else {
-                return pug.renderFile('./templates/message.pug', { message: stats.error});
+            const playerStats = { 
+                HP: player.health,
+                XP: player.experience,
+                level: player.level
             }
-    
+
+            updatePlayerLocation(conn, id, pid); 
+            return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
         
         } else {
             return pug.renderFile('./templates/location_error.pug', { locID: result.player_data.loc_id, buttonLabel: "GO!"});
