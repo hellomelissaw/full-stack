@@ -61,8 +61,5 @@ document.getElementById("inventory-button")?.addEventListener("click", function 
 
 // Event listener for the Exit Game button
 document.getElementById("exit-button")?.addEventListener("click", function () {
-    let confirmExit = confirm("Are you sure you want to exit?");
-    if (confirmExit) {
-        window.location.href = "/"; 
-    }
+    window.location.href = "/"; 
 });
