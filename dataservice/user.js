@@ -97,8 +97,13 @@ async function createNewPlayer(conn, uid, name) {
 
 async function getPlayerStats(conn, pid) {
     try {
-        const stats = await findOne(conn, 'player', 'pid', pid);
-        if (stats) {
+        const player = await findOne(conn, 'player', 'pid', pid);
+        if (player) {
+            stats = { 
+                HP: player.health,
+                XP: player.experience,
+                level: player.level
+            }
             return { success: true, player_stats: stats};
         
         } else {
