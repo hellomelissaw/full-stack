@@ -117,5 +117,6 @@ module.exports = {
                     createNewPlayer,
                     loadGames,
                     updatePassword,
-                    createAccount
+                    createAccount,
+                    getPlayerStats
                  }
