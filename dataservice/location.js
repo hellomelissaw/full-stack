@@ -19,7 +19,9 @@ async function getLocationPageData(conn, id) {
         }))
     };
 
-    return locationData;
+    const playerData = await findOne(conn, 'player', 'pid', id); // TODO Handle if null
+
+    return { loc: locationData, player: playerData };
 }
 
 async function updatePlayerLocation(conn, id, pid) {
