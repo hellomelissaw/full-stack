@@ -52,7 +52,7 @@ async function generateLocationResponse(conn, locID) {
 
     // if(result.success) {
         // const id = url.query.locID;
-        const data = await getLocationPageData(conn, locID);
+        const data = await getLocationPageData(conn, locID, pid);
 
         if (data.loc && data.player) {
             const loc = data.loc;

@@ -5,7 +5,7 @@ const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
 // LOCATION DATA QUERIES
 ////////////////////////////////////////////////////////////
 
-async function getLocationPageData(conn, id) {
+async function getLocationPageData(conn, id, pid) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
     
@@ -19,7 +19,7 @@ async function getLocationPageData(conn, id) {
         }))
     };
 
-    const playerData = await findOne(conn, 'player', 'pid', id); // TODO Handle if null
+    const playerData = await findOne(conn, 'player', 'pid', pid); // TODO Handle if null
 
     return { loc: locationData, player: playerData };
 }
