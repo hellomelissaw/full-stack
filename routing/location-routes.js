@@ -48,30 +48,34 @@ async function generateLocationResponse(conn, url) {
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
-    const result = await getPlayerData(conn, pid); 
+    // const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
         const id = url.query.locID;
-        const loc = await getLocationPageData(conn, id);
+        const data = await getLocationPageData(conn, id);
+
+        if (data.loc && data.player) {
+            const loc = data.loc;
+            const player = data.player;
     
-        if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
-            const playerStats = { 
-                hp: result.player_data.health,
-                xp: result.player_data.experience,
-                level: result.player_data.level
+            if(locationIsValid(loc.connections, player.loc_id, id)){
+                const playerStats = { 
+                    hp: player.health,
+                    xp: player.experience,
+                    level: player.level
+                }
+                console.table(playerStats);
+                updatePlayerLocation(conn, id, pid); 
+                return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
+            
+            } else {
+                return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!"});
             }
-            console.table(playerStats);
-            updatePlayerLocation(conn, id, pid); 
-            return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
         
         } else {
-            return pug.renderFile('./templates/location_error.pug', { locID: result.player_data.loc_id, buttonLabel: "GO!"});
+            return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." } )
         }
-    
-    } else {
-        return pug.renderFile('./templates/message.pug', { message: result.error } )
-    }
-    
+    }   
 }
 
 module.exports = { 
