@@ -56,11 +56,11 @@ async function generateLocationResponse(conn, url) {
     
         if(locationIsValid(loc.connections, result.player_data.loc_id, id)){
             const playerStats = { 
-                HP: player.health,
-                XP: player.experience,
-                level: player.level
+                hp: result.player_data.health,
+                xp: result.player_data.experience,
+                level: result.player_data.level
             }
-
+            console.table(playerStats);
             updatePlayerLocation(conn, id, pid); 
             return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
         
