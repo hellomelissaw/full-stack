@@ -76,7 +76,7 @@ async function requestRoute(conn, req) {
             return validateLoginResponse(conn, req, temp_token);
 
         case '/location':
-            return generateLocationResponse(conn, parsedURL);
+            return generateLocationResponse(conn, parsedURL.query.locID);
 
         case '/insert-location-form':
             return pug.renderFile('./templates/insert_form.pug');

@@ -43,7 +43,7 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 // otherwise generates an error page.
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateLocationResponse(conn, url) {
+async function generateLocationResponse(conn, locID) {
     const pid = await getSessionPid(conn, temp_token); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
@@ -51,21 +51,21 @@ async function generateLocationResponse(conn, url) {
     // const result = await getPlayerData(conn, pid); 
 
     if(result.success) {
-        const id = url.query.locID;
-        const data = await getLocationPageData(conn, id);
+        // const id = url.query.locID;
+        const data = await getLocationPageData(conn, locID);
 
         if (data.loc && data.player) {
             const loc = data.loc;
             const player = data.player;
     
-            if(locationIsValid(loc.connections, player.loc_id, id)){
+            if(locationIsValid(loc.connections, player.loc_id, locID)){
                 const playerStats = { 
                     hp: player.health,
                     xp: player.experience,
                     level: player.level
                 }
                 console.table(playerStats);
-                updatePlayerLocation(conn, id, pid); 
+                updatePlayerLocation(conn, locID, pid); 
                 return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
             
             } else {

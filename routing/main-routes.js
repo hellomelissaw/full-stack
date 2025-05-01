@@ -26,6 +26,7 @@ const {
     getLocationPageData,
     insertLocation
 } = require('../dataservice/location');
+const { generateLocationResponse } = require('./location-routes');
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,8 +137,9 @@ async function loadGame(conn, pid) {
     if(result.success){
         const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
         if (addedPid) {
-            const loc = await getLocationPageData(conn, result.player_data.loc_id);
-            return pug.renderFile('./templates/location.pug', { location: loc });  
+            return generateLocationResponse(conn, result.player_data.loc_id)
+            // const loc = await getLocationPageData(conn, result.player_data.loc_id);
+            // return pug.renderFile('./templates/location.pug', { location: loc });  
         } else {
             return pug.renderFile('./templates/message.pug', 
                 { message: "Problem adding game to session, please try again." } 
