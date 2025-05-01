@@ -50,7 +50,7 @@ async function generateLocationResponse(conn, locID) {
     }
     // const result = await getPlayerData(conn, pid); 
 
-    if(result.success) {
+    // if(result.success) {
         // const id = url.query.locID;
         const data = await getLocationPageData(conn, locID);
 
@@ -76,7 +76,7 @@ async function generateLocationResponse(conn, locID) {
             return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." } )
         }
     }   
-}
+// }
 
 module.exports = { 
     generateLocationResponse
