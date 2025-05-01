@@ -7,7 +7,7 @@ const { findOne,
       } = require("./utilities");
 
 ////////////////////////////////////////////////////////////
-// USER AND PLAYER DATA QUERIES
+// USER DATA QUERIES
 ////////////////////////////////////////////////////////////
 
 async function getUserData(conn, username) {
@@ -29,40 +29,11 @@ async function getUserData(conn, username) {
 
 }
 
-async function getPlayerData(conn, pid) {
-    try {
-        const pd = await findOne(conn, 'player', 'pid', pid);
-
-        if (pd) {
-            return { success: true, player_data: pd };
-
-        } else {
-            console.log(`Player with pid ${pid} not found.`);
-            return { success: false, error: "Player not found" };
-
-        }
-    } catch (err) {
-        return { success: false, error: err.message };
-
-    }
-}
-
 async function getUserPlayers(conn, uid) {
     let player_ids = await conn.query("SELECT * FROM player WHERE uid = ?", [uid]);
     return player_ids;
 }
 
-async function createNewPlayer(conn, uid, name) {
-    try {
-        const newPlayer = await conn.query(create_player, [uid, name, 0]);
-        return { success: true, pid: newPlayer.insertId };
-
-    } catch (err) {
-        return { success: false, error: err.message };
-
-    }
-
-}
 async function createAccount(conn, uid, name) {
     try {
         const newAccount = await conn.query(create_account, [uid, name]);
@@ -84,11 +55,45 @@ async function updatePassword(conn, hash, uid) {
     }
 }
 
+
 async function loadGames(conn, uid) {
     const games = await conn.query(get_user_players, [uid]);
     return games;
 }
 
+////////////////////////////////////////////////////////////
+// PLAYER DATA QUERIES
+////////////////////////////////////////////////////////////
+
+async function getPlayerData(conn, pid) {
+    try {
+        const pd = await findOne(conn, 'player', 'pid', pid);
+
+        if (pd) {
+            return { success: true, player_data: pd };
+
+        } else {
+            console.log(`Player with pid ${pid} not found.`);
+            return { success: false, error: "Player not found" };
+
+        }
+    } catch (err) {
+        return { success: false, error: err.message };
+
+    }
+}
+
+async function createNewPlayer(conn, uid, name) {
+    try {
+        const newPlayer = await conn.query(create_player, [uid, name, 0]);
+        return { success: true, pid: newPlayer.insertId };
+
+    } catch (err) {
+        return { success: false, error: err.message };
+
+    }
+
+}
 
 module.exports = { 
                     getUserData,
