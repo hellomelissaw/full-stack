@@ -19,6 +19,7 @@ const {
 const {
     getPlayerData, 
     createNewPlayer,
+    createAccount,
     loadGames,
 } = require('../dataservice/user');
 
@@ -96,6 +97,27 @@ async function createNewGame(conn, req) {
         }
     }
 
+async function createAccount (conn, req) {
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+        req.on('end', resolve);
+    });
+
+    const params = new URLSearchParams(body);
+    const username = params.get('username');
+    const password = params.get('password');
+    const result = await create_account(conn, username, password);  
+    
+        if(result.success) {
+            return pug.renderFile('./templates/start.pug');
+        } else {
+            return pug.renderFile('./templates/message.pug', { message: "Problem creating new acccount, please try again" } ) 
+        }
+}    
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the page to create a new character/game
@@ -162,7 +184,7 @@ async function generateInsertResponse(conn, req) {
             body += chunk.toString();
         })
 
-        req.on('end', resolve);
+        req.on('end', resolve); 
     });
 
     const params = new URLSearchParams(body);

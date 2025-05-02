@@ -7,6 +7,7 @@ const saltRounds = 10;
 const {
     generateLandingPage,
     createNewGame,
+    createAccount,
     generateNewGamePageResponse,
     generateLoadPageResponse,
     loadGame,
@@ -72,6 +73,9 @@ async function requestRoute(conn, req) {
         case '/create-account':
             return pug.renderFile('./templates/createAccount.pug')
 
+        case'/create-account-recieve':
+            return createAccount(conn, req);
+
         case '/log-in':
             return validateLoginResponse(conn, req, temp_token);
 
@@ -102,7 +106,6 @@ async function requestRoute(conn, req) {
 	
 	    case '/set-hash':
 	        return setTestUserPasswordHash(conn, parsedURL);
-
         default: 
             return generateLandingPage(conn, req);
     }
