@@ -48,35 +48,32 @@ async function generateLocationResponse(conn, locID) {
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
-    // const result = await getPlayerData(conn, pid); 
 
-    // if(result.success) {
-        // const id = url.query.locID;
-        const data = await getLocationPageData(conn, locID, pid);
+    const data = await getLocationPageData(conn, locID, pid);
 
-        if (data.loc && data.player) {
-            const loc = data.loc;
-            const player = data.player;
-    
-            if(locationIsValid(loc.connections, player.loc_id, locID)){
-                const playerStats = { 
-                    hp: player.health,
-                    xp: player.experience,
-                    level: player.level
-                }
-                console.table(playerStats);
-                updatePlayerLocation(conn, locID, pid); 
-                return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
-            
-            } else {
-                return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!"});
+    if (data.loc && data.player) {
+        const loc = data.loc;
+        const player = data.player;
+
+        if(locationIsValid(loc.connections, player.loc_id, locID)){
+            const playerStats = { 
+                hp: player.health,
+                xp: player.experience,
+                level: player.level
             }
+            console.table(playerStats);
+            updatePlayerLocation(conn, locID, pid); 
+            return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
         
         } else {
-            return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." } )
+            return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!"});
         }
-    }   
-// }
+    
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." } )
+    }
+}   
+
 
 module.exports = { 
     generateLocationResponse
