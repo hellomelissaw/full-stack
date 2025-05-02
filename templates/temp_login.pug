@@ -3,20 +3,18 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet" href="/static/startpage.css")
+    link(rel="stylesheet" href="/static/ui.css")
     title Log in to continue playing
   body
-    include menu.pug
-    .screen
-      .menu
-      main  
-        h1 Log in
-        // I know this is not encrypted, it's just for testing
-        if showError 
-          p Username or password incorrect 
-        form(action=`/log-in` method="post") 
+    main  
+      h1 Log in
+      if showError 
+        p Username or password incorrect 
+      form(action=`/log-in` method="post")
+        h3 
           label(for="name") Username:
-          input(type="text" id="username" name="username" required)
+        input(type="text" id="username" name="username" required)
+        h3  
           label(for="password") Password:
-          input(type="password" id="password" name="password" required)
-          button(type="submit") Log in
+        input(type="password" id="password" name="password" required)
+        button(type="submit") Log in
