@@ -73,7 +73,7 @@ async function requestRoute(conn, req) {
         case '/create-account':
             return pug.renderFile('./templates/createAccount.pug')
 
-        case'/create-account-recieve':
+        case'/create-account-receive':
             return createAccount(conn, req);
 
         case '/log-in':
