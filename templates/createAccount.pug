@@ -11,7 +11,8 @@ html(lang="en")
     .sign
       span Please create an account
     .login
-    input(type="text", id="username", placeholder="Enter username")
-    input(type="text", id="password", placeholder="Enter password")
-    button(type="submit" formaction ="/create-account-recieve") Create account
+    form.login(method="POST", action="/create-account-receive")
+      input(type="text", name="username", placeholder="Enter username", required)
+      input(type="password", name="password", placeholder="Enter password", required)
+      button(type="submit") Create account
     ul#gameFiles
