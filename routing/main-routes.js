@@ -100,26 +100,42 @@ async function createNewGame(conn, req) {
         }
     }
 
-async function createAccount (conn, req) {
-    let body = '';
-    await new Promise((resolve) => {
-        req.on('data', chunk => {
-            body += chunk.toString();
-        })
-        req.on('end', resolve);
-    });
+    const pug = require('pug');
 
-    const params = new URLSearchParams(body);
-    const username = params.get('username');
-    const password = params.get('password');
-    const result = await createAccount(conn, username, password);  
+    async function createAccount(conn, req) {
+      return new Promise((resolve, reject) => {
+        let body = '';
     
-        if(result.success) {
-            return pug.renderFile('./templates/start.pug');
-        } else {
-            return pug.renderFile('./templates/message.pug', { message: "Problem creating new acccount, please try again" } ) 
-        }
-}    
+        req.on('data', chunk => {
+          body += chunk.toString();
+        });
+    
+        req.on('end', async () => {
+          try {
+            const params = new URLSearchParams(body);
+            const username = params.get('username');
+            const password = params.get('password');
+    
+            const result = await createAccountInDB(conn, username, password); // renamed to avoid recursion
+    
+            if (result.success) {
+              const html = pug.renderFile('./templates/start.pug');
+              resolve(html);
+            } else {
+              const html = pug.renderFile('./templates/message.pug', {
+                message: "Problem creating new account, please try again"
+              });
+              resolve(html);
+            }
+          } catch (err) {
+            reject(err);
+          }
+        });
+    
+        req.on('error', reject);
+      });
+    }
+       
 
 
 ///////////////////////////////////////////////////////////////////////////////
