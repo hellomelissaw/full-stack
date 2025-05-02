@@ -68,6 +68,7 @@ function handleAction(act_id) {
     fetch(`/update_game_page_data?act_id=${act_id}`)
     .then(res => res.text())
     .then(text => {
-        console.log(text);
+        html = `<p> ${text} <\p>`;
+        document.getElementById('description-text').innerHTML = html;
     })
 }
