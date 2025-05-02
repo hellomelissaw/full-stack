@@ -116,7 +116,7 @@ async function createNewGame(conn, req) {
             const username = params.get('username');
             const password = params.get('password');
     
-            const result = await createAccountInDB(conn, username, password); // renamed to avoid recursion
+            const result = await createAccount(conn, username, password); // renamed to avoid recursion
     
             if (result.success) {
               const html = pug.renderFile('./templates/start.pug');
