@@ -19,7 +19,6 @@ const {
 const {
     getPlayerData, 
     createNewPlayer,
-    createAccount,
     loadGames,
 } = require('../dataservice/user');
 
@@ -213,6 +212,7 @@ module.exports = {
                     generateNewGamePageResponse,
                     generateLoadPageResponse,
                     loadGame,
+                    createAccount,
                     generateInsertResponse,
                     quitGame
                 }
