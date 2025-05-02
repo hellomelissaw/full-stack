@@ -54,7 +54,7 @@ async function generateLocationResponse(conn, locID) {
     if (data.loc && data.player) {
         const loc = data.loc;
         const player = data.player;
-
+        console.table(loc.actions);
         if(locationIsValid(loc.connections, player.loc_id, locID)){
             const playerStats = { 
                 hp: player.health,
