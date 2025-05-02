@@ -32,6 +32,11 @@ async function createSession(conn, sessionID, uid) {
 
 }
 
+async function createNewAccount (conn, username, password) {
+    const active = await conn.query('INSERT INTO user (usernname, password) values (?, ?)', [username, password]);
+    return active.length > 0;
+}
+
 async function getSessionUser(conn, sessionID) {
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
@@ -81,5 +86,6 @@ module.exports = {
                     deleteSession,
                     getSessionStatus,
                     addPidToSession,
-                    getSessionPid
+                    getSessionPid,
+                    createNewAccount,
                  }
