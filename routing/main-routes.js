@@ -27,6 +27,10 @@ const {
     insertLocation
 } = require('../dataservice/location');
 
+const {
+    create_account
+} = require('../dataservice/utilities');
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the start page if user is logged in or error if user not logged in
