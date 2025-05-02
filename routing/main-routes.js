@@ -108,7 +108,7 @@ async function createAccount (conn, req) {
     const params = new URLSearchParams(body);
     const username = params.get('username');
     const password = params.get('password');
-    const result = await create_account(conn, username, password);  
+    const result = await createAccount(conn, username, password);  
     
         if(result.success) {
             return pug.renderFile('./templates/start.pug');

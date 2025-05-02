@@ -22,7 +22,7 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
-const create_account = 'INSERT INTO user (usernname, password) values (?. ?)';
+const create_account = 'INSERT INTO user (usernname, password) values (?, ?)';
 
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 
