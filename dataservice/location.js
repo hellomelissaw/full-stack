@@ -1,4 +1,4 @@
-const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
+const { findOne, sql_conn, sql_actions, update_player_loc_id } = require("./utilities");
 
 
 ////////////////////////////////////////////////////////////
@@ -8,7 +8,8 @@ const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
 async function getLocationPageData(conn, id, pid) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
-    
+    const actions = await conn.query(sql_actions, [id]);
+
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
@@ -16,6 +17,10 @@ async function getLocationPageData(conn, id, pid) {
         connections: Object.keys(connections).map(key => ({
             conn_id: connections[key].conn_id,
             conn_name: connections[key].conn_name
+        })),
+        actions: Object.keys(actions).map(key => ({
+            act_id: actions[key].act_id,
+            act_name: actions[key].act_name
         }))
     };
 

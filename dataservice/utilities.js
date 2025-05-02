@@ -71,6 +71,7 @@ exports.findOne = findOne;
 module.exports = { 
                     findOne,
                     sql_conn,
+                    sql_actions,
                     update_player_loc_id,
                     create_player,
                     create_session,
