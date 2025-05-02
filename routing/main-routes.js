@@ -100,8 +100,6 @@ async function createNewGame(conn, req) {
         }
     }
 
-    const pug = require('pug');
-
     async function createAccount(conn, req) {
       return new Promise((resolve, reject) => {
         let body = '';
