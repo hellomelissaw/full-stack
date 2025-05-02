@@ -78,6 +78,9 @@ async function requestRoute(conn, req) {
         case '/location':
             return generateLocationResponse(conn, parsedURL.query.locID);
 
+        case '/update_game_page_data':
+            return "You clicked an action";
+
         case '/insert-location-form':
             return pug.renderFile('./templates/insert_form.pug');
         
