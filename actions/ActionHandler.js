@@ -17,8 +17,9 @@ function performAction(conn, actionType) {
         throw new Error(`Action type "${actionType}" not found.`); 
     }
     // TODO get action stats from DB
+    // TODO get pid from DB
     const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
-    action.excecute(pid);
+    action.excecute(22); // HARD-CODED FOR TESTING
 
 }
 
