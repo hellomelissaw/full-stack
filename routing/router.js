@@ -62,6 +62,7 @@ async function setTestUserPasswordHash(conn, url) {
 ////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
+    let contentType = 'text/html';
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
 
@@ -79,7 +80,10 @@ async function requestRoute(conn, req) {
             return generateLocationResponse(conn, parsedURL.query.locID);
 
         case '/update_game_page_data':
-            return "You clicked an action";
+            return { 
+                content: "You clicked an action", 
+                contentType: 'text/html'
+            };
 
         case '/insert-location-form':
             return pug.renderFile('./templates/insert_form.pug');
@@ -91,7 +95,6 @@ async function requestRoute(conn, req) {
             return generateLoadPageResponse(conn, req);
 
         case '/load-game':
-            console.log(parsedURL.query.pid);
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':

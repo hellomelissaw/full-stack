@@ -52,11 +52,22 @@ async function requestHandler(req, res) {
         }
 
        const result = await requestRoute(conn, req);
+       let content, contentType;
+
+       if(typeof result === 'string') {
+           content = result;
+           contentType = 'text/html';
+
+       } else {
+           content = result.content;
+           contentType = result.contentType || 'text/html'; // adding a fallback in case  
+       }
+
        res.statusCode = 200;
-       res.setHeader('Content-Type', 'text/html');
+       res.setHeader('Content-Type', contentType);
        res.setHeader('Cache-Control', 'no-cache');
        res.setHeader('Set-Cookie', sessionCook);
-       res.end(result);
+       res.end(content);
     } catch (err) {
         console.error(err);
         res.statusCode = 500;
