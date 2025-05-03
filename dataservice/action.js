@@ -5,3 +5,7 @@ const {
 async function getRandomEnemy(conn) {
     return await conn.query(select_random_enemy);
 }
+
+module.exports = {
+    getRandomEnemy
+}
