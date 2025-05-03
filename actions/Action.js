@@ -51,3 +51,8 @@ class GatherAction extends Action {
         // Do a thing
     }
 }
+
+module.exports = {
+        FightAction,
+        GatherAction
+}
