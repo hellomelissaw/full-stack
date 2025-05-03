@@ -72,7 +72,15 @@ async function generateLocationResponse(conn, locID) {
     }
 }   
 
+async function updateAfterAction(act_id) {
+    return JSON.stringify({
+        stats: '<p>HP: 12</p><p>XP: 34</p>',
+        description: 'You swing your sword!'
+      })
+}
+
 
 module.exports = { 
-    generateLocationResponse
+    generateLocationResponse,
+    updateAfterAction
 }

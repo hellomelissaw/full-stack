@@ -19,7 +19,8 @@ const {
 } = require('./login-routes');
 
 const {
-    generateLocationResponse
+    generateLocationResponse,
+    updateAfterAction
 } = require('./location-routes');
 
 const {
@@ -81,8 +82,8 @@ async function requestRoute(conn, req) {
 
         case '/update_game_page_data':
             return { 
-                content: "You clicked an action", 
-                contentType: 'text/html'
+                content: updateAfterAction(conn, parsedURL.query.act_id), 
+                contentType: 'application/json'
             };
 
         case '/insert-location-form':
