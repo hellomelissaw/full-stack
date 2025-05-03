@@ -15,7 +15,7 @@ const actionStrategies = {
 };
 
 function performAction(conn, actionType) {
-    console.log(`actionType data type in performAction: [${actionType}]`)
+    console.log(`actionType data type in performAction: ${typeof([actionType])}`)
     console.log("Available keys:", Object.keys(actionStrategies));
     console.log("Does key exist?", "1" in actionStrategies); // should be true
 
