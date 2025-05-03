@@ -15,6 +15,8 @@ const actionStrategies = {
 };
 
 function performAction(conn, actionType) {
+    console.log(`actionType data type in performAction: ${typeof(actionType)}`)
+    console.log(`${typeof(actionStrategies.key)}`);
     const ActionClass = actionStrategies[actionType];
 
     if(!ActionClass) {
