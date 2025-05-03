@@ -1,5 +1,8 @@
 const XP_CAP = 100;
 const MAX_REDUCTION = 0.5;
+const {
+    getRandomEnemy
+} = require('../dataservice/action');
 
 class Action {
     constructor(name, xpBaseReward, hpBaseCost) {
