@@ -25,10 +25,20 @@ function performAction(conn, actionType) {
     }
     // TODO get action stats from DB
     // TODO get pid from DB
-    const result = getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
+    // const result = getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
+    const player = {
+        pid: 22,
+        uid: 1,
+        name: 'Aragorn',
+        loc_id: 3,
+        health: 85,
+        experience: 10,
+        level: 1
+      };
+      
     if(result.success) {
         const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
-        return action.excecute(result.player_data);
+        return action.excecute(player);
     } else {
         throw new Error(result.error);
     }
