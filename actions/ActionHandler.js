@@ -15,12 +15,12 @@ const actionStrategies = {
 };
 
 function performAction(conn, actionType) {
-    console.log(`actionType data type in performAction: ${typeof([actionType])}`)
+    console.log(`actionType data type in performAction: ${typeof(actionType)}`)
     console.log("Available keys:", Object.keys(actionStrategies));
     console.log("Does key exist?", "1" in actionStrategies); // should be true
+    console.log(`ActionClass: ${actionStrategies[actionType]}, type: ${typeof(actionStrategies[actionType])});
 
-    const ActionClass = actionStrategies[actionType];
-
+    const ActionClass = actionStrategies[actionType.trim()];
     if(!ActionClass) {
         // maybe return an error message to display in message.pug??
         throw new Error(`Action type "${actionType}" not found.`); 
