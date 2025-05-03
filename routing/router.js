@@ -27,6 +27,10 @@ const {
     updatePassword
 } = require('../dataservice/user');
 
+const {
+    performAction
+} = require('../actions/ActionHandler');
+
 
 ////////////////////////////////////////////////////////////
 // TEMP FUNCTIONS
@@ -81,7 +85,7 @@ async function requestRoute(conn, req) {
 
         case '/update_game_page_data':
             return { 
-                content: await updateAfterAction(conn, parsedURL.query.act_id), 
+                content: await performAction(conn, parsedURL.query.act_id), 
                 contentType: 'application/json'
             };
 
