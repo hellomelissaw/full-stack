@@ -1,3 +1,6 @@
+const XP_CAP = 100;
+const MAX_REDUCTION = 0.5;
+
 class Action {
     constructor(name, xpBaseReward, hpBaseCost) {
         this.name = name;
@@ -6,7 +9,7 @@ class Action {
     }
 
     // Simulate a generic method
-    execute(pid) {
+    async execute(player) {
         throw new Error("execute method must be implemented");
     }
 }
@@ -16,12 +19,22 @@ class FightAction extends Action {
         super("fight", xpBaseReward, hpBaseCost);
     }
 
-    execute(pid) {
-        const enemy = getRandomEnemy();
-        const totalXP = enemy.xpReward + this.xpBaseReward;
-        const totalHP = enemy.xpCost + this.hpBaseCost;
+    async execute(conn, player) {
+        const enemy = await getRandomEnemy(conn);
+        const totalXP = enemy.xpReward 
+                        + this.xpBaseReward
+                        + player.XP;
 
+        const reductionRate = Math.min(player.experience / XP_CAP, MAX_REDUCTION); // return xp as percentage or 0.5
+        const totalHP = (enemy.xpCost + this.hpBaseCost)
+                        * (1 - reductionRate);
 
+        return JSON.stringify({
+            stats: `<p>HP: ${totalHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
+            description: `You fought the ${enemy.name}! ${enemy.description}
+                          <br><br>
+                          Your current stats are: HP: ${totalHP}, XP: ${totalXP}`
+        })
     }
 }
 
@@ -31,7 +44,7 @@ class GatherAction extends Action {
         super("fight", xpBaseReward, hpBaseCost);
     }
 
-    execute(pid) {
+    async execute(player) {
         // Do a thing
     }
 }

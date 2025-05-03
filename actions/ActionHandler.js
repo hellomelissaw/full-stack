@@ -3,6 +3,11 @@ const {
     GatherAction
 } = require('./Action')
 
+const {
+    getPlayerData
+} = require('../dataservice/user')
+
+
 // Map action types to the right class extension
 const actionStrategies = {
     1: FightAction,
@@ -18,8 +23,14 @@ function performAction(conn, actionType) {
     }
     // TODO get action stats from DB
     // TODO get pid from DB
-    const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
-    action.excecute(22); // HARD-CODED FOR TESTING
+    const result = getPlayerData(conn, 22)  // HARD-CODED FOR TESTING
+    if(result.success) {
+        const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
+        return action.excecute(result.player_data);
+    } else {
+        throw new Error("Player not found.");
+    }
+  
 
 }
 

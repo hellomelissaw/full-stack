@@ -53,7 +53,11 @@ const update_password = `UPDATE user
                         SET password = ?
                         WHERE uid = ?`;
 
-
+// TODO optimize for performance if future table becomes larger
+const select_random_enemy = `SELECT * FROM your_table
+                            ORDER BY RAND()
+                            LIMIT 1;
+                            `
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
 ////////////////////////////////////////////////////////////
@@ -77,5 +81,6 @@ module.exports = {
                     create_session,
                     add_pid_to_session,
                     get_user_players,
-                    update_password
+                    update_password,
+                    select_random_enemy
                  }
