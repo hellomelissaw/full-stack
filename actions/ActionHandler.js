@@ -1,3 +1,8 @@
+const {
+    FightAction,
+    GatherAction
+} = require('./Action')
+
 // Map action types to the right class extension
 const actionStrategies = {
     1: FightAction,
@@ -11,6 +16,9 @@ function performAction(conn, actionType) {
         // maybe return an error message to display in message.pug??
         throw new Error(`Action type "${actionType}" not found.`); 
     }
+    // TODO get action stats from DB
+    const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
+    action.excecute(pid);
 
 }
 
