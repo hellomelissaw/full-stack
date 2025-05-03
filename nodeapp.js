@@ -59,6 +59,7 @@ async function requestHandler(req, res) {
            contentType = 'text/html';
 
        } else {
+           console.log(`content: ${result.content}, type: ${result.contentType}`)
            content = result.content;
            contentType = result.contentType || 'text/html'; // adding a fallback in case  
        }
@@ -68,6 +69,7 @@ async function requestHandler(req, res) {
        res.setHeader('Cache-Control', 'no-cache');
        res.setHeader('Set-Cookie', sessionCook);
        res.end(content);
+
     } catch (err) {
         console.error(err);
         res.statusCode = 500;
