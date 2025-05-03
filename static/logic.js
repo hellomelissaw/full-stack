@@ -66,9 +66,9 @@ document.getElementById("exit-button")?.addEventListener("click", function () {
 
 function handleAction(act_id) {
     fetch(`/update_game_page_data?act_id=${act_id}`)
-    .then(res => res.text())
-    .then(text => {
-        html = `<p> ${text} <\p>`;
-        document.getElementById('description-text').innerHTML = html;
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('description-text').innerHTML = data.description;
+        document.getElementById('stats').innerHTML = data.stats;
     })
 }
