@@ -59,7 +59,6 @@ async function requestHandler(req, res) {
            contentType = 'text/html';
 
        } else {
-           console.log(`content: ${result.content}, type: ${result.contentType}`)
            content = result.content;
            contentType = result.contentType || 'text/html'; // adding a fallback in case  
        }

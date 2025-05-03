@@ -63,7 +63,6 @@ async function setTestUserPasswordHash(conn, url) {
 ////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
-    let contentType = 'text/html';
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
 

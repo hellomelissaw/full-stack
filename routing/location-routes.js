@@ -73,12 +73,10 @@ async function generateLocationResponse(conn, locID) {
 }   
 
 async function updateAfterAction(conn, act_id) {
-    const json = JSON.stringify({
+    return JSON.stringify({
         stats: '<p>HP: 12</p><p>XP: 34</p>',
         description: '<p>You swing your sword!</p>'
-      });
-    console.log(`json: ${json}`);
-    return json;
+    });;
 }
 
 
