@@ -10,13 +10,15 @@ const {
 
 // Map action types to the right class extension
 const actionStrategies = {
-    1: FightAction,
-    2: GatherAction
+    "1": FightAction,
+    "2": GatherAction
 };
 
 function performAction(conn, actionType) {
-    console.log(`actionType data type in performAction: ${typeof(actionType)}`)
-    console.log(`${typeof(actionStrategies.key)}`);
+    console.log(`actionType data type in performAction: [${actionType}]`)
+    console.log("Available keys:", Object.keys(actionStrategies));
+    console.log("Does key exist?", "1" in actionStrategies); // should be true
+
     const ActionClass = actionStrategies[actionType];
 
     if(!ActionClass) {
