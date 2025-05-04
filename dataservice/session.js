@@ -1,4 +1,9 @@
-const { create_session, findOne, add_pid_to_session } = require("./utilities");
+const {
+    create_session,
+    findOne,
+    add_pid_to_session,
+    create_account
+} = require("./utilities");
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
@@ -33,7 +38,7 @@ async function createSession(conn, sessionID, uid) {
 }
 
 async function createNewAccount (conn, username, password) {
-    const active = await conn.query('INSERT INTO user (usernname, password) values (?, ?)', [username, password]);
+    const active = await conn.query(create_account, [username, password]);
     return active.length > 0;
 }
 

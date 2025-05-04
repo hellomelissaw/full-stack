@@ -13,7 +13,8 @@ const {
     getSessionUser,
     getSessionStatus,
     deleteSession,
-    addPidToSession
+    addPidToSession,
+    createNewAccount
 } = require('../dataservice/session');
 
 const {
@@ -26,11 +27,6 @@ const {
     getLocationPageData,
     insertLocation
 } = require('../dataservice/location');
-
-const {
-    create_account
-} = require('../dataservice/utilities');
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the start page if user is logged in or error if user not logged in
@@ -100,20 +96,22 @@ async function createNewGame(conn, req) {
         }
     }
 
-async function createAccount (conn, req) {
+///////////////////////////////////////////////////////////////////////////////
+// Creates a new account from /create-account sent to /create-account-receive
+///////////////////////////////////////////////////////////////////////////////
 
+async function createAccount (conn, req) {
     const form = new FormData;
     const user = form.get('username')
     const pass = form.get('password')
-    const result = await createAccount(conn, user, pass);
+    const result = await createNewAccount(conn, user, pass);
     
-        if(result.success) {
-            return pug.renderFile('./templates/start.pug');
-        } else {
-            return pug.renderFile('./templates/message.pug', { message: "Problem creating new acccount, please try again" } ) 
-        }
+    if (result.success) {
+        return pug.renderFile('./templates/start.pug');
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+    }
 }    
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the page to create a new character/game

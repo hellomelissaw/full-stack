@@ -67,5 +67,5 @@ module.exports = {
                     add_pid_to_session,
                     get_user_players,
                     update_password,
-                    create_account,
+                    create_account
                  }
