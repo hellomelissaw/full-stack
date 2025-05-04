@@ -3,6 +3,7 @@ const {
 } = require('./utilities')
 
 async function getRandomEnemy(conn) {
+    console.log(`conn type in random enemy: ${typeof(conn)}`);
     return await conn.query(select_random_enemy);
 }
 

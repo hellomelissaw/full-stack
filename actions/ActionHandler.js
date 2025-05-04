@@ -35,10 +35,10 @@ function performAction(conn, actionType) {
         experience: 10,
         level: 1
       };
-      
+    const result = {success: true, player_data: player };  
     if(result.success) {
-        const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
-        return action.excecute(player);
+        const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
+        return action.execute(result.player_data);
     } else {
         throw new Error(result.error);
     }
