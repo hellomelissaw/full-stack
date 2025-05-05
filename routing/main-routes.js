@@ -13,7 +13,8 @@ const {
     getSessionUser,
     getSessionStatus,
     deleteSession,
-    addPidToSession
+    addPidToSession,
+    createNewAccount
 } = require('../dataservice/session');
 
 const {
@@ -27,7 +28,6 @@ const {
     insertLocation
 } = require('../dataservice/location');
 const { generateLocationResponse } = require('./location-routes');
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the start page if user is logged in or error if user not logged in
@@ -97,6 +97,31 @@ async function createNewGame(conn, req) {
         }
     }
 
+///////////////////////////////////////////////////////////////////////////////
+// Creates a new account from /create-account sent to /create-account-receive
+///////////////////////////////////////////////////////////////////////////////
+
+async function createAccount (conn, req) {
+    // const user = req.body.username;
+    // const pass = req.body.password;
+
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+        req.on('end', resolve);
+    });
+    const params = new URLSearchParams(body);
+    const pass = params.get('password');
+    const result = await createNewAccount(conn, params.get('username'), pass);
+    
+    if (result.success) {
+        return pug.renderFile('./templates/start.pug');
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+    }
+}    
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the page to create a new character/game
@@ -164,7 +189,7 @@ async function generateInsertResponse(conn, req) {
             body += chunk.toString();
         })
 
-        req.on('end', resolve);
+        req.on('end', resolve); 
     });
 
     const params = new URLSearchParams(body);
@@ -193,6 +218,7 @@ module.exports = {
                     generateNewGamePageResponse,
                     generateLoadPageResponse,
                     loadGame,
+                    createAccount,
                     generateInsertResponse,
                     quitGame
                 }

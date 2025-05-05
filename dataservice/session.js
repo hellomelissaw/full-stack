@@ -1,4 +1,9 @@
-const { create_session, findOne, add_pid_to_session } = require("./utilities");
+const {
+    create_session,
+    findOne,
+    add_pid_to_session,
+    create_account
+} = require("./utilities");
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
@@ -31,6 +36,17 @@ async function createSession(conn, sessionID, uid) {
 
 
 }
+
+
+async function createNewAccount (conn, username, password) {
+    try {
+        await conn.query(create_account, [username, password]);
+        return { success: true };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+}
+
 
 async function getSessionUser(conn, sessionID) {
     const session = await findOne(conn, 'session', 'session_id', sessionID);
@@ -81,5 +97,6 @@ module.exports = {
                     deleteSession,
                     getSessionStatus,
                     addPidToSession,
-                    getSessionPid
+                    getSessionPid,
+                    createNewAccount,
                  }

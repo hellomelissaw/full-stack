@@ -22,6 +22,8 @@ const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
+const create_account = 'INSERT INTO user (username, password) values (?, ?)';
+
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 
 const get_user_players = `SELECT 
@@ -64,5 +66,6 @@ module.exports = {
                     create_session,
                     add_pid_to_session,
                     get_user_players,
-                    update_password
+                    update_password,
+                    create_account
                  }
