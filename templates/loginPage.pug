@@ -11,11 +11,11 @@ html(lang="en")
     .sign
       span welcome to the forest
     .login
-    form.login(method="POST", action="/log-in")
-    input(type="text", id="username", placeholder="Username")
-    input(type="password", id="password", placeholder="Password")
-    button(type="submit") Create Account
- h3(style="margin-bottom: 5px;") 
-  | Please log in, or create a new account 
-  a(href='/create-account') here
-
+      form.login(method="POST", action="/log-in")
+        input(type="text", id="username", placeholder="Username")
+        input(type="password", id="password", placeholder="Password")
+        button(type="submit") Create Account
+    h3(style="margin-bottom: 5px;")
+      | Please log in, or create a new account 
+      a(href='/create-account') here
+    ul#gameFiles
