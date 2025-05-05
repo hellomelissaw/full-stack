@@ -102,8 +102,8 @@ async function createNewGame(conn, req) {
 
 async function createAccount (conn, req) {
     const form = new FormData;
-    const user = form.get('username')
-    const pass = form.get('password')
+    const user = form.get('username');
+    const pass = form.get('password');
     const result = await createNewAccount(conn, user, pass);
     
     if (result.success) {
