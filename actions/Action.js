@@ -37,7 +37,7 @@ class FightAction extends Action {
 
             return JSON.stringify({
             stats: `<p>HP: ${totalHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
-            description: `You fought the ${enemy.name}! ${enemy.description}
+            description: `You fought the ${enemy.name}! ${enemy.description || ' '}
                         <br><br>
                         Your current stats are: HP: ${totalHP}, XP: ${totalXP}`
             })
