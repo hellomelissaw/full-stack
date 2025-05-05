@@ -101,13 +101,19 @@ async function createNewGame(conn, req) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function createAccount (conn, req) {
-    const form = new FormData;
-    // const user = form.get('username');
-    // const pass = form.get('password');
-    const user = req.body.username;
-    const pass = req.body.password;
+    // const user = req.body.username;
+    // const pass = req.body.password;
 
-    const result = await createNewAccount(conn, user, pass);
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+        req.on('end', resolve);
+    });
+    const params = new URLSearchParams(body);
+    const pass = params.get('password');
+    const result = await createNewAccount(conn, params.get('username'), pass);
     
     if (result.success) {
         return pug.renderFile('./templates/start.pug');
