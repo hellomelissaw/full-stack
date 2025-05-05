@@ -54,7 +54,7 @@ const update_password = `UPDATE user
                         WHERE uid = ?`;
 
 // TODO optimize for performance if future table becomes larger
-const select_random_enemy = `SELECT * FROM your_table
+const select_random_enemy = `SELECT * FROM enemy
                             ORDER BY RAND()
                             LIMIT 1;
                             `

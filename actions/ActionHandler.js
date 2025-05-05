@@ -38,7 +38,7 @@ async function performAction(conn, actionType) {
     const result = {success: true, player_data: player };  
     if(result.success) {
         const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
-        const output = await action.execute(result.player_data);
+        const output = await action.execute(conn, result.player_data);
         console.log(`return value action.execute: ${output}`)
         return output;
 
