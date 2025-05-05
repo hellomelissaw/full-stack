@@ -23,7 +23,9 @@ class FightAction extends Action {
     }
 
     async execute(conn, player) {
+        console.log(`conn in execute: ${conn}`);
         const enemy = await getRandomEnemy(conn);
+        console.table(enemy);
         const totalXP = enemy.xpReward 
                         + this.xpBaseReward
                         + player.XP;

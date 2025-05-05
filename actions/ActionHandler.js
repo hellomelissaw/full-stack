@@ -14,7 +14,7 @@ const actionStrategies = {
     "2": GatherAction
 };
 
-function performAction(conn, actionType) {
+async function performAction(conn, actionType) {
     console.log(`actionType data type in performAction: ${typeof(actionType)}`)
     console.log("Available keys:", Object.keys(actionStrategies));
     console.log("Does key exist?", "1" in actionStrategies); // should be true
@@ -38,7 +38,9 @@ function performAction(conn, actionType) {
     const result = {success: true, player_data: player };  
     if(result.success) {
         const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
-        return action.execute(result.player_data);
+        const output = await action.execute(result.player_data);
+        console.log(`return value action.execute: ${output}`)
+        return output;
 
     } else {
         throw new Error(result.error);
