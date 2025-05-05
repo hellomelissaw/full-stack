@@ -37,10 +37,16 @@ async function createSession(conn, sessionID, uid) {
 
 }
 
+
 async function createNewAccount (conn, username, password) {
-    const active = await conn.query(create_account, [username, password]);
-    return active.length > 0;
+    try {
+        await conn.query(create_account, [username, password]);
+        return { success: true };
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
 }
+
 
 async function getSessionUser(conn, sessionID) {
     const session = await findOne(conn, 'session', 'session_id', sessionID);
