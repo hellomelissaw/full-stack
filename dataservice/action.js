@@ -3,9 +3,8 @@ const {
 } = require('./utilities')
 
 async function getRandomEnemy(conn) {
-    console.log("I'm in getRandomEnemy");
-    console.log(`conn type in random enemy: ${typeof(conn)}`);
-    return await conn.query(select_random_enemy);
+    const enemy = await conn.query(select_random_enemy);
+    return enemy[0] || null;
 }
 
 module.exports = {

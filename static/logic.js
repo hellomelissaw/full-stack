@@ -70,11 +70,11 @@ function handleAction(act_id) {
         console.log("Response status:", res.status);
         console.log("Response headers:", [...res.headers]);
 
-        const text = await res.text(); // Always try to read raw text first
+        const text = await res.text();
         console.log("Raw response text:", text);
 
         try {
-            const data = JSON.parse(text); // Try parsing manually
+            const data = JSON.parse(text);
             return data;
         } catch (err) {
             console.error("Failed to parse JSON:", err);
@@ -87,7 +87,6 @@ function handleAction(act_id) {
     })
     .catch(err => {
         console.error("Error in handleAction:", err);
-        // Optionally show user-friendly message in UI
         document.getElementById('description-text').innerHTML = "An error occurred.";
     });
 }

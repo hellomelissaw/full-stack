@@ -26,20 +26,25 @@ class FightAction extends Action {
         console.log(`conn in execute: ${conn}`);
         const enemy = await getRandomEnemy(conn);
         console.table(enemy);
-        const totalXP = enemy.xpReward 
-                        + this.xpBaseReward
-                        + player.XP;
-
-        const reductionRate = Math.min(player.experience / XP_CAP, MAX_REDUCTION); // return xp as percentage or 0.5
-        const totalHP = (enemy.xpCost + this.hpBaseCost)
+        if(enemy){
+            const totalXP = enemy.xp_reward 
+            + this.xpBaseReward
+            + player.experience;
+            console.log(`totalXP: ${totalXP}`);
+            const reductionRate = Math.min(player.experience / XP_CAP, MAX_REDUCTION); // return xp as percentage or 0.5
+            const totalHP = (enemy.xp_cost + this.hpBaseCost)
                         * (1 - reductionRate);
 
-        return JSON.stringify({
+            return JSON.stringify({
             stats: `<p>HP: ${totalHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
             description: `You fought the ${enemy.name}! ${enemy.description}
-                          <br><br>
-                          Your current stats are: HP: ${totalHP}, XP: ${totalXP}`
-        })
+                        <br><br>
+                        Your current stats are: HP: ${totalHP}, XP: ${totalXP}`
+            })
+        } else {
+            return "Error fetching enemy.";
+        }
+     
     }
 }
 
