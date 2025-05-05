@@ -12,8 +12,8 @@ html(lang="en")
       span welcome to the forest
     .login
       form.login(method="POST", action="/log-in")
-        input(type="text", id="username", placeholder="Username")
-        input(type="password", id="password", placeholder="Password")
+        input#username(type="text", id="username", placeholder="Username")
+        input#password(type="password", id="password", placeholder="Password")
         button(type="submit") Create Account
     h3(style="margin-bottom: 5px;")
       | Please log in, or create a new account 
