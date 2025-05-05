@@ -88,6 +88,12 @@ button:hover {
     text-align: center;
 }
 
+.form.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 
 .login {
     margin-bottom: 20px;
