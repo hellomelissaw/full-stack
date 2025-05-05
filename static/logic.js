@@ -66,9 +66,28 @@ document.getElementById("exit-button")?.addEventListener("click", function () {
 
 function handleAction(act_id) {
     fetch(`/update_game_page_data?act_id=${act_id}`)
-    .then(res => res.json())
+    .then(async res => {
+        console.log("Response status:", res.status);
+        console.log("Response headers:", [...res.headers]);
+
+        const text = await res.text(); // Always try to read raw text first
+        console.log("Raw response text:", text);
+
+        try {
+            const data = JSON.parse(text); // Try parsing manually
+            return data;
+        } catch (err) {
+            console.error("Failed to parse JSON:", err);
+            throw new Error("Invalid JSON response from server");
+        }
+    })
     .then(data => {
         document.getElementById('description-text').innerHTML = data.description;
         document.getElementById('stats').innerHTML = data.stats;
     })
+    .catch(err => {
+        console.error("Error in handleAction:", err);
+        // Optionally show user-friendly message in UI
+        document.getElementById('description-text').innerHTML = "An error occurred.";
+    });
 }
