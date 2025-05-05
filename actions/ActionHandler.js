@@ -37,7 +37,7 @@ function performAction(conn, actionType) {
       };
       
     if(result.success) {
-        const action = ActionClass(5, 2); // HARD-CODED FOR TESTING
+        const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
         return action.excecute(player);
     } else {
         throw new Error(result.error);
