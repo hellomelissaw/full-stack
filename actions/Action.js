@@ -3,7 +3,6 @@ const MAX_REDUCTION = 0.5;
 const {
     getRandomEnemy,
     updateStats,
-    updateStats
 } = require('../dataservice/action');
 
 class Action {
@@ -38,9 +37,9 @@ class FightAction extends Action {
                         * (1 - reductionRate));
             const updatedHP = player.health - totalCostHP;
 
-            const updateStats = updateStats(conn, totalXP, updatedHP, 1, player.pid);
+            const update = updateStats(conn, totalXP, updatedHP, 1, player.pid);
 
-            if(updateStats) {
+            if(update) {
                 return JSON.stringify({
                 stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
                 description: `You fought the ${enemy.name}! ${enemy.description || ' '}
