@@ -1,7 +1,9 @@
 const XP_CAP = 100;
 const MAX_REDUCTION = 0.5;
 const {
-    getRandomEnemy
+    getRandomEnemy,
+    updateStats,
+    updateStats
 } = require('../dataservice/action');
 
 class Action {
@@ -35,13 +37,19 @@ class FightAction extends Action {
             const totalCostHP = Math.round((enemy.hp_cost + this.hpBaseCost)
                         * (1 - reductionRate));
             const updatedHP = player.health - totalCostHP;
-            
-            return JSON.stringify({
-            stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
-            description: `You fought the ${enemy.name}! ${enemy.description || ' '}
-                        <br><br>
-                        Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
-            })
+
+            const updateStats = updateStats(conn, totalXP, updatedHP, 1, player.pid);
+
+            if(updateStats) {
+                return JSON.stringify({
+                stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
+                description: `You fought the ${enemy.name}! ${enemy.description || ' '}
+                            <br><br>
+                            Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
+                })
+            } else {
+                return "Error updating player stats.";
+            }
         } else {
             return "Error fetching enemy.";
         }

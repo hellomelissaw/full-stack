@@ -1,5 +1,6 @@
 const {
-    select_random_enemy
+    select_random_enemy,
+    update_stats
 } = require('./utilities')
 
 async function getRandomEnemy(conn) {
@@ -7,6 +8,14 @@ async function getRandomEnemy(conn) {
     return enemy[0] || null;
 }
 
-module.exports = {
-    getRandomEnemy
+async function updateStats(conn, xp, hp, level, pid) {
+    const stats = [xp, hp, level, pid];
+    const result = await conn.query(updateStats, stats);
+    return result;
 }
+
+module.exports = {
+    getRandomEnemy,
+    updateStats
+}
+

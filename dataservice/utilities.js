@@ -58,6 +58,10 @@ const select_random_enemy = `SELECT * FROM enemy
                             ORDER BY RAND()
                             LIMIT 1;
                             `
+
+const update_stats = `UPDATE player
+                      SET health = ?, experience = ?, level = ?
+                      WHERE pid = ?`;
 ////////////////////////////////////////////////////////////
 // GENERAL QUERYING
 ////////////////////////////////////////////////////////////
@@ -82,5 +86,6 @@ module.exports = {
                     add_pid_to_session,
                     get_user_players,
                     update_password,
-                    select_random_enemy
+                    select_random_enemy,
+                    update_stats
                  }
