@@ -85,7 +85,10 @@ function handleAction(act_id) {
         const button = document.getElementById(`action-${act_id}`);
         button.disabled = true;
         button.onclick = null;
-        
+        button.style.opacity = "0.5";
+        button.style.cursor = "not-allowed";
+        button.style.pointerEvents = "none";
+         
         document.getElementById('description-text').innerHTML = data.description;
         document.getElementById('stats').innerHTML = data.stats;
     })
