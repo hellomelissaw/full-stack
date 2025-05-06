@@ -36,6 +36,7 @@ async function performAction(conn, actionType) {
     const stats = await getActionStats(conn, actionType);
     const pid = await getSessionPid(conn, temp_token);
     console.log(`xp_base_reward: ${stats.xp_base_reward}, type: ${typeof(stats.xp_base_reward)}`);
+    console.log(`hp_base_cost: ${stats.hp_base_cost}, type: ${typeof(stats.hp_base_cost)}`);
     console.log(`pid: ${pid}`);
     if (stats && pid) {
         const result = await getPlayerData(conn, pid);  
