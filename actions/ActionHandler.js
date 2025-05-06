@@ -25,7 +25,7 @@ async function performAction(conn, actionType) {
     }
     // TODO get action stats from DB
     // TODO get pid from DB
-    const result = getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
+    const result = await getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
     // const player = {
     //     pid: 22,
     //     uid: 1,
