@@ -48,9 +48,13 @@ async function logAction(conn, pid, locID, actID) {
         return { success: true, error: null }
     
     } catch (err) {
-        return { success: false, error: err.message }
-    }
-    
+        if (err.no === 1062) {
+            console.log("Action already in DB. Skipping insert.");
+            return { success: true, error: null } 
+        } else {
+            return { success: false, error: err.message }
+        }  
+    }   
 }
 module.exports = {
     getRandomEnemy,
