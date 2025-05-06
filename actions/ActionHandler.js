@@ -25,9 +25,6 @@ const actionStrategies = {
 };
 
 async function performAction(conn, actionType) {
-    console.log(`actionType data type in performAction: ${typeof(actionType)}`)
-    console.log("Available keys:", Object.keys(actionStrategies));
-    console.log("Does key exist?", "1" in actionStrategies); // should be true
     const ActionClass = actionStrategies[actionType.trim()];
     if(!ActionClass) {
         // maybe return an error message to display in message.pug??
@@ -35,16 +32,13 @@ async function performAction(conn, actionType) {
     }
     const stats = await getActionStats(conn, actionType);
     const pid = await getSessionPid(conn, temp_token);
-    console.log(`xp_base_reward: ${stats.xp_base_reward}, type: ${typeof(stats.xp_base_reward)}`);
-    console.log(`hp_base_cost: ${stats.hp_base_cost}, type: ${typeof(stats.hp_base_cost)}`);
-    console.log(`pid: ${pid}`);
+
     if (stats && pid) {
         const result = await getPlayerData(conn, pid);  
 
         if(result.success) {
             const action = new ActionClass(stats.xp_base_reward, stats.hp_base_cost); 
             const output = await action.execute(conn, result.player_data);
-            console.log(`return value action.execute: ${output}`)
             return output;
     
         } else {
@@ -53,9 +47,6 @@ async function performAction(conn, actionType) {
     } else {
         throw new Error("Missing stats or pid");
     }
- 
-  
-
 }
 
 module.exports = { performAction }

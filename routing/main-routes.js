@@ -57,7 +57,6 @@ async function generateLandingPage(conn, req) {
         return pug.renderFile('./templates/temp_login.pug', { showError: false });
     
     } else {
-        console.log("session active");
         return generateStartResponse(conn, req);
     }
 }

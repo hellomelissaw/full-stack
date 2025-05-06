@@ -24,11 +24,9 @@ class FightAction extends Action {
     }
 
     async execute(conn, player) {
-        console.log(`action stats:  ${this.xpBaseReward}, ${this.hpBaseCost}`);
         const enemy = await getRandomEnemy(conn);
 
         if(enemy){
-            console.log(`${enemy.xp_reward},  ${this.xpBaseReward}, ${player.experience}`);
             const totalXP = enemy.xp_reward 
             + this.xpBaseReward
             + player.experience;
@@ -37,8 +35,6 @@ class FightAction extends Action {
 
             const totalCostHP = Math.round((enemy.hp_cost + this.hpBaseCost)
                         * (1 - reductionRate));
-
-            console.log(`totalCostHP: ${totalCostHP}`);
 
             const updatedHP = player.health - totalCostHP;
 

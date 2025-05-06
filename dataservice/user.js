@@ -66,7 +66,6 @@ async function loadGames(conn, uid) {
 ////////////////////////////////////////////////////////////
 
 async function getPlayerData(conn, pid) {
-console.log(`in getPlayerData ${pid}`);
     try {
         const pd = await findOne(conn, 'player', 'pid', pid);
 
