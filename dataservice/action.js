@@ -33,7 +33,7 @@ async function getActionStats(conn, actionType) {
         //     xp_base_reward: parseInt(stats.xp_base_reward),
         //     hp_base_cost: parseInt(stats.hp_base_cost)
         // }
-        return stats;
+        return stats[0];
     
     } catch (err) {
         throw new Error (err);
