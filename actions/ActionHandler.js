@@ -1,3 +1,5 @@
+const temp_token = "temp-sesh-12345"; 
+
 const {
     FightAction,
     GatherAction
@@ -6,6 +8,10 @@ const {
 const {
     getPlayerData
 } = require('../dataservice/user')
+
+const {
+    getSessionPid
+} = require('../dataservice/session')
 
 
 // Map action types to the right class extension
@@ -23,28 +29,23 @@ async function performAction(conn, actionType) {
         // maybe return an error message to display in message.pug??
         throw new Error(`Action type "${actionType}" not found.`); 
     }
-    // TODO get action stats from DB
-    // TODO get pid from DB
-    const result = await getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
-    // const player = {
-    //     pid: 22,
-    //     uid: 1,
-    //     name: 'Aragorn',
-    //     loc_id: 3,
-    //     health: 85,
-    //     experience: 10,
-    //     level: 1
-    //   };
-    // const result = {success: true, player_data: player };  
-    if(result.success) {
-        const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
-        const output = await action.execute(conn, result.player_data);
-        console.log(`return value action.execute: ${output}`)
-        return output;
+    const stats = await getActionStats(conn, actionType);
+    const pid = await getSessionPid(conn, temp_token);
 
-    } else {
-        throw new Error(result.error);
+    if (stats && pid) {
+        const result = await getPlayerData(conn, pid);  // HARD-CODED FOR TESTING
+
+        if(result.success) {
+            const action = new ActionClass(stats.base_xp_reward, stats.base_hp_cost); // HARD-CODED FOR TESTING
+            const output = await action.execute(conn, result.player_data);
+            console.log(`return value action.execute: ${output}`)
+            return output;
+    
+        } else {
+            throw new Error(result.error);
+        }
     }
+ 
   
 
 }
