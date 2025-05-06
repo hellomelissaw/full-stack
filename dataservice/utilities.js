@@ -15,18 +15,18 @@ const sql_conn = `SELECT
             WHERE
                 location_connection.loc_id = ?`;
 
-const sql_actions = `SELECT
-                    location_action.loc_id,
-                    location_action.act_id,
-                    action.name AS act_name
-                FROM
-                    location_action
-                JOIN
-                    action
-                ON
-                    location_action.act_id = action.act_id
-                WHERE 
-                    location_action.loc_id = ?`;
+// const sql_actions = `SELECT
+//                     location_action.loc_id,
+//                     location_action.act_id,
+//                     action.name AS act_name
+//                 FROM
+//                     location_action
+//                 JOIN
+//                     action
+//                 ON
+//                     location_action.act_id = action.act_id
+//                 WHERE 
+//                     location_action.loc_id = ?`;
 
 const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
