@@ -48,7 +48,7 @@ async function generateLocationResponse(conn, locID) {
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
-
+    
     const data = await getLocationPageData(conn, locID, pid);
 
     if (data.loc && data.player) {
