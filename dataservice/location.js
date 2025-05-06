@@ -1,4 +1,25 @@
-const { findOne, sql_conn, sql_actions, update_player_loc_id } = require("./utilities");
+const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
+
+const sql_actions = `
+SELECT
+    location_action.loc_id,
+    location_action.act_id,
+    action.name AS act_name
+FROM
+    location_action
+JOIN
+    action ON location_action.act_id = action.act_id
+WHERE
+    location_action.loc_id = ?
+    AND NOT EXISTS (
+        SELECT 1
+        FROM player_action
+        WHERE
+            player_action.loc_id = location_action.loc_id
+            AND player_action.act_id = location_action.act_id
+            AND player_action.player_id = ?
+    )
+`;
 
 
 ////////////////////////////////////////////////////////////
