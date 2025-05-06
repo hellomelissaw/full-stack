@@ -29,7 +29,7 @@ WHERE
 async function getLocationPageData(conn, id, pid) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
-    const actions = await conn.query(sql_actions, [id]);
+    const actions = await conn.query(sql_actions, [id, pid]);
 
     const locationData = {
         loc_id: loc.loc_id,
