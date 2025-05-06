@@ -32,16 +32,15 @@ class FightAction extends Action {
             + player.experience;
      
             const reductionRate = Math.min(player.experience / XP_CAP, MAX_REDUCTION); // return xp as percentage or 0.5
-            console.log(`reductionRate: ${reductionRate}`);
-            console.log(`this.hpBaseCost: ${this.hpBaseCost}`);
-            const totalHP = (enemy.xp_cost + this.hpBaseCost)
-                        * (1 - reductionRate);
-            console.log(`totalHP: ${totalHP}`);
+            const totalCostHP = Math.round((enemy.hp_cost + this.hpBaseCost)
+                        * (1 - reductionRate));
+            const updatedHP = player.health - totalCostHP;
+            
             return JSON.stringify({
-            stats: `<p>HP: ${totalHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
+            stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
             description: `You fought the ${enemy.name}! ${enemy.description || ' '}
                         <br><br>
-                        Your current stats are: HP: ${totalHP}, XP: ${totalXP}`
+                        Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
             })
         } else {
             return "Error fetching enemy.";
