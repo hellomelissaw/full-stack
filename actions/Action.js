@@ -32,7 +32,6 @@ class FightAction extends Action {
             + this.xpBaseReward
             + player.experience;
             
-            console.log(`reductionRate: ${reductionRate}`);
             const reductionRate = Math.min(player.experience / XP_CAP, MAX_REDUCTION); // return xp as percentage or 0.5
 
             console.log(`totalCostHP: ${totalCostHP}`);

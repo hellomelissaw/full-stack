@@ -29,11 +29,11 @@ async function getActionStats(conn, actionType) {
         console.log(`actionType: ${actionType}, type: ${typeof(actionType)}`);
         const stats = await conn.query(action_stats, [actionType]);
         console.table(stats);
-        // const int_stats = {
-        //     xp_base_reward: parseInt(stats.xp_base_reward),
-        //     hp_base_cost: parseInt(stats.hp_base_cost)
-        // }
-        return stats[0];
+        const int_stats = {
+            xp_base_reward: parseInt(stats[0].xp_base_reward),
+            hp_base_cost: parseInt(stats[0].hp_base_cost)
+        }
+        return int_stats;
     
     } catch (err) {
         throw new Error (err);
