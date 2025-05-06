@@ -8,6 +8,10 @@ const action_stats = `SELECT xp_base_reward, hp_base_cost
                       WHERE act_id = ?
                       `;
 
+const log_action = `INSERT INTO player_action
+                    (pid, loc_id, act_id) values
+                    (?, ?, ?)`;
+
 async function getRandomEnemy(conn) {
     const enemy = await conn.query(select_random_enemy);
     return enemy[0] || null;
@@ -38,9 +42,20 @@ async function getActionStats(conn, actionType) {
     }
 }
 
+async function logAction(conn, pid, locID, actID) {
+    try {
+        const result = await conn.query(log_action, [pid, locID, actID]);
+        return { success: true, error: null }
+    
+    } catch (err) {
+        return { success: false, error: err.message }
+    }
+    
+}
 module.exports = {
     getRandomEnemy,
     updateStats,
-    getActionStats
+    getActionStats,
+    logAction
 }
 
