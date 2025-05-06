@@ -17,7 +17,7 @@ WHERE
         WHERE
             player_action.loc_id = location_action.loc_id
             AND player_action.act_id = location_action.act_id
-            AND player_action.player_id = ?
+            AND player_action.pid = ?
     )
 `;
 
