@@ -35,9 +35,10 @@ async function performAction(conn, actionType) {
     }
     const stats = await getActionStats(conn, actionType);
     const pid = await getSessionPid(conn, temp_token);
-
+    console.table(stats);
+    console.log(`pid: ${pid}`);
     if (stats && pid) {
-        const result = await getPlayerData(conn, pid);  // HARD-CODED FOR TESTING
+        const result = await getPlayerData(conn, pid);  
 
         if(result.success) {
             const action = new ActionClass(stats.base_xp_reward, stats.base_hp_cost); // HARD-CODED FOR TESTING
@@ -48,6 +49,8 @@ async function performAction(conn, actionType) {
         } else {
             throw new Error(result.error);
         }
+    } else {
+        throw new Error("Missing stats or pid");
     }
  
   
