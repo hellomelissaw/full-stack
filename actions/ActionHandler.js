@@ -41,7 +41,7 @@ async function performAction(conn, actionType) {
         const result = await getPlayerData(conn, pid);  
 
         if(result.success) {
-            const action = new ActionClass(stats.base_xp_reward, stats.base_hp_cost); // HARD-CODED FOR TESTING
+            const action = new ActionClass(stats.base_xp_reward, stats.base_hp_cost); 
             const output = await action.execute(conn, result.player_data);
             console.log(`return value action.execute: ${output}`)
             return output;
