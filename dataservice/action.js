@@ -29,6 +29,7 @@ async function getActionStats(conn, actionType) {
 
 module.exports = {
     getRandomEnemy,
-    updateStats
+    updateStats,
+    getActionStats
 }
 
