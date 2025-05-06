@@ -27,7 +27,7 @@ async function getActionStats(conn, actionType) {
     // return null;
     try {
         console.log(`actionType: ${actionType}, type: ${typeof(actionType)}`);
-        const stats = conn.query(action_stats, [actionType]);
+        const stats = await conn.query(action_stats, [actionType]);
         console.table(stats);
         const int_stats = {
             xp_base_reward: parseInt(stats.xp_base_reward),
