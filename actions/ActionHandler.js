@@ -25,17 +25,17 @@ async function performAction(conn, actionType) {
     }
     // TODO get action stats from DB
     // TODO get pid from DB
-    // const result = getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
-    const player = {
-        pid: 22,
-        uid: 1,
-        name: 'Aragorn',
-        loc_id: 3,
-        health: 85,
-        experience: 10,
-        level: 1
-      };
-    const result = {success: true, player_data: player };  
+    const result = getPlayerData(conn, "22");  // HARD-CODED FOR TESTING
+    // const player = {
+    //     pid: 22,
+    //     uid: 1,
+    //     name: 'Aragorn',
+    //     loc_id: 3,
+    //     health: 85,
+    //     experience: 10,
+    //     level: 1
+    //   };
+    // const result = {success: true, player_data: player };  
     if(result.success) {
         const action = new ActionClass(5, 2); // HARD-CODED FOR TESTING
         const output = await action.execute(conn, result.player_data);
