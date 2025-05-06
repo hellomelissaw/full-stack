@@ -82,6 +82,10 @@ function handleAction(act_id) {
         }
     })
     .then(data => {
+        const button = document.getElementById(`action-${act_id}`);
+        button.disabled = true;
+        button.onclick = null;
+        
         document.getElementById('description-text').innerHTML = data.description;
         document.getElementById('stats').innerHTML = data.stats;
     })

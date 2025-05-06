@@ -16,7 +16,7 @@ html
           each conn in location.connections
             button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
           each action in location.actions 
-            button.btn(onclick=`handleAction(${action.act_id})`) #{action.act_name}
+            button.btn(id=`action-${action.act_id}`, onclick=`handleAction(${action.act_id})`) #{action.act_name}
       .inventory
         button#inventory-button.btn Inventory
         #inventory-container.inventory-container
