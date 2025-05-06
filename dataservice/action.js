@@ -20,11 +20,18 @@ async function updateStats(conn, hp, xp, level, pid) {
 }
 
 async function getActionStats(conn, actionType) {
-    const stats = conn.query(action_stats, actionType);
-    if (stats) {
-        return stats[0];
+    // const stats = conn.query(action_stats, actionType);
+    // if (stats) {
+    //     return stats[0];
+    // }
+    // return null;
+    try {
+        const stats = conn.query(action_stats, actionType);
+        return stats;
+    
+    } catch (err) {
+        throw new Error (err);
     }
-    return null;
 }
 
 module.exports = {
