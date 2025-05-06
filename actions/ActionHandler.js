@@ -6,7 +6,8 @@ const {
 } = require('./Action')
 
 const { 
-    getActionStats
+    getActionStats,
+    logAction
 } = require('../dataservice/action')
 
 const {
@@ -39,8 +40,14 @@ async function performAction(conn, actionType) {
         if(result.success) {
             const action = new ActionClass(stats.xp_base_reward, stats.hp_base_cost); 
             const output = await action.execute(conn, result.player_data);
-            return output;
-    
+            const log = await logAction(conn, result.player_data.pid, result.player_data.loc_id, actionType);
+            if (log.success) {
+                return output;
+            
+            } else {
+                throw new Error(log.error);
+            }
+            
         } else {
             throw new Error(result.error);
         }
