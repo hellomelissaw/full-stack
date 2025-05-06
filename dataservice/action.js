@@ -8,9 +8,9 @@ async function getRandomEnemy(conn) {
     return enemy[0] || null;
 }
 
-async function updateStats(conn, xp, hp, level, pid) {
-    const stats = [xp, hp, level, pid];
-    const result = await conn.query(updateStats, stats);
+async function updateStats(conn, hp, xp, level, pid) {
+    const stats = [hp, xp, level, pid];
+    const result = await conn.query(update_stats, stats);
     return result;
 }
 
