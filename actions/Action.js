@@ -37,7 +37,7 @@ class FightAction extends Action {
                         * (1 - reductionRate));
             const updatedHP = player.health - totalCostHP;
 
-            const update = updateStats(conn, totalXP, updatedHP, 1, player.pid);
+            const update = updateStats(conn, updatedHP, totalXP, 1, player.pid);
 
             if(update) {
                 return JSON.stringify({
