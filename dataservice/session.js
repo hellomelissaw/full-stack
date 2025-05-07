@@ -1,9 +1,13 @@
-const {
-    create_session,
-    findOne,
-    add_pid_to_session,
-    create_account
-} = require("./utilities");
+const { findOne } = require("./utilities");
+
+////////////////////////////////////////////////////////////
+// QUERIES
+////////////////////////////////////////////////////////////
+
+const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
+
+const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
+
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO

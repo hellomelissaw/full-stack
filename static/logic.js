@@ -63,3 +63,37 @@ document.getElementById("inventory-button")?.addEventListener("click", function 
 document.getElementById("exit-button")?.addEventListener("click", function () {
     window.location.href = "/"; 
 });
+
+function handleAction(act_id) {
+    fetch(`/update_game_page_data?act_id=${act_id}`)
+    .then(async res => {
+        console.log("Response status:", res.status);
+        console.log("Response headers:", [...res.headers]);
+
+        const text = await res.text();
+        console.log("Raw response text:", text);
+
+        try {
+            const data = JSON.parse(text);
+            return data;
+        } catch (err) {
+            console.error("Failed to parse JSON:", err);
+            throw new Error("Invalid JSON response from server");
+        }
+    })
+    .then(data => {
+        const button = document.getElementById(`action-${act_id}`);
+        button.disabled = true;
+        button.onclick = null;
+        button.style.opacity = "0.5";
+        button.style.cursor = "not-allowed";
+        button.style.pointerEvents = "none";
+         
+        document.getElementById('description-text').innerHTML = data.description;
+        document.getElementById('stats').innerHTML = data.stats;
+    })
+    .catch(err => {
+        console.error("Error in handleAction:", err);
+        document.getElementById('description-text').innerHTML = "An error occurred.";
+    });
+}

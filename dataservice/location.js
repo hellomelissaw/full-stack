@@ -1,4 +1,46 @@
-const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
+const { findOne } = require("./utilities");
+
+////////////////////////////////////////////////////////////
+// QUERIES
+////////////////////////////////////////////////////////////
+
+const sql_conn = `SELECT
+                location_connection.loc_id,
+                location_connection.conn_id,
+                location.name AS conn_name
+            FROM
+                location_connection
+            JOIN 
+                location
+            ON 
+                location_connection.conn_id = location.loc_id
+            WHERE
+                location_connection.loc_id = ?`;
+
+const update_player_loc_id = `UPDATE player 
+                              SET loc_id = ? 
+                              WHERE pid = ?`;
+
+const sql_actions = `
+                    SELECT
+                        location_action.loc_id,
+                        location_action.act_id,
+                        action.name AS act_name
+                    FROM
+                        location_action
+                    JOIN
+                        action ON location_action.act_id = action.act_id
+                    WHERE
+                        location_action.loc_id = ?
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM player_action
+                            WHERE
+                                player_action.loc_id = location_action.loc_id
+                                AND player_action.act_id = location_action.act_id
+                                AND player_action.pid = ?
+                        )
+                    `;
 
 
 ////////////////////////////////////////////////////////////
@@ -8,7 +50,8 @@ const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
 async function getLocationPageData(conn, id, pid) {
     const loc = await findOne(conn, 'location', 'loc_id', id); // TODO Handle if null
     const connections = await conn.query(sql_conn, [id]);
-    
+    const actions = await conn.query(sql_actions, [id, pid]);
+
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
@@ -16,6 +59,10 @@ async function getLocationPageData(conn, id, pid) {
         connections: Object.keys(connections).map(key => ({
             conn_id: connections[key].conn_id,
             conn_name: connections[key].conn_name
+        })),
+        actions: Object.keys(actions).map(key => ({
+            act_id: actions[key].act_id,
+            act_name: actions[key].act_name
         }))
     };
 

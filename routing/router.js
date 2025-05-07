@@ -20,12 +20,17 @@ const {
 } = require('./login-routes');
 
 const {
-    generateLocationResponse
+    generateLocationResponse,
+    updateAfterAction
 } = require('./location-routes');
 
 const {
     updatePassword
 } = require('../dataservice/user');
+
+const {
+    performAction
+} = require('../actions/ActionHandler');
 
 
 ////////////////////////////////////////////////////////////
@@ -82,6 +87,12 @@ async function requestRoute(conn, req) {
         case '/location':
             return generateLocationResponse(conn, parsedURL.query.locID);
 
+        case '/update_game_page_data':
+            return { 
+                content: await performAction(conn, parsedURL.query.act_id), 
+                contentType: 'application/json'
+            };
+
         case '/insert-location-form':
             return pug.renderFile('./templates/insert_form.pug');
         
@@ -92,7 +103,6 @@ async function requestRoute(conn, req) {
             return generateLoadPageResponse(conn, req);
 
         case '/load-game':
-            console.log(parsedURL.query.pid);
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':
