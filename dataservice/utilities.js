@@ -17,24 +17,24 @@
 
 // const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
-const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
+// const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
 const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 
-const get_user_players = `SELECT 
-                            player.pid, 
-                            player.name, 
-                            location.name AS loc_name 
-                        FROM 
-                            location JOIN player
-                        ON 
-                            location.loc_id = player.loc_id
-                        WHERE 
-                            player.uid = ?
-                        ORDER BY 
-                            player.pid`;
+// const get_user_players = `SELECT 
+//                             player.pid, 
+//                             player.name, 
+//                             location.name AS loc_name 
+//                         FROM 
+//                             location JOIN player
+//                         ON 
+//                             location.loc_id = player.loc_id
+//                         WHERE 
+//                             player.uid = ?
+//                         ORDER BY 
+//                             player.pid`;
 
 const update_password = `UPDATE user
                         SET password = ?

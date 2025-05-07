@@ -1,10 +1,28 @@
 
 const { findOne, 
-        create_player, 
-        get_user_players,
-        update_password, 
-        create_account
+        create_account // missing??
       } = require("./utilities");
+
+////////////////////////////////////////////////////////////
+// QUERIES
+////////////////////////////////////////////////////////////
+
+const create_player = `INSERT INTO player (uid, name, loc_id) 
+                       VALUES (?, ?, ?)`;
+
+const get_user_players = `SELECT 
+                            player.pid, 
+                            player.name, 
+                            location.name AS loc_name 
+                        FROM 
+                            location JOIN player
+                        ON 
+                            location.loc_id = player.loc_id
+                        WHERE 
+                            player.uid = ?
+                        ORDER BY 
+                            player.pid`;
+
 
 ////////////////////////////////////////////////////////////
 // USER DATA QUERIES
