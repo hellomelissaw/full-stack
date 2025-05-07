@@ -51,6 +51,10 @@ async function generateLocationResponse(conn, locID) {
     }
 
     const apply = await applyLocationEffect(conn, locID, pid);
+
+    if (!apply.success) {
+        return pug.renderFile('./templates/message.pug', { message: "Well, you should have perished, but something went wrong.. Good for you!"});
+    }
     
     const data = await getLocationPageData(conn, locID, pid);
 
