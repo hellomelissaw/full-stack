@@ -99,7 +99,7 @@ async function insertLocation(conn, name, emojis, connections) {
 
 }
 
-async function applyLocationEffet(conn, locID, pid) {
+async function applyLocationEffect(conn, locID, pid) {
     const effect = await conn.query(location_effect, [locID]);
     if (effect) {
         switch(effect[0]) {
@@ -118,5 +118,5 @@ module.exports = {
                     getLocationPageData,
                     updatePlayerLocation,
                     insertLocation,
-                    applyLocationEffet
+                    applyLocationEffect
                  }
