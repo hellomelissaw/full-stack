@@ -12,6 +12,15 @@ const update_stats = `UPDATE player
                       SET health = ?, experience = ?, level = ?
                       WHERE pid = ?`;
 
+const update_hp = `UPDATE player
+                    SET health = ?
+                    WHERE pid = ?`;
+
+
+const update_Xp = `UPDATE player
+SET experience = ?
+WHERE pid = ?`;
+
 const action_stats = `SELECT xp_base_reward, hp_base_cost
                       FROM action
                       WHERE act_id = ?
@@ -35,6 +44,26 @@ async function updateStats(conn, hp, xp, level, pid) {
     const stats = [hp, xp, level, pid];
     const result = await conn.query(update_stats, stats);
     return result;
+}
+
+async function updateHP(conn, hp, pid) {
+    try {
+        await conn.query(update_hp, [hp, pid]);
+        return { success: true, error: null};
+    
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+}
+
+async function updateXP(conn, xp, pid) {
+    try {
+        await conn.query(update_xp, [xp, pid]);
+        return { success: true, error: null};
+    
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
 }
 
 async function getActionStats(conn, actionType) {
@@ -74,6 +103,8 @@ module.exports = {
     getRandomEnemy,
     updateStats,
     getActionStats,
-    logAction
+    logAction,
+    updateHP,
+    updateXP
 }
 

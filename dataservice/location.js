@@ -1,4 +1,7 @@
+const { updateStats } = require("./action");
 const { findOne } = require("./utilities");
+
+const { updatePlayerLocation } = requestAnimationFrame("../dataservice/action");
 
 ////////////////////////////////////////////////////////////
 // QUERIES
@@ -42,6 +45,8 @@ const sql_actions = `
                         )
                     `;
 
+
+const location_effect = `SELECT * FROM location_effect where loc_id = ?`
 
 ////////////////////////////////////////////////////////////
 // LOCATION DATA QUERIES
@@ -94,9 +99,24 @@ async function insertLocation(conn, name, emojis, connections) {
 
 }
 
+async function applyLocationEffet(conn, locID, pid) {
+    const effect = await conn.query(location_effect, [locID]);
+    if (effect) {
+        switch(effect[0]) {
+            case 'game-over':
+                return await updateXP(conn, 0, pid);     
+            case 'heal':
+                // healing effect
+            default: return null;
+        }
+    }
+    return null;
+}
+
 
 module.exports = { 
                     getLocationPageData,
                     updatePlayerLocation,
-                    insertLocation
+                    insertLocation,
+                    applyLocationEffet
                  }

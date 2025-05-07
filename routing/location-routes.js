@@ -12,6 +12,7 @@ const {
 const {
     getLocationPageData,
     updatePlayerLocation,
+    applyLocationEffet
 } = require('../dataservice/location');
 
 const {
@@ -48,6 +49,8 @@ async function generateLocationResponse(conn, locID) {
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
+
+    const apply = await applyLocationEffet(conn, locID, pid);
     
     const data = await getLocationPageData(conn, locID, pid);
 
