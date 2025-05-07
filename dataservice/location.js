@@ -101,6 +101,7 @@ async function insertLocation(conn, name, emojis, connections) {
 async function applyLocationEffect(conn, locID, pid) {
     const effect = await conn.query(location_effect, [locID]);
     if (effect) {
+        console.log(`Effect: ${effect[0]}`);
         switch(effect[0]) {
             case 'game-over':
                 return await updateXP(conn, 0, pid);     
@@ -109,6 +110,7 @@ async function applyLocationEffect(conn, locID, pid) {
             default: return null;
         }
     }
+    console.log("Effect not found.");
     return null;
 }
 
