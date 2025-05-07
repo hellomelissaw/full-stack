@@ -2,33 +2,20 @@
 // PREPARED QUERIES
 ////////////////////////////////////////////////////////////
 
-const sql_conn = `SELECT
-                location_connection.loc_id,
-                location_connection.conn_id,
-                location.name AS conn_name
-            FROM
-                location_connection
-            JOIN 
-                location
-            ON 
-                location_connection.conn_id = location.loc_id
-            WHERE
-                location_connection.loc_id = ?`;
+// const sql_conn = `SELECT
+//                 location_connection.loc_id,
+//                 location_connection.conn_id,
+//                 location.name AS conn_name
+//             FROM
+//                 location_connection
+//             JOIN 
+//                 location
+//             ON 
+//                 location_connection.conn_id = location.loc_id
+//             WHERE
+//                 location_connection.loc_id = ?`;
 
-// const sql_actions = `SELECT
-//                     location_action.loc_id,
-//                     location_action.act_id,
-//                     action.name AS act_name
-//                 FROM
-//                     location_action
-//                 JOIN
-//                     action
-//                 ON
-//                     location_action.act_id = action.act_id
-//                 WHERE 
-//                     location_action.loc_id = ?`;
-
-const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
+// const update_player_loc_id = 'UPDATE player SET loc_id = ? WHERE pid = ?';
 
 const create_player = 'INSERT INTO player (uid, name, loc_id) values (?, ?, ?)';
 
