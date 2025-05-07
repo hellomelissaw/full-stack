@@ -1,5 +1,6 @@
-const { updateStats } = require("./action");
 const { findOne } = require("./utilities");
+
+const { updateXP } = require("./action");
 
 ////////////////////////////////////////////////////////////
 // QUERIES

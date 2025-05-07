@@ -17,9 +17,9 @@ const update_hp = `UPDATE player
                     WHERE pid = ?`;
 
 
-const update_Xp = `UPDATE player
-SET experience = ?
-WHERE pid = ?`;
+const update_xp = `UPDATE player
+                    SET experience = ?
+                    WHERE pid = ?`;
 
 const action_stats = `SELECT xp_base_reward, hp_base_cost
                       FROM action
