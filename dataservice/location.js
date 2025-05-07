@@ -101,17 +101,15 @@ async function insertLocation(conn, name, emojis, connections) {
 async function applyLocationEffect(conn, locID, pid) {
     const effect = await conn.query(location_effect, [locID]);
     if (effect) {
-        console.log(`Effect: ${effect[0].effect_type}`);
         switch(effect[0].effect_type) {
-            case 'game-over':
+            case 'game_over':
                 return await updateXP(conn, 0, pid);     
             case 'heal':
                 // healing effect
-            default: return null;
+            default: return { success: false, error: "Effect not valid." };
         }
     }
-    console.log("Effect not found.");
-    return null;
+    return { success: false, error: "Effect not found" };
 }
 
 
