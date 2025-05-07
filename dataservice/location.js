@@ -1,25 +1,46 @@
-const { findOne, sql_conn, update_player_loc_id } = require("./utilities");
+const { findOne } = require("./utilities");
+
+////////////////////////////////////////////////////////////
+// QUERIES
+////////////////////////////////////////////////////////////
+
+const sql_conn = `SELECT
+                location_connection.loc_id,
+                location_connection.conn_id,
+                location.name AS conn_name
+            FROM
+                location_connection
+            JOIN 
+                location
+            ON 
+                location_connection.conn_id = location.loc_id
+            WHERE
+                location_connection.loc_id = ?`;
+
+const update_player_loc_id = `UPDATE player 
+                              SET loc_id = ? 
+                              WHERE pid = ?`;
 
 const sql_actions = `
-SELECT
-    location_action.loc_id,
-    location_action.act_id,
-    action.name AS act_name
-FROM
-    location_action
-JOIN
-    action ON location_action.act_id = action.act_id
-WHERE
-    location_action.loc_id = ?
-    AND NOT EXISTS (
-        SELECT 1
-        FROM player_action
-        WHERE
-            player_action.loc_id = location_action.loc_id
-            AND player_action.act_id = location_action.act_id
-            AND player_action.pid = ?
-    )
-`;
+                    SELECT
+                        location_action.loc_id,
+                        location_action.act_id,
+                        action.name AS act_name
+                    FROM
+                        location_action
+                    JOIN
+                        action ON location_action.act_id = action.act_id
+                    WHERE
+                        location_action.loc_id = ?
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM player_action
+                            WHERE
+                                player_action.loc_id = location_action.loc_id
+                                AND player_action.act_id = location_action.act_id
+                                AND player_action.pid = ?
+                        )
+                    `;
 
 
 ////////////////////////////////////////////////////////////
