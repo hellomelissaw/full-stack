@@ -1,7 +1,16 @@
-const {
-    select_random_enemy,
-    update_stats
-} = require('./utilities')
+////////////////////////////////////////////////////////////
+// QUERIES
+////////////////////////////////////////////////////////////
+
+// TODO optimize for performance if future table becomes larger
+const select_random_enemy = `SELECT * FROM enemy
+                            ORDER BY RAND()
+                            LIMIT 1;
+                            `
+
+const update_stats = `UPDATE player
+                      SET health = ?, experience = ?, level = ?
+                      WHERE pid = ?`;
 
 const action_stats = `SELECT xp_base_reward, hp_base_cost
                       FROM action
@@ -11,6 +20,11 @@ const action_stats = `SELECT xp_base_reward, hp_base_cost
 const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
+
+
+////////////////////////////////////////////////////////////
+// ACTION QUERYING
+////////////////////////////////////////////////////////////
 
 async function getRandomEnemy(conn) {
     const enemy = await conn.query(select_random_enemy);
