@@ -1,7 +1,4 @@
-const { updateStats } = require("./action");
 const { findOne } = require("./utilities");
-
-const { updatePlayerLocation } = requestAnimationFrame("../dataservice/action");
 
 ////////////////////////////////////////////////////////////
 // QUERIES

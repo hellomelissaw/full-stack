@@ -24,9 +24,9 @@ const {
 } = require('../dataservice/user');
 
 const {
-    getLocationPageData,
     insertLocation
 } = require('../dataservice/location');
+
 const { generateLocationResponse } = require('./location-routes');
 
 ///////////////////////////////////////////////////////////////////////////////
