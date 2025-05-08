@@ -99,17 +99,24 @@ async function insertLocation(conn, name, emojis, connections) {
 }
 
 async function applyLocationEffect(conn, locID, pid) {
-    const effect = await conn.query(location_effect, [locID]);
-    if (effect > 0) {
-        switch(effect[0].effect_type) {
-            case 'game_over':
-                return await updateXP(conn, 0, pid);     
-            case 'heal':
-                // healing effect
-            default: return { success: false, error: "Effect not valid." };
+    try {
+        const effect = await conn.query(location_effect, [locID]);
+        if (effect > 0) {
+            switch(effect[0].effect_type) {
+                case 'game_over':
+                    return await updateXP(conn, 0, pid);     
+                case 'heal':
+                    // TODO: add healing effect 
+                default: return { success: false, error: "Effect not valid." };
+            }
         }
+        return { success: true, error: null };
+        
+    } catch(err) {
+        return { success: false, error: err.message }
+
     }
-    return { success: false, error: "Effect not found" };
+
 }
 
 
