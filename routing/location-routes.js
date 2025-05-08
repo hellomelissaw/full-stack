@@ -12,6 +12,7 @@ const {
 const {
     getLocationPageData,
     updatePlayerLocation,
+    applyLocationEffect
 } = require('../dataservice/location');
 
 const {
@@ -47,6 +48,12 @@ async function generateLocationResponse(conn, locID) {
     const pid = await getSessionPid(conn, temp_token); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
+    }
+
+    const apply = await applyLocationEffect(conn, locID, pid);
+
+    if (!apply.success) {
+        return pug.renderFile('./templates/message.pug', { message: "Well, you should have perished, but something went wrong.. Good for you!"});
     }
     
     const data = await getLocationPageData(conn, locID, pid);
