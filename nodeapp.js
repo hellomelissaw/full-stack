@@ -48,7 +48,8 @@ async function requestHandler(req, res) {
         
         if (debug) {
             console.log("Database object: ", conn);
-            console.log("Cookie received: ", req.headers.cookie)
+            const cook = req.headers.cookie.split("=");
+            console.log("Cookie received: ", cook[1]);
         }
 
        const result = await requestRoute(conn, req);
