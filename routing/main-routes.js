@@ -14,7 +14,6 @@ const {
     getSessionStatus,
     deleteSession,
     addPidToSession,
-    createNewAccount,
 } = require('../dataservice/session');
 
 const {

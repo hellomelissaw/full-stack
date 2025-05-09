@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 
 const {
     createSession,
+    createNewAccount
 } = require('../dataservice/session');
 
 const {
