@@ -88,7 +88,7 @@ async function validateLoginResponse(conn, req, temp_token) {
         }
     } else {
         return pug.renderFile('./templates/message.pug', {
-            message: 'Something went wrong with getting user data.'
+            message: result.error
         });
     }
 }
