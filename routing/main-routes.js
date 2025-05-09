@@ -105,7 +105,7 @@ async function createNewGame(conn, req, sessionId) {
 // Creates a new account from /create-account sent to /create-account-receive
 ///////////////////////////////////////////////////////////////////////////////
 
-async function createAccount (conn, req) {
+async function createAccount (conn, req, sessionId) {
     // const user = req.body.username;
     // const pass = req.body.password;
 
