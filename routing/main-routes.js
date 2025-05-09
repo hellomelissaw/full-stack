@@ -14,7 +14,8 @@ const {
     getSessionStatus,
     deleteSession,
     addPidToSession,
-    createNewAccount
+    createNewAccount,
+    createSessionInDB
 } = require('../dataservice/session');
 
 const {
@@ -27,11 +28,8 @@ const {
     insertLocation
 } = require('../dataservice/location');
 
-const {
-    createSessionInDB
-} = require('./login-routes');
-
 const { generateLocationResponse } = require('./location-routes');
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the start page if user is logged in or error if user not logged in

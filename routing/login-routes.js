@@ -6,7 +6,8 @@ const pug = require('pug');
 const bcrypt = require('bcrypt');
 
 const {
-    createSession
+    createSession,
+    createSessionInDB
 } = require('../dataservice/session');
 
 const {
@@ -16,26 +17,6 @@ const {
 const {
     generateStartResponse
 } = require('./main-routes')
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Creates a row for the user's session with their unique token and user id
-// and forwards the user to the appropriate according to the failure or success
-// of creating a new session
-///////////////////////////////////////////////////////////////////////////////
-
-async function createSessionInDB(conn, sessionId, uid) {
-    const sessionResult = await createSession(conn, sessionId, uid);
-
-    if (sessionResult.success) {     
-        return await generateStartResponse(conn, sessionId)
-
-    } else {
-        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
-
-    }
-
-}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -97,5 +78,4 @@ async function validateLoginResponse(conn, req, sessionId) {
 
 module.exports = { 
     validateLoginResponse,
-    createSessionInDB
 }
