@@ -6,7 +6,7 @@
 // - QUIT
 ///////////////////////////////////////////////////////////////////////////////
 
-const temp_token = "temp-sesh-12345"; 
+// const temp_token = "temp-sesh-12345"; 
 const pug = require('pug');
 
 const {
@@ -34,8 +34,8 @@ const { generateLocationResponse } = require('./location-routes');
 // (ie. trying to by-pass logging in)
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateStartResponse(conn, req) {
-    const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+async function generateStartResponse(conn, sessionId) {
+    const user = await getSessionUser(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
     if(user) {
         return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
 
@@ -51,13 +51,13 @@ async function generateStartResponse(conn, req) {
 // otherwise generates the login page
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateLandingPage(conn, req) {
-    const sessionExists = await getSessionStatus(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+async function generateLandingPage(conn, sessionId) {
+    const sessionExists = await getSessionStatus(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
     if(!sessionExists) {
         return pug.renderFile('./templates/loginPage.pug');
     
     } else {
-        return generateStartResponse(conn, req);
+        return generateStartResponse(conn, sessionId);
     }
 }
 
@@ -66,8 +66,8 @@ async function generateLandingPage(conn, req) {
 // Creates a new game with a new character given by the user's input
 ///////////////////////////////////////////////////////////////////////////////
 
-async function createNewGame(conn, req) {
-        const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+async function createNewGame(conn, req, sessionId) {
+        const user = await getSessionUser(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
         const uid = user.uid;
         let body = '';
         await new Promise((resolve) => {
@@ -126,8 +126,8 @@ async function createAccount (conn, req) {
 // Generates the page to create a new character/game
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateNewGamePageResponse(conn, req) {
-    const user = await getSessionUser(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
+async function generateNewGamePageResponse(conn, sessionId) {
+    const user = await getSessionUser(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
     return pug.renderFile('./templates/new_game_form.pug', { uid: user.uid } );
 }
 
@@ -136,8 +136,8 @@ async function generateNewGamePageResponse(conn, req) {
 // Generates the page with all existing games for current user
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateLoadPageResponse(conn, req) { // Hard-coded token. This should be gotten from the req I guess?? 
-    const user = await getSessionUser(conn, temp_token);
+async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. This should be gotten from the req I guess?? 
+    const user = await getSessionUser(conn, sessionId);
     if (!user) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
@@ -205,8 +205,8 @@ async function generateInsertResponse(conn, req) {
 // Deletes session for given session token and fowards user to log in page
 ///////////////////////////////////////////////////////////////////////////////
 
-async function quitGame(conn, req) {
-    await deleteSession(conn, temp_token); // Hard-coded session token
+async function quitGame(conn, sessionId) {
+    await deleteSession(conn, sessionId); // Hard-coded session token
     return pug.renderFile('./templates/loginPage.pug', { showError: false });
 }
 

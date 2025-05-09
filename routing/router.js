@@ -1,6 +1,6 @@
 const url = require('url');
 const pug = require('pug');
-const temp_token = "temp-sesh-12345"; 
+// const temp_token = "temp-sesh-12345"; 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -87,11 +87,11 @@ async function requestRoute(conn, req) {
             return validateLoginResponse(conn, req, sessionId);
 
         case '/location':
-            return generateLocationResponse(conn, parsedURL.query.locID);
+            return generateLocationResponse(conn, parsedURL.query.locID, sessionId);
 
         case '/update_game_page_data':
             return { 
-                content: await performAction(conn, parsedURL.query.act_id), 
+                content: await performAction(conn, parsedURL.query.act_id, sessionId), 
                 contentType: 'application/json'
             };
 
@@ -102,19 +102,19 @@ async function requestRoute(conn, req) {
            return generateInsertResponse(conn, req, parsedURL);
 
         case '/load-game-page':
-            return generateLoadPageResponse(conn, req);
+            return generateLoadPageResponse(conn, sessionId);
 
         case '/load-game':
             return loadGame(conn, parsedURL.query.pid);
 
         case '/new-game-page':
-           return generateNewGamePageResponse(conn, req);
+           return generateNewGamePageResponse(conn, sessionId);
 
         case '/new-game':
-            return createNewGame(conn, req)
+            return createNewGame(conn, req, sessionId);
 
         case '/quit':
-            return quitGame(conn, req)
+            return quitGame(conn, sessionId);
 	
 	    case '/set-hash':
 	        return setTestUserPasswordHash(conn, parsedURL);
