@@ -1,6 +1,5 @@
 const { findOne } = require("./utilities");
 
-const { generateStartResponse } = require("../routing/main-routes");
 
 ////////////////////////////////////////////////////////////
 // QUERIES
@@ -105,5 +104,4 @@ module.exports = {
                     addPidToSession,
                     getSessionPid,
                     createNewAccount,
-                    createSessionInDB
                  }

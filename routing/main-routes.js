@@ -194,7 +194,6 @@ module.exports = {
                     generateNewGamePageResponse,
                     generateLoadPageResponse,
                     loadGame,
-                    createAccount,
                     generateInsertResponse,
                     quitGame
                 }
