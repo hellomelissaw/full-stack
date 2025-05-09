@@ -88,6 +88,7 @@ async function addPidToSession(conn, pid, uid) {
 }
 
 async function getSessionPid(conn, sessionID) {
+    console.log(`sessionID in getSessionPid: ${sessionID}`);
     const result = await conn.query("SELECT pid FROM session WHERE session_id = ?", [sessionID]);
     if(result.length === 0) {
         return null;
