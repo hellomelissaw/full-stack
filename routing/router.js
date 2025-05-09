@@ -21,11 +21,8 @@ const {
 
 const {
     generateLocationResponse,
-<<<<<<< HEAD
-    updateAfterAction
-=======
     generateExplore
->>>>>>> explore
+
 } = require('./location-routes');
 
 const {
