@@ -11,10 +11,16 @@ html(lang="en")
     .sign
       span welcome to the forest
     .login
-      form.login(method="POST", action="/log-in")
-        input#username(type="text", placeholder="Username")
-        input#password(type="password", placeholder="Password")
-        button(type="submit") Login
+        if showError 
+          p Username or password incorrect 
+        form(action=`/log-in` method="post")
+          h3 
+            label(for="name") Username:
+          input(type="text" id="username" name="username" required)
+          h3  
+            label(for="password") Password:
+          input(type="password" id="password" name="password" required)
+          button(type="submit").btn Log in
     h3(style="margin-bottom: 5px;")
       | Please log in, or create a new account 
       a(href='/create-account') here
