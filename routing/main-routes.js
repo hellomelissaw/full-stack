@@ -141,7 +141,7 @@ async function loadGame(conn, sessionId) {
     if(result.success){
         const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
         if (addedPid) {
-            return generateLocationResponse(conn, result.player_data.loc_id)
+            return generateLocationResponse(conn, result.player_data.loc_id, sessionId);
             // const loc = await getLocationPageData(conn, result.player_data.loc_id);
             // return pug.renderFile('./templates/location.pug', { location: loc });  
         } else {
