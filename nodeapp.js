@@ -53,7 +53,7 @@ async function requestHandler(req, res) {
 
        const result = await requestRoute(conn, req);
        let content, contentType;
-
+       console.log(typeof(result));
        if(typeof result === 'string') {
            content = result;
            contentType = 'text/html';

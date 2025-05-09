@@ -56,12 +56,13 @@ async function validateLoginResponse(conn, req, temp_token) {
     const params = new URLSearchParams(body);
     const username = params.get('username');
     const userInputPassword = params.get('password');
-
+    console.log(`username: ${username} password: ${userInputPassword}`);
     // Get the user row by given username
     const result = await getUserData(conn, username);
 
     if (result.success) {
-        const storedHashedPassword = result.user_data.password;
+    console.log("Result success..."); 
+       const storedHashedPassword = result.user_data.password;
 
         try {
             // Compare the hashed password with the hash in the DB for given user
