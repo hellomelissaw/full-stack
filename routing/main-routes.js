@@ -129,8 +129,8 @@ async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. 
 ///////////////////////////////////////////////////////////////////////////////
 
 async function loadGame(conn, sessionId) {
-    const pid = getSessionPid(conn, sessionId);
-
+    const pid = await getSessionPid(conn, sessionId);
+    console.log(pid);
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
