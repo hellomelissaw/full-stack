@@ -207,7 +207,7 @@ async function generateInsertResponse(conn, req) {
 
 async function quitGame(conn, req) {
     await deleteSession(conn, temp_token); // Hard-coded session token
-    return pug.renderFile('./templates/temp_login.pug', { showError: false });
+    return pug.renderFile('./templates/loginPage.pug', { showError: false });
 }
 
 module.exports = { 

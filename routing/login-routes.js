@@ -72,11 +72,11 @@ async function validateLoginResponse(conn, req, temp_token) {
                 console.log('Passwords match! User authenticated.');
 
                 const sessionResult = await createSessionInDB(conn, req, temp_token, result.user_data.uid);
-		return sessionResult;
+		        return sessionResult;
 
             } else {
                 console.log('Passwords do not match! Authentication failed.');
-                return pug.renderFile('./templates/temp_login.pug', {
+                return pug.renderFile('./templates/loginPage.pug', {
                     showError: true
                 });
             }
