@@ -1,4 +1,4 @@
-const temp_token = "temp-sesh-12345"; 
+// const temp_token = "temp-sesh-12345"; 
 
 const {
     FightAction,
@@ -25,14 +25,14 @@ const actionStrategies = {
     "2": GatherAction
 };
 
-async function performAction(conn, actionType) {
+async function performAction(conn, actionType, sessionId) {
     const ActionClass = actionStrategies[actionType.trim()];
     if(!ActionClass) {
         // maybe return an error message to display in message.pug??
         throw new Error(`Action type "${actionType}" not found.`); 
     }
     const stats = await getActionStats(conn, actionType);
-    const pid = await getSessionPid(conn, temp_token);
+    const pid = await getSessionPid(conn, sessionId);
 
     if (stats && pid) {
         const result = await getPlayerData(conn, pid);  

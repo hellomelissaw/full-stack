@@ -2,7 +2,7 @@
 // ALL THE ROUTING FUNCTIONS RELATED TO LOCATION PAGES
 ///////////////////////////////////////////////////////////////////////////////
 const pug = require('pug');
-const temp_token = "temp-sesh-12345"; 
+// const temp_token = "temp-sesh-12345"; 
 
 const {
     getPlayerData,
@@ -44,8 +44,8 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 // otherwise generates an error page.
 ///////////////////////////////////////////////////////////////////////////////
 
-async function generateLocationResponse(conn, locID) {
-    const pid = await getSessionPid(conn, temp_token); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
+async function generateLocationResponse(conn, locID, sessionId) {
+    const pid = await getSessionPid(conn, sessionId); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }

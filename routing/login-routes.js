@@ -28,7 +28,7 @@ async function createSessionInDB(conn, req, sessionId, uid) {
     const sessionResult = await createSession(conn, sessionId, uid);
 
     if (sessionResult.success) {     
-        return generateStartResponse(conn, req)
+        return generateStartResponse(conn, sessionId)
 
     } else {
         return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
