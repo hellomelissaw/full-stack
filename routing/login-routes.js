@@ -24,7 +24,7 @@ const {
 // of creating a new session
 ///////////////////////////////////////////////////////////////////////////////
 
-async function createSessionInDB(conn, req, sessionId, uid) {
+async function createSessionInDB(conn, sessionId, uid) {
     const sessionResult = await createSession(conn, sessionId, uid);
 
     if (sessionResult.success) {     
@@ -71,7 +71,7 @@ async function validateLoginResponse(conn, req, sessionId) {
                 console.log('Passwords match! User authenticated.');
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
-                const sessionResult = await createSessionInDB(conn, req, sessionId, result.user_data.uid);
+                const sessionResult = await createSessionInDB(conn, sessionId, result.user_data.uid);
 		        return sessionResult;
 
             } else {
@@ -95,5 +95,6 @@ async function validateLoginResponse(conn, req, sessionId) {
 }
 
 module.exports = { 
-    validateLoginResponse
+    validateLoginResponse,
+    createSessionInDB
 }
