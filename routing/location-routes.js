@@ -86,8 +86,61 @@ async function updateAfterAction(conn, act_id) {
     });;
 }
 
+async function generateExplore(conn, req) {
+    const pid = await getSessionPid(conn, temp_token);
+    const playerData = await getPlayerData(conn, pid);
+    if (!playerData.success) {
+        return pug.renderFile('./templates/message.pug', { message: playerData.error });
+    }
+    const currentLocationId = playerData.player_data.loc_id;
+    const locationData = await getLocationPageData(conn, currentLocationId);
+
+    const discoveredConnections = await conn.query(
+        "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+        [pid, currentLocationId]
+    );
+    console.log("Discovered connections:");
+    console.table(discoveredConnections);
+
+    const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
+
+    // Filter connections to find undiscovered ones
+    const undiscoveredConnections = locationData.connections.filter(conn =>
+        !discoveredConnectionIds.includes(conn.conn_id)
+    );
+
+    console.log("UUndiscovered connections:");
+    console.table(undiscoveredConnections);
+    
+    if (undiscoveredConnections.length === 0) {
+        return pug.renderFile('./templates/location.pug', {
+            location: locationData,
+            message: "No new connections to explore!"
+        });
+    }
+
+    // Select a random undiscovered connection
+    const randomConnection = undiscoveredConnections[Math.floor(Math.random() * undiscoveredConnections.length)];
+
+    // Add the new connection to the player's discovered connections
+    await conn.query(
+        "INSERT INTO player_location_connection (pid, loc_id, conn_id) VALUES (?, ?, ?)",
+        [pid, currentLocationId, randomConnection.conn_id]
+    );
+
+    console.log("Inserted discovered location in db.");
+    // Refresh the location data to include the new connection
+    const updatedLocationData = await getLocationPageData(conn, currentLocationId);
+
+    return pug.renderFile('./templates/location.pug', {
+        location: updatedLocationData,
+        message: `You discovered a new location: ${randomConnection.conn_name}!`
+    });
+}
+
 
 module.exports = { 
     generateLocationResponse,
-    updateAfterAction
-}
+    generateExplore
+};
+

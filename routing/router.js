@@ -21,7 +21,11 @@ const {
 
 const {
     generateLocationResponse,
+<<<<<<< HEAD
     updateAfterAction
+=======
+    generateExplore
+>>>>>>> explore
 } = require('./location-routes');
 
 const {
@@ -118,6 +122,12 @@ async function requestRoute(conn, req) {
 	
 	    case '/set-hash':
 	        return setTestUserPasswordHash(conn, parsedURL);
+
+        case '/explore':
+            const template = generateExplore(conn, req);
+            console.log(template);
+            return template;
+
         default: 
             return generateLandingPage(conn, sessionId);
     }

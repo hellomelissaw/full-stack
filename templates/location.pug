@@ -18,6 +18,8 @@ html
           each action in location.actions 
             button.btn(id=`action-${action.act_id}`, onclick=`handleAction(${action.act_id})`) #{action.act_name}
       .inventory
+        p #{message}
+        button#explore-button.btn(onclick="window.location.href='/explore'") Explore
         button#inventory-button.btn Inventory
         #inventory-container.inventory-container
           h3 Player inventory
