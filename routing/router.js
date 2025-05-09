@@ -70,6 +70,8 @@ async function setTestUserPasswordHash(conn, url) {
 async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
+    const cookie = req.headers.cookie.split("=");
+    const sessionId = cookie[1];
 
     switch(path) {
         case '/log-in-page':
@@ -82,7 +84,7 @@ async function requestRoute(conn, req) {
             return createAccount(conn, req);
 
         case '/log-in':
-            return validateLoginResponse(conn, req, temp_token);
+            return validateLoginResponse(conn, req, sessionId);
 
         case '/location':
             return generateLocationResponse(conn, parsedURL.query.locID);
