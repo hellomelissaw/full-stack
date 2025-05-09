@@ -27,6 +27,10 @@ const {
     insertLocation
 } = require('../dataservice/location');
 
+const {
+    createSessionInDB
+} = require('./login-routes');
+
 const { generateLocationResponse } = require('./location-routes');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -37,6 +41,7 @@ const { generateLocationResponse } = require('./location-routes');
 async function generateStartResponse(conn, sessionId) {
     const user = await getSessionUser(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
     if(user) {
+        //return createSessionInDB(conn, sessionId, uid)
         return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
 
     } else {
@@ -52,8 +57,7 @@ async function generateStartResponse(conn, sessionId) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function generateLandingPage(conn, sessionId) {
-    console.log(`sessionId in landing page: ${sessionId}`);
-    const sessionExists = await getSessionStatus(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
+    const sessionExists = await getSessionStatus(conn, sessionId); 
     if(!sessionExists) {
         return pug.renderFile('./templates/loginPage.pug');
     
@@ -117,6 +121,7 @@ async function createAccount (conn, req) {
     const result = await createNewAccount(conn, params.get('username'), pass);
     
     if (result.success) {
+        createSessionInDB(conn, sessionId, result.uid);
         return pug.renderFile('./templates/start.pug');
     } else {
         return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
