@@ -121,8 +121,8 @@ async function createAccount (conn, req, sessionId) {
     const result = await createNewAccount(conn, params.get('username'), pass);
     
     if (result.success) {
-        createSessionInDB(conn, sessionId, result.uid);
-        return pug.renderFile('./templates/start.pug');
+        return await createSessionInDB(conn, sessionId, result.uid);
+        //return pug.renderFile('./templates/start.pug');
     } else {
         return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
     }
