@@ -71,8 +71,8 @@ async function setTestUserPasswordHash(conn, url) {
 async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
-    const cookie = req.headers.cookie.split("=");
-    const sessionId = cookie[1];
+    const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
+    const sessionId = cookie[1] || null;
 
     switch(path) {
         case '/log-in-page':
