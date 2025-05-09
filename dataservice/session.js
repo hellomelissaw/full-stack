@@ -44,7 +44,7 @@ async function createSession(conn, sessionID, uid) {
 
 async function createNewAccount (conn, username, password) {
     try {
-        await conn.query(create_account, [username, password]);
+        await conn.query('INSERT INTO user (username, password) values (?, ?)', [username, password]);
         return { success: true };
     } catch (err) {
         return { success: false, error: err.message };
