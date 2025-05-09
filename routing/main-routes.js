@@ -14,6 +14,7 @@ const {
     getSessionStatus,
     deleteSession,
     addPidToSession,
+    getSessionPid
 } = require('../dataservice/session');
 
 const {
@@ -86,7 +87,7 @@ async function createNewGame(conn, req, sessionId) {
         if (result.success) {
             const addedPid = await addPidToSession(conn, result.pid, uid);
             if (addedPid) {
-                return loadGame(conn, result.pid);
+                return loadGame(conn, sessionId);
             }
             return pug.renderFile('./templates/message.pug', { message: "Problem adding game to session, please try again." } )
     
@@ -127,7 +128,9 @@ async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. 
 // location for the given pid
 ///////////////////////////////////////////////////////////////////////////////
 
-async function loadGame(conn, pid) {
+async function loadGame(conn, sessionId) {
+    const pid = getSessionPid(conn, sessionId);
+
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
