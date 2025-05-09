@@ -13,6 +13,26 @@ const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 // SESSION-SPECIFIC INFO
 ////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// Creates a row for the user's session with their unique token and user id
+// and forwards the user to the appropriate according to the failure or success
+// of creating a new session
+///////////////////////////////////////////////////////////////////////////////
+
+async function createSessionInDB(conn, sessionId, uid) {
+    const sessionResult = await createSession(conn, sessionId, uid);
+
+    if (sessionResult.success) {     
+        return await generateStartResponse(conn, sessionId);
+
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
+
+    }
+
+}
+
+
 async function userIsActive(conn, uid) {
     const active = await conn.query('SELECT * FROM session WHERE uid = ?', [uid]);
     return active.length > 0;
@@ -103,4 +123,5 @@ module.exports = {
                     addPidToSession,
                     getSessionPid,
                     createNewAccount,
+                    createSessionInDB
                  }
