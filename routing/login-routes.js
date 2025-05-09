@@ -70,7 +70,8 @@ async function validateLoginResponse(conn, req, temp_token) {
             
             if (isMatch) { // Forward user to appropriate page according to result
                 console.log('Passwords match! User authenticated.');
-
+                // session=eqctlv3u; Expires=1747041076537; HttpOnly
+                // req.headers.cookie;
                 const sessionResult = await createSessionInDB(conn, req, temp_token, result.user_data.uid);
 		        return sessionResult;
 

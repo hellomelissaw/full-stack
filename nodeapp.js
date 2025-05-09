@@ -22,7 +22,6 @@ process.argv.forEach(function (value, index) {
     }
 })
 
-
 ////////////////////////////////////////////////////////////
 // REQUEST HANDLING
 ////////////////////////////////////////////////////////////
@@ -49,6 +48,7 @@ async function requestHandler(req, res) {
         
         if (debug) {
             console.log("Database object: ", conn);
+            console.log("Cookie received: ", req.headers.cookie)
         }
 
        const result = await requestRoute(conn, req);
