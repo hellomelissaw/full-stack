@@ -54,6 +54,7 @@ async function createNewAccount (conn, username, password) {
 
 
 async function getSessionUser(conn, sessionID) {
+    console.log(`sessionUD in getSessionUser: ${sessionID}`);
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
         return await findOne(conn, 'user', 'uid', session.uid);

@@ -47,7 +47,7 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 async function generateLocationResponse(conn, locID, sessionId) {
     const pid = await getSessionPid(conn, sessionId); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
     if (!pid) {
-        return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
+        return pug.renderFile('./templates/message.pug', { message: "No player found for this session." } )
     }
 
     const apply = await applyLocationEffect(conn, locID, pid);

@@ -116,6 +116,7 @@ async function generateNewGamePageResponse(conn, sessionId) {
 async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. This should be gotten from the req I guess?? 
     const user = await getSessionUser(conn, sessionId);
     if (!user) {
+        console.log("in not user");
         return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
     }
     const games = await loadGames(conn, user.uid); 
@@ -132,7 +133,7 @@ async function loadGame(conn, sessionId) {
     const pid = await getSessionPid(conn, sessionId);
     console.log(pid);
     if (!pid) {
-        return pug.renderFile('./templates/message.pug', { message: "No user found! Please log in or create an account." } )
+        return pug.renderFile('./templates/message.pug', { message: "No player found when loading game!" } )
     }
 
     const result = await getPlayerData(conn, pid);
