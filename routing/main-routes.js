@@ -52,6 +52,7 @@ async function generateStartResponse(conn, sessionId) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function generateLandingPage(conn, sessionId) {
+    console.log(`sessionId in landing page: ${sessionId}`);
     const sessionExists = await getSessionStatus(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
     if(!sessionExists) {
         return pug.renderFile('./templates/loginPage.pug');
