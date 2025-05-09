@@ -62,7 +62,7 @@ async function generateLandingPage(conn, sessionId) {
         return pug.renderFile('./templates/loginPage.pug');
     
     } else {
-        return generateStartResponse(conn, sessionId);
+        return await generateStartResponse(conn, sessionId);
     }
 }
 
