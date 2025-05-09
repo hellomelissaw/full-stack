@@ -87,13 +87,17 @@ async function updateAfterAction(conn, act_id) {
 }
 
 async function generateExplore(conn, req) {
-    const pid = await getSessionPid(conn, temp_token);
-    const playerData = await getPlayerData(conn, pid);
-    if (!playerData.success) {
-        return pug.renderFile('./templates/message.pug', { message: playerData.error });
+    const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
+    console.log("LocRoutes Cookie Header:", req.headers.cookie);
+    const sessionId = cookie[1] || null;
+    console.log("LocRoutes Extracted Session ID:", sessionId);
+    const pid = await getSessionPid(conn, sessionId);
+    if (!pid) {
+        return pug.renderFile('./templates/message.pug', { message: "Session ID nhot found."});
     }
+    const playerData = await getPlayerData(conn, pid);
     const currentLocationId = playerData.player_data.loc_id;
-    const locationData = await getLocationPageData(conn, currentLocationId);
+    const locationData = await getLocationPageData(conn, currentLocationId, pid);
 
     const discoveredConnections = await conn.query(
         "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
@@ -103,18 +107,19 @@ async function generateExplore(conn, req) {
     console.table(discoveredConnections);
 
     const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
-
     // Filter connections to find undiscovered ones
-    const undiscoveredConnections = locationData.connections.filter(conn =>
+    const undiscoveredConnections = locationData.loc.connections.filter(conn =>
         !discoveredConnectionIds.includes(conn.conn_id)
     );
-
-    console.log("UUndiscovered connections:");
-    console.table(undiscoveredConnections);
     
     if (undiscoveredConnections.length === 0) {
         return pug.renderFile('./templates/location.pug', {
-            location: locationData,
+            location: locationData.loc,
+            stats: {
+                hp: playerData.player_data.health,
+                xp: playerData.player_data.experience,
+                level: playerData.player_data.level
+            },
             message: "No new connections to explore!"
         });
     }
@@ -130,10 +135,15 @@ async function generateExplore(conn, req) {
 
     console.log("Inserted discovered location in db.");
     // Refresh the location data to include the new connection
-    const updatedLocationData = await getLocationPageData(conn, currentLocationId);
+    const updatedLocationData = await getLocationPageData(conn, currentLocationId, pid);
 
     return pug.renderFile('./templates/location.pug', {
-        location: updatedLocationData,
+        location: updatedLocationData.loc,
+        stats: {
+            hp: playerData.player_data.health,
+            xp: playerData.player_data.experience,
+            level: playerData.player_data.level
+        },
         message: `You discovered a new location: ${randomConnection.conn_name}!`
     });
 }
