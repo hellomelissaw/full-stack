@@ -24,8 +24,8 @@ const {
 // of creating a new session
 ///////////////////////////////////////////////////////////////////////////////
 
-async function createSessionInDB(conn, req, temp_token, uid) {
-    const sessionResult = await createSession(conn, temp_token, uid);
+async function createSessionInDB(conn, req, sessionId, uid) {
+    const sessionResult = await createSession(conn, sessionId, uid);
 
     if (sessionResult.success) {     
         return generateStartResponse(conn, req)
@@ -43,7 +43,7 @@ async function createSessionInDB(conn, req, temp_token, uid) {
 // the appropriate page according to result
 ///////////////////////////////////////////////////////////////////////////////
 
-async function validateLoginResponse(conn, req, temp_token) {
+async function validateLoginResponse(conn, req, sessionId) {
     // Get the username and password from the input field
     let body = '';
     await new Promise((resolve) => {
@@ -72,7 +72,7 @@ async function validateLoginResponse(conn, req, temp_token) {
                 console.log('Passwords match! User authenticated.');
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
-                const sessionResult = await createSessionInDB(conn, req, temp_token, result.user_data.uid);
+                const sessionResult = await createSessionInDB(conn, req, sessionId, result.user_data.uid);
 		        return sessionResult;
 
             } else {
