@@ -54,7 +54,7 @@ async function generateStartResponse(conn, req) {
 async function generateLandingPage(conn, req) {
     const sessionExists = await getSessionStatus(conn, temp_token); // Hard-coded token. This should be gotten from the req I guess?? 
     if(!sessionExists) {
-        return pug.renderFile('./templates/temp_login.pug', { showError: false });
+        return pug.renderFile('./templates/loginPage.pug');
     
     } else {
         return generateStartResponse(conn, req);
