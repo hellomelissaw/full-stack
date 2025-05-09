@@ -15,7 +15,6 @@ const {
     deleteSession,
     addPidToSession,
     createNewAccount,
-    createSessionInDB
 } = require('../dataservice/session');
 
 const {
@@ -99,32 +98,6 @@ async function createNewGame(conn, req, sessionId) {
         }
     }
 
-///////////////////////////////////////////////////////////////////////////////
-// Creates a new account from /create-account sent to /create-account-receive
-///////////////////////////////////////////////////////////////////////////////
-
-async function createAccount (conn, req, sessionId) {
-    // const user = req.body.username;
-    // const pass = req.body.password;
-
-    let body = '';
-    await new Promise((resolve) => {
-        req.on('data', chunk => {
-            body += chunk.toString();
-        })
-        req.on('end', resolve);
-    });
-    const params = new URLSearchParams(body);
-    const pass = params.get('password');
-    const result = await createNewAccount(conn, params.get('username'), pass);
-    
-    if (result.success) {
-        return await createSessionInDB(conn, sessionId, result.uid);
-        //return pug.renderFile('./templates/start.pug');
-    } else {
-        return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
-    }
-}    
 
 ///////////////////////////////////////////////////////////////////////////////
 // Generates the page to create a new character/game

@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 
 const {
     createSession,
-    createSessionInDB
 } = require('../dataservice/session');
 
 const {
@@ -17,6 +16,53 @@ const {
 const {
     generateStartResponse
 } = require('./main-routes')
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Creates a row for the user's session with their unique token and user id
+// and forwards the user to the appropriate according to the failure or success
+// of creating a new session
+///////////////////////////////////////////////////////////////////////////////
+
+async function createSessionInDB(conn, sessionId, uid) {
+    const sessionResult = await createSession(conn, sessionId, uid);
+
+    if (sessionResult.success) {     
+        return await generateStartResponse(conn, sessionId);
+
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
+
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Creates a new account from /create-account sent to /create-account-receive
+///////////////////////////////////////////////////////////////////////////////
+
+async function createAccount (conn, req, sessionId) {
+    // const user = req.body.username;
+    // const pass = req.body.password;
+
+    let body = '';
+    await new Promise((resolve) => {
+        req.on('data', chunk => {
+            body += chunk.toString();
+        })
+        req.on('end', resolve);
+    });
+    const params = new URLSearchParams(body);
+    const pass = params.get('password');
+    const result = await createNewAccount(conn, params.get('username'), pass);
+    
+    if (result.success) {
+        return await createSessionInDB(conn, sessionId, result.uid);
+        //return pug.renderFile('./templates/start.pug');
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+    }
+}    
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -77,5 +123,6 @@ async function validateLoginResponse(conn, req, sessionId) {
 }
 
 module.exports = { 
-    validateLoginResponse,
+    createAccount,
+    validateLoginResponse
 }

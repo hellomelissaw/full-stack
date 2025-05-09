@@ -7,7 +7,6 @@ const saltRounds = 10;
 const {
     generateLandingPage,
     createNewGame,
-    createAccount,
     generateNewGamePageResponse,
     generateLoadPageResponse,
     loadGame,
@@ -16,7 +15,8 @@ const {
 } = require('./main-routes');
 
 const {
-    validateLoginResponse
+    createAccount,
+    validateLoginResponse,
 } = require('./login-routes');
 
 const {
