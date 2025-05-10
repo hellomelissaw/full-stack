@@ -45,8 +45,9 @@ async function createSession(conn, sessionID, uid) {
 }
 
 async function usernameExists(conn, username) {
+    let exists;
     try {
-        const exists = await conn.query(username_exists, [username]);
+        exists = await conn.query(username_exists, [username]);
         
     } catch(err) {
         console.log(err);
