@@ -69,7 +69,7 @@ async function createAccount (conn, req, sessionId) {
     const params = new URLSearchParams(body);
     const username = params.get('username');
 
-    if (usernameExists(username)) {
+    if (await usernameExists(conn, username)) {
         return pug.renderFile('./templates/createAccount.pug', { usernameExists: true })
     }
 
