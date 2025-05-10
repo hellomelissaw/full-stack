@@ -18,6 +18,19 @@ const {
     generateStartResponse
 } = require('./main-routes')
 
+////////////////////////////////////////////////////////////
+// HASHING FUNCTIONS
+////////////////////////////////////////////////////////////
+// Run this once to set the test hashes in the database
+async function hashUserInput(input) {
+    try {
+        const salt = await bcrypt.genSalt(saltRounds); 
+        const hash = await bcrypt.hash(input, salt); 
+        return hash; 
+    } catch (err) {
+        return null; 
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Creates a row for the user's session with their unique token and user id
@@ -55,13 +68,18 @@ async function createAccount (conn, req, sessionId) {
     });
     const params = new URLSearchParams(body);
     const pass = params.get('password');
-    const result = await createNewAccount(conn, params.get('username'), pass);
-    
-    if (result.success) {
-        return await createSessionInDB(conn, sessionId, result.uid);
-        //return pug.renderFile('./templates/start.pug');
+    const hash = hashUserInput(pass);
+    if (hash) {
+        const result = await createNewAccount(conn, params.get('username'), pass);
+        
+        if (result.success) {
+            return await createSessionInDB(conn, sessionId, result.uid);
+            //return pug.renderFile('./templates/start.pug');
+        } else {
+            return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+        }
     } else {
-        return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+        return pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } )
     }
 }    
 
