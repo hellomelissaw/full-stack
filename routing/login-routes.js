@@ -29,6 +29,7 @@ async function hashUserInput(input) {
         console.log(hash)
         return hash; 
     } catch (err) {
+        console.log(err);
         return null; 
     }
 }
@@ -69,6 +70,7 @@ async function createAccount (conn, req, sessionId) {
     });
     const params = new URLSearchParams(body);
     const pass = params.get('password');
+    console.log(`pass: ${pass}`);
     const hash = await hashUserInput(pass);
     if (hash) {
         const result = await createNewAccount(conn, params.get('username'), hash);
