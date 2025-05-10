@@ -130,6 +130,8 @@ async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. 
 ///////////////////////////////////////////////////////////////////////////////
 
 async function loadGame(conn, sessionId) {
+    console.log(`sessionId in loadgame: ${sessionId}`);
+
     const pid = await getSessionPid(conn, sessionId);
     console.log(pid);
     if (!pid) {
