@@ -34,34 +34,19 @@ const {
 } = require('../actions/ActionHandler');
 
 
-////////////////////////////////////////////////////////////
-// TEMP FUNCTIONS
-////////////////////////////////////////////////////////////
-// Run this once to set the test hashes in the database
-async function getTestUserPasswordHash(password) {
-    try {
-        const salt = await bcrypt.genSalt(saltRounds); 
-        const hash = await bcrypt.hash(password, salt); 
-        return hash; 
-    } catch (err) {
-        return null; 
-    }
-}
+// async function setTestUserPasswordHash(conn, url) {
+//     const hash = await getTestUserPasswordHash(url.query.password);
+//     if(hash){ 
+//         const result = await updatePassword(conn, hash, url.query.uid);
+//         if(!result.success) {
+//             return pug.renderFile('./templates/message.pug', { message: result.error })
+//         } 
+//             return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
+//     }
 
+//     return pug.renderFile('./templates/message.pug', { message: "Failed to get hash" })
 
-async function setTestUserPasswordHash(conn, url) {
-    const hash = await getTestUserPasswordHash(url.query.password);
-    if(hash){ 
-        const result = await updatePassword(conn, hash, url.query.uid);
-        if(!result.success) {
-            return pug.renderFile('./templates/message.pug', { message: result.error })
-        } 
-            return pug.renderFile('./templates/message.pug', { message: "Setting hash success" })
-    }
-
-    return pug.renderFile('./templates/message.pug', { message: "Failed to get hash" })
-
-}
+// }
 
 
 ////////////////////////////////////////////////////////////
@@ -72,9 +57,9 @@ async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
     const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
-    console.log("Cookie Header:", req.headers.cookie);
+    //console.log("Cookie Header:", req.headers.cookie);
     const sessionId = cookie[1] || null;
-    console.log("Extracted Session ID:", sessionId);
+    //console.log("Extracted Session ID:", sessionId);
     switch(path) {
         case '/log-in-page':
             return pug.renderFile('./templates/loginPage.pug', { showError: false });
