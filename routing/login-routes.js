@@ -27,8 +27,8 @@ async function hashUserInput(input) {
     try {
         const salt = await bcrypt.genSalt(saltRounds); 
         const hash = await bcrypt.hash(input, salt); 
-        console.log(hash)
         return hash; 
+
     } catch (err) {
         console.log(err);
         return null; 
@@ -59,9 +59,6 @@ async function createSessionInDB(conn, sessionId, uid) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function createAccount (conn, req, sessionId) {
-    // const user = req.body.username;
-    // const pass = req.body.password;
-
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -71,16 +68,17 @@ async function createAccount (conn, req, sessionId) {
     });
     const params = new URLSearchParams(body);
     const pass = params.get('password');
-    console.log(`pass: ${pass}`);
     const hash = await hashUserInput(pass);
+
     if (hash) {
         const result = await createNewAccount(conn, params.get('username'), hash);
         
         if (result.success) {
             return await createSessionInDB(conn, sessionId, result.uid);
-            //return pug.renderFile('./templates/start.pug');
+
         } else {
             return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+
         }
     } else {
         return pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } )
@@ -106,7 +104,7 @@ async function validateLoginResponse(conn, req, sessionId) {
     const params = new URLSearchParams(body);
     const username = params.get('username');
     const userInputPassword = params.get('password');
-    console.log(`username: ${username} password: ${userInputPassword}`);
+
     // Get the user row by given username
     const result = await getUserData(conn, username);
 

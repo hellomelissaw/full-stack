@@ -47,6 +47,7 @@ async function createNewAccount (conn, username, password) {
     try {
         const result = await conn.query('INSERT INTO user (username, password) values (?, ?)', [username, password]);
         return { success: true, uid: result.insertId };
+
     } catch (err) {
         return { success: false, error: err.message };
     }
@@ -54,10 +55,10 @@ async function createNewAccount (conn, username, password) {
 
 
 async function getSessionUser(conn, sessionID) {
-    console.log(`sessionUD in getSessionUser: ${sessionID}`);
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
         return await findOne(conn, 'user', 'uid', session.uid);
+
     }
     return null;
 }
