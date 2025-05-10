@@ -26,6 +26,7 @@ async function hashUserInput(input) {
     try {
         const salt = await bcrypt.genSalt(saltRounds); 
         const hash = await bcrypt.hash(input, salt); 
+        console.log(hash)
         return hash; 
     } catch (err) {
         return null; 
@@ -68,9 +69,9 @@ async function createAccount (conn, req, sessionId) {
     });
     const params = new URLSearchParams(body);
     const pass = params.get('password');
-    const hash = hashUserInput(pass);
+    const hash = await hashUserInput(pass);
     if (hash) {
-        const result = await createNewAccount(conn, params.get('username'), pass);
+        const result = await createNewAccount(conn, params.get('username'), hash);
         
         if (result.success) {
             return await createSessionInDB(conn, sessionId, result.uid);
