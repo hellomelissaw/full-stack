@@ -9,6 +9,8 @@ const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 
+const username_exists = 'SELECT 1 FROM users WHERE username = ? LIMIT 1';
+
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
@@ -42,6 +44,23 @@ async function createSession(conn, sessionID, uid) {
 
 }
 
+async function usernameExists(conn, username) {
+    try {
+        const exists = await conn.query(username_exists, [username]);
+        
+    } catch(err) {
+        console.log(err);
+        return true;
+    }
+
+
+    if (exists.length >= 1) {
+        return true;
+    
+    } else {
+        return false;
+    }
+}
 
 async function createNewAccount (conn, username, password) {
     try {
@@ -51,7 +70,6 @@ async function createNewAccount (conn, username, password) {
         return { success: false, error: err.message };
     }
 }
-
 
 async function getSessionUser(conn, sessionID) {
     console.log(`sessionUD in getSessionUser: ${sessionID}`);
@@ -106,4 +124,5 @@ module.exports = {
                     addPidToSession,
                     getSessionPid,
                     createNewAccount,
+                    usernameExists
                  }

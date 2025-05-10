@@ -8,7 +8,8 @@ const bcrypt = require('bcrypt');
 
 const {
     createSession,
-    createNewAccount
+    createNewAccount,
+    usernameExists
 } = require('../dataservice/session');
 
 const {
@@ -57,11 +58,7 @@ async function createSessionInDB(conn, sessionId, uid) {
 ///////////////////////////////////////////////////////////////////////////////
 // Creates a new account from /create-account sent to /create-account-receive
 ///////////////////////////////////////////////////////////////////////////////
-
 async function createAccount (conn, req, sessionId) {
-    // const user = req.body.username;
-    // const pass = req.body.password;
-
     let body = '';
     await new Promise((resolve) => {
         req.on('data', chunk => {
@@ -70,15 +67,21 @@ async function createAccount (conn, req, sessionId) {
         req.on('end', resolve);
     });
     const params = new URLSearchParams(body);
+    const username = params.get('username');
+
+    if (usernameExists(username)) {
+        return pug.renderFile('./templates/createAccount.pug')
+    }
+
     const pass = params.get('password');
-    console.log(`pass: ${pass}`);
+
     const hash = await hashUserInput(pass);
     if (hash) {
-        const result = await createNewAccount(conn, params.get('username'), hash);
+        const result = await createNewAccount(conn, username, hash);
         
         if (result.success) {
             return await createSessionInDB(conn, sessionId, result.uid);
-            //return pug.renderFile('./templates/start.pug');
+
         } else {
             return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
         }
