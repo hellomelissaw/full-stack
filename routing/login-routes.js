@@ -70,7 +70,7 @@ async function createAccount (conn, req, sessionId) {
     const username = params.get('username');
 
     if (usernameExists(username)) {
-        return pug.renderFile('./templates/createAccount.pug')
+        return pug.renderFile('./templates/createAccount.pug', { usernameExists: true })
     }
 
     const pass = params.get('password');
