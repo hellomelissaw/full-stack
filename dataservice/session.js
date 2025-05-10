@@ -9,7 +9,7 @@ const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
 
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 
-const username_exists = 'SELECT 1 FROM users WHERE username = ? LIMIT 1';
+const username_exists = 'SELECT 1 FROM user WHERE username = ? LIMIT 1';
 
 
 ////////////////////////////////////////////////////////////
