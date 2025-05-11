@@ -31,7 +31,7 @@ const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
 
-const get_enemy_id = `SELECT object_id 
+const get_enemy = `SELECT name, descripton 
                     FROM enemy
                     JOIN location_action
                     ON enemy.object_id = location_action.action_object_id
@@ -117,7 +117,8 @@ async function logAction(conn, pid, locID, actID) {
 
 async function getEnemy(conn, locID) {
     try {
-        const enemy = await conn.query(get_enemy_id, [locID]);
+        const enemy = await conn.query(get_enemy, [locID]);
+        console.log("Enemy found...");
         return enemy[0];
     
     } catch (err) {

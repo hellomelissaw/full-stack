@@ -33,6 +33,7 @@ class FightAction extends Action {
         } else {
             const locID = player.locID;
             enemy = await getEnemy(conn, locID);
+            console.table(enemy);
         }
         
 
@@ -51,12 +52,20 @@ class FightAction extends Action {
             const update = updateStats(conn, updatedHP, totalXP, 1, player.pid);
 
             if (update.success) {
-                return JSON.stringify({
-                stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
-                description: `You fought the ${enemy.name}! ${enemy.description || ' '}
-                            <br><br>
-                            Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
-                })
+                try {
+                    const json = JSON.stringify({
+                                 stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
+                                 description: `You fought the ${enemy.name}! ${enemy.description || ' '}
+                                            <br><br>
+                                            Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
+                                });
+
+                return json;
+
+                } catch (err) {
+                    return JSON.stringify( {error: err.message} );
+                }
+                
             } else {
                 return "Error updating player stats.";
             }
