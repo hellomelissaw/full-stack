@@ -32,11 +32,10 @@ async function createSession(conn, sessionID, uid) {
 
     try {
         sessionUUID = crypto.randomUUID();
-        console.log(`sessionUUID: ${sessionUUID}`); 
         await conn.query('INSERT INTO session (session_id, uid) values (?, ?)', [sessionUUID, uid]);
-        return { success: true };
+        return { success: true, error: null };
 
-    } catch {
+    } catch(err) {
         return { success: false, error: err.message };
 
     }

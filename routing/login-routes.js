@@ -43,12 +43,8 @@ async function hashUserInput(input) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function createSessionInDB(conn, sessionId, uid) {
-    try {
     const sessionResult = await createSession(conn, sessionId, uid);
-    
-    } catch (err) {
-        console.log(`Error creating session: ${err.message})`);
-    }
+
     if (sessionResult.success) {
         const { sessionUUID } = require('../dataservice/session.js');
         console.log(`sessionUUID in createSession in db: ${sessionUUID}`);
