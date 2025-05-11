@@ -3,13 +3,15 @@ const MAX_REDUCTION = 0.5;
 const {
     getRandomEnemy,
     updateStats,
+    getEnemy
 } = require('../dataservice/action');
 
 class Action {
-    constructor(name, xpBaseReward, hpBaseCost) {
+    constructor(name, xpBaseReward, hpBaseCost, isRandom) {
         this.name = name;
         this.xpBaseReward = xpBaseReward;
         this.hpBaseCost = hpBaseCost;
+        this.isRandom = isRandom;
     }
 
     // Simulate a generic method
@@ -19,14 +21,22 @@ class Action {
 }
 
 class FightAction extends Action {
-    constructor(xpBaseReward, hpBaseCost) {
-        super("fight", xpBaseReward, hpBaseCost);
+    constructor(xpBaseReward, hpBaseCost, isRandom) {
+        super("fight", xpBaseReward, hpBaseCost, isRandom);
     }
 
     async execute(conn, player) {
-        const enemy = await getRandomEnemy(conn);
+        let enemy;
+        if (this.isRandom) {
+            enemy = await getRandomEnemy(conn);
+        
+        } else {
+            const locID = player.locID;
+            enemy = await getEnemy(conn, locID);
+        }
+        
 
-        if(enemy){
+        if (enemy){
             const totalXP = enemy.xp_reward 
             + this.xpBaseReward
             + player.experience;
@@ -40,7 +50,7 @@ class FightAction extends Action {
 
             const update = updateStats(conn, updatedHP, totalXP, 1, player.pid);
 
-            if(update) {
+            if (update.success) {
                 return JSON.stringify({
                 stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
                 description: `You fought the ${enemy.name}! ${enemy.description || ' '}

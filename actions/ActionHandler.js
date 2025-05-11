@@ -38,9 +38,15 @@ async function performAction(conn, actionType, sessionId) {
         const result = await getPlayerData(conn, pid);  
 
         if(result.success) {
-            const action = new ActionClass(stats.xp_base_reward, stats.hp_base_cost); 
+            const action = new ActionClass(
+                                            stats.xp_base_reward, 
+                                            stats.hp_base_cost, 
+                                            stats.isRandom
+                                          ); 
+
             const output = await action.execute(conn, result.player_data);
             const log = await logAction(conn, result.player_data.pid, result.player_data.loc_id, actionType);
+            
             if (log.success) {
                 return output;
             

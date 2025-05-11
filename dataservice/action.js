@@ -21,14 +21,22 @@ const update_xp = `UPDATE player
                     SET experience = ?
                     WHERE pid = ?`;
 
-const action_stats = `SELECT xp_base_reward, hp_base_cost
+const action_stats = `SELECT xp_base_reward, hp_base_cost, random_action
                       FROM action
+                      JOIN location_action
                       WHERE act_id = ?
                       `;
 
 const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
+
+const get_enemy_id = `SELECT object_id 
+                    FROM enemy
+                    JOIN location_action
+                    ON enemy.object_id = location_action.action_object_id
+                    WHERE loc_id = ? 
+                    `;
 
 
 ////////////////////////////////////////////////////////////
@@ -41,9 +49,15 @@ async function getRandomEnemy(conn) {
 }
 
 async function updateStats(conn, hp, xp, level, pid) {
-    const stats = [hp, xp, level, pid];
-    const result = await conn.query(update_stats, stats);
-    return result;
+    try {
+        const stats = [hp, xp, level, pid];
+        const result = await conn.query(update_stats, stats);
+        return { success: true, error: null };
+    
+    } catch (err) {
+        return { success: false, error: err.message };
+    }
+   
 }
 
 async function updateHP(conn, hp, pid) {
@@ -76,7 +90,8 @@ async function getActionStats(conn, actionType) {
         const stats = await conn.query(action_stats, [actionType]);
         const int_stats = {
             xp_base_reward: parseInt(stats[0].xp_base_reward),
-            hp_base_cost: parseInt(stats[0].hp_base_cost)
+            hp_base_cost: parseInt(stats[0].hp_base_cost),
+            isRandom: parseInt(stats[0].random_action)
         }
         return int_stats;
     
@@ -99,12 +114,25 @@ async function logAction(conn, pid, locID, actID) {
         }  
     }   
 }
+
+async function getEnemy(conn, locID) {
+    try {
+        const enemy = await conn.query(get_enemy_id, [locID]);
+        return enemy[0];
+    
+    } catch (err) {
+        console.log(err.message);
+        return null;
+    }
+}
+
 module.exports = {
     getRandomEnemy,
     updateStats,
     getActionStats,
     logAction,
     updateHP,
-    updateXP
+    updateXP,
+    getEnemy
 }
 
