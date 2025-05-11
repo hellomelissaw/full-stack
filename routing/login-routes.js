@@ -45,9 +45,9 @@ async function hashUserInput(input) {
 async function createSessionInDB(conn, sessionId, uid) {
     const sessionResult = await createSession(conn, sessionId, uid);
 
-    if (sessionResult.success) {     
-        return await generateStartResponse(conn, sessionId);
-
+    if (sessionResult.success) {
+        const { sessionUUID } = require('../dataservice/session.js');
+        return await generateStartResponse(conn, sessionUUID);
     } else {
         return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
 
