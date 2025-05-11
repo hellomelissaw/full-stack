@@ -1,3 +1,4 @@
+const { randomBytes } = require('node:crypto');
 const { findOne } = require("./utilities");
 
 // Variable for exporting new session ID
@@ -31,7 +32,7 @@ async function createSession(conn, sessionID, uid) {
     }
 
     try {
-        sessionUUID = crypto.randomUUID();
+        sessionUUID = randomBytes(8).toString('hex');
         await conn.query('INSERT INTO session (session_id, uid) values (?, ?)', [sessionUUID, uid]);
         return { success: true, error: null };
 
@@ -56,7 +57,7 @@ async function usernameExists(conn, username) {
 
     if (exists.length >= 1) {
         return true;
-    
+
     } else {
         return false;
     }
