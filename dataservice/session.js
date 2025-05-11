@@ -1,16 +1,14 @@
 const { findOne } = require("./utilities");
 
+// Variable for exporting new session ID
+let sessionUUID = '';
 
 ////////////////////////////////////////////////////////////
 // QUERIES
 ////////////////////////////////////////////////////////////
 
-const create_session = 'INSERT INTO session (session_id, uid) values (?, ?)';
-
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
-
 const username_exists = 'SELECT 1 FROM user WHERE username = ? LIMIT 1';
-
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
@@ -33,7 +31,8 @@ async function createSession(conn, sessionID, uid) {
     }
 
     try {
-        await conn.query(create_session, [sessionID, uid]);
+        sessionUUID = crypto.randomUUID();
+        await conn.query('INSERT INTO session (session_id, uid) values (?, ?)', [sessionUUID, uid]);
         return { success: true };
 
     } catch {
@@ -125,5 +124,6 @@ module.exports = {
                     addPidToSession,
                     getSessionPid,
                     createNewAccount,
-                    usernameExists
+                    usernameExists,
+                    sessionUUID
                  }

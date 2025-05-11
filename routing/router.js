@@ -4,6 +4,12 @@ const pug = require('pug');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+// Declare cookie variables so they can be exported
+let cookie = [];
+//console.log("Cookie Header:", req.headers.cookie);
+let sessionId = '';
+//console.log("Extracted Session ID:", sessionId);
+
 const {
     generateLandingPage,
     createNewGame,
@@ -56,9 +62,9 @@ const {
 async function requestRoute(conn, req) {
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
-    const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
+    cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
     //console.log("Cookie Header:", req.headers.cookie);
-    const sessionId = cookie[1] || null;
+    sessionId = cookie[1] || null;
     //console.log("Extracted Session ID:", sessionId);
     switch(path) {
         case '/log-in-page':
@@ -117,4 +123,4 @@ async function requestRoute(conn, req) {
 
 }
 
-module.exports = { requestRoute }
+module.exports = { requestRoute, sessionId }

@@ -6,14 +6,19 @@ const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
 const { requestRoute } = require('./routing/router.js');
+
+// Begin building the session cookie
+const { sessionId } = require('routing/router.js');
+let sessionCook = '';
+if (sessionId) {
+    let sessionDate = new Date();
+    sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
+    sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
+}
+
 // Process variables
 let conn;
 let debug = false;
-
-// Create testing session cookie
-let sessionDate = new Date();
-sessionDate = sessionDate.setDate(sessionDate.getDate() + 3)
-let sessionCook = 'session=' + 'eqctlv3u' + '; Expires=' + sessionDate + '; HttpOnly';
 
 // Collect command line arguments
 process.argv.forEach(function (value, index) {
@@ -67,7 +72,9 @@ async function requestHandler(req, res) {
        res.statusCode = 200;
        res.setHeader('Content-Type', contentType);
        res.setHeader('Cache-Control', 'no-cache');
-       res.setHeader('Set-Cookie', sessionCook);
+       if (sessionId) {
+           res.setHeader('Set-Cookie', sessionCook);
+       }
        res.end(content);
 
     } catch (err) {
