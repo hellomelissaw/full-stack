@@ -5,10 +5,11 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const { requestRoute } = require('./routing/router.js');
+const { requestRoute,
+        sessionId
+} = require('./routing/router.js');
 
 // Begin building the session cookie
-const { sessionId } = require('routing/router.js');
 let sessionCook = '';
 if (sessionId) {
     let sessionDate = new Date();
