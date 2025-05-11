@@ -43,12 +43,18 @@ async function hashUserInput(input) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function createSessionInDB(conn, sessionId, uid) {
+    try {
     const sessionResult = await createSession(conn, sessionId, uid);
-
+    
+    } catch (err) {
+        console.log(`Error creating session: ${err.message})`);
+    }
     if (sessionResult.success) {
         const { sessionUUID } = require('../dataservice/session.js');
+        console.log(`sessionUUID in createSession in db: ${sessionUUID}`);
         return await generateStartResponse(conn, sessionUUID);
     } else {
+        console.log("createSession not a success");
         return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
 
     }
@@ -126,6 +132,7 @@ async function validateLoginResponse(conn, req, sessionId) {
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
                 const sessionResult = await createSessionInDB(conn, sessionId, result.user_data.uid);
+                 console.log(`Returning session result...`);
 		        return sessionResult;
 
             } else {
@@ -136,7 +143,7 @@ async function validateLoginResponse(conn, req, sessionId) {
             }
 
         } catch (err) {
-            console.error('Error comparing passwords:', err);
+            console.error('Error comparing passwords:', err.message);
             return pug.renderFile('./templates/message.pug', {
                 message: 'Something went wrong when checking the password.'
             });
