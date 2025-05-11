@@ -87,7 +87,7 @@ async function createNewGame(conn, req, sessionId) {
         if (result.success) {
             const addedPid = await addPidToSession(conn, result.pid, uid);
             if (addedPid) {
-                return loadGame(conn, pid, sessionId);
+                return loadGame(conn, result.pid, sessionId);
             }
             return pug.renderFile('./templates/message.pug', { message: "Problem adding game to session, please try again." } )
     
