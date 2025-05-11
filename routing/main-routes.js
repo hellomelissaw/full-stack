@@ -87,7 +87,7 @@ async function createNewGame(conn, req, sessionId) {
         if (result.success) {
             const addedPid = await addPidToSession(conn, result.pid, uid);
             if (addedPid) {
-                return loadGame(conn, sessionId);
+                return loadGame(conn, pid, sessionId);
             }
             return pug.renderFile('./templates/message.pug', { message: "Problem adding game to session, please try again." } )
     
@@ -129,15 +129,14 @@ async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. 
 // location for the given pid
 ///////////////////////////////////////////////////////////////////////////////
 
-async function loadGame(conn, sessionId) {
-    console.log(`sessionId in loadgame: ${sessionId}`);
+async function loadGame(conn, pid, sessionId) {
+    // console.log(`sessionId in loadgame: ${sessionId}`);
 
-    const pid = await getSessionPid(conn, sessionId);
-    console.log(pid);
-    if (!pid) {
-        return pug.renderFile('./templates/message.pug', { message: "No player found when loading game!" } )
-    }
-
+    // const pid = await getSessionPid(conn, sessionId);
+    // console.log(pid);
+    // if (!pid) {
+    //     return pug.renderFile('./templates/message.pug', { message: "No player found when loading game!" } )
+    // }
     const result = await getPlayerData(conn, pid);
 
     if(result.success){

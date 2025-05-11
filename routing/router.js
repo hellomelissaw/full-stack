@@ -92,7 +92,7 @@ async function requestRoute(conn, req) {
             return generateLoadPageResponse(conn, sessionId);
 
         case '/load-game':
-            return loadGame(conn, sessionId);
+            return loadGame(conn, req.query.pid, sessionId);
 
         case '/new-game-page':
            return generateNewGamePageResponse(conn, sessionId);
