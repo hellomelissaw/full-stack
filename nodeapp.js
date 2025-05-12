@@ -64,7 +64,7 @@ async function requestHandler(req, res) {
        const result = await requestRoute(conn, req);
        let content, contentType, cookie;
 
-       if(typeof result === 'string') {
+       if(typeof result.content === 'string') {
         console.log("content in nodeapp (text/html): ", result.content);
            content = result.content;
            contentType = 'text/html';
