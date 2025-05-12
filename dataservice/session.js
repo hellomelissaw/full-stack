@@ -31,8 +31,15 @@ async function createSession(conn, sessionID, uid) {
         }
     }
 
-    try {
+    let sessionUUID;
+    if (!sessionID) {
         sessionUUID = randomBytes(8).toString('hex');
+    
+    } else {
+        sessionUUID = sessionID
+    }
+
+    try {  
         await conn.query('INSERT INTO session (session_id, uid) values (?, ?)', [sessionUUID, uid]);
         return { success: true, sessionID: sessionUUID };
 
@@ -40,7 +47,6 @@ async function createSession(conn, sessionID, uid) {
         return { success: false, error: err.message };
 
     }
-
 
 }
 
