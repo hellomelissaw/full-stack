@@ -38,6 +38,7 @@ async function createSession(conn, sessionID, uid) {
             return { success: true, sessionID: sessionUUID };
 
         } catch (err) {
+            console.log("Could not verify if user is active.");
             return { success: false, error: err.message };
 
         }
@@ -48,6 +49,7 @@ async function createSession(conn, sessionID, uid) {
             return { success: true, sessionID: sessionUUID };
     
         } catch(err) {
+            console.log("Could not insert new session id");
             return { success: false, error: err.message };
     
         }
