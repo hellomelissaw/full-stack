@@ -22,10 +22,10 @@ const update_xp = `UPDATE player
                     WHERE pid = ?`;
 
 const action_stats = `SELECT xp_base_reward, hp_base_cost, random_action
-                      FROM action
-                      JOIN location_action
-                      WHERE action.act_id = ?
-                      `;
+                      FROM action AS a
+                      JOIN location_action AS la
+                      ON a.act_id = la.act_id
+                      WHERE la.loc_id = ?;`;
 
 const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
