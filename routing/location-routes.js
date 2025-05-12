@@ -29,12 +29,14 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
     console.log("player_loc_id:", player_loc_id);
     console.log("loc_id:", loc_id);
 
-    if (player_loc_id == loc_id) { 
+    if (player_loc_id == loc_id) {
         return true; 
     }
 
     for (const row of connection_rows) {
-        if(row.conn_id === player_loc_id) {
+        console.log("conn_log", row.conn_id);
+        if(row.conn_id === loc_id) {
+
             return true;
         }
     }
@@ -71,21 +73,33 @@ async function generateLocationResponse(conn, locID, sessionId) {
             "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
             [pid, locID]
         );
+        console.log("discoveredConnections:", discoveredConnections);
+        console.log("PID and loc_id:", pid, locID);
+
         const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
+        console.log("discoveredConnectionIds:", discoveredConnectionIds);
+        console.log("PID and loc_id:", pid, locID);
 
 /*
         // Filter loc.connections to include only discovered connections
         loc.connections = loc.connections.filter(conn => discoveredConnectionIds.includes(conn.conn_id));
 console.log("loc.connections after filtering:", loc.connections);
  */
+        const currentlyAt = await conn.query(
+        "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+        [pid, player.loc_id]
+        );
+                console.log("goTo:", currentlyAt);
 
-        if(locationIsValid(loc.connections, player.loc_id, locID)){
+        if(locationIsValid(currentlyAt, player.loc_id, locID)){
             const playerStats = { 
                 hp: player.health,
                 xp: player.experience,
                 level: player.level
             }
-            updatePlayerLocation(conn, locID, pid); 
+            updatePlayerLocation(conn, locID, pid);
+            console.log("PID and loc_id:", pid, locID);
+
             return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats, discoveredConnectionIds });
         
         } else {
