@@ -88,8 +88,7 @@ async function requestRoute(conn, req) {
     if (!publicPaths.includes(path)) {
         if (sessionId && await getSessionStatus(conn, sessionId)) {
             sessionUser = await getSessionUser(conn, sessionId);
-        } else if (parsedURL.query.uid) {
-            sessionUser = parsedURL.query.uid;
+        
         } else {
             // No valid session and no uid: redirect to login and clear cookie
             console.log("No valid session or uid");
