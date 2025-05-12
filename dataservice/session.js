@@ -34,7 +34,7 @@ async function createSession(conn, sessionID, uid) {
 
     if (await userIsActive(conn, uid)) {
         try {
-            await conn.query(modify_session_id, [uid]);
+            await conn.query(modify_session_id, [sessionUUID, uid]);
             return { success: true, sessionID: sessionUUID };
 
         } catch (err) {
