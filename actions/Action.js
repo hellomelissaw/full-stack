@@ -32,7 +32,8 @@ class FightAction extends Action {
             enemy = await getRandomEnemy(conn);
         
         } else {
-            const locID = player.locID;
+            const locID = player.loc_id;
+            console.log(`loc id for enemy: ${locID}`);
             enemy = await getEnemy(conn, locID);
             console.table(enemy);
         }
