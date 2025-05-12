@@ -98,7 +98,8 @@ async function requestRoute(conn, req) {
         sessionUser = parsedURL.query.uid;
     } else {
         // If no valid session and no uid: show login page and clear cookie
-        return {
+        console.log("No valid session or uid");
+	return {
             content: pug.renderFile('./templates/loginPage.pug', { showError: true }),
             cookie: 'session=; Max-Age=0; HttpOnly' // Clear broken cookie
         };
