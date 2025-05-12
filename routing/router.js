@@ -47,7 +47,7 @@ const {
 
 const {
     buildCookie
-} = require('../dataservice/utilities');
+} = require('./cookie');
 
 
 // async function setTestUserPasswordHash(conn, url) {
@@ -179,4 +179,4 @@ async function requestRoute(conn, req) {
     return { content: content, cookie: updatedCookie }
 }
 
-module.exports = { requestRoute, buildCookie }
+module.exports = { requestRoute }

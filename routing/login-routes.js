@@ -22,7 +22,7 @@ const {
 
 const {
     buildCookie
-} = require('../dataservice/utilities');
+} = require('./cookie');
 
 ////////////////////////////////////////////////////////////
 // HASHING FUNCTIONS
