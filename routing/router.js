@@ -66,6 +66,8 @@ async function buildCookie(conn, uid) {
         let sessionDate = new Date();
         sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
         sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
+    } else {
+        return null;
     }
     return sessionCook;
 }
