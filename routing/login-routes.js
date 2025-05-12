@@ -51,7 +51,7 @@ async function createSessionInDB(conn, sessionId, uid) {
 
     if (sessionResult.success) {
         //const { sessionUUID } = require('../dataservice/session.js');
-        console.log(`sessionUUID in createSession in db: ${sessionResult.sessionID}`);
+        console.log(`sessionUUID in createSession in db`);
         return { content: await generateStartResponse(conn, sessionResult.sessionID), 
                 cookie: await buildCookie(conn, uid)
         };

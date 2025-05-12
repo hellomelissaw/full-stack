@@ -115,7 +115,9 @@ async function requestRoute(conn, req) {
             break;
 
         case '/log-in':
-            return await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
+            const resp = await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
+            console.log("Log in response: ", resp);
+            return resp;
 
         case '/location':
             content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
