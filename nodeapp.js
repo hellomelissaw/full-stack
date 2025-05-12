@@ -65,12 +65,12 @@ async function requestHandler(req, res) {
        let content, contentType, cookie;
 
        if(typeof result.content === 'string') {
-        console.log("content in nodeapp (text/html): ", result.content);
+//        console.log("content in nodeapp (text/html): ", result.content);
            content = result.content;
            contentType = 'text/html';
 
        } else {
-           console.log("content in nodeapp (json): ", result.content.content);
+//           console.log("content in nodeapp (json): ", result.content.content);
            content = result.content.content; // TODO rename 
            contentType = result.content.contentType || 'text/html'; // adding a fallback in case  
        }

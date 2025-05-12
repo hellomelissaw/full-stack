@@ -92,7 +92,7 @@ async function requestRoute(conn, req) {
 
     // TODO: put in helper function if this works...
 
-    const publicPaths = ['/', '/create-account'];
+    const publicPaths = ['/', 'log-in', '/create-account'];
     // Check if session is active and if so, what user is associated
     if (!publicPaths.includes(path)) {
         if (sessionId && await getSessionStatus(conn, sessionId)) {
