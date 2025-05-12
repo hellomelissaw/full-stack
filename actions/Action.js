@@ -27,15 +27,12 @@ class FightAction extends Action {
 
     async execute(conn, player) {
         let enemy;
-        console.log(`random? ${this.isRandom}`); 
         if (this.isRandom) {
             enemy = await getRandomEnemy(conn);
         
         } else {
             const locID = player.loc_id;
-            console.log(`loc id for enemy: ${locID}`);
             enemy = await getEnemy(conn, locID);
-            console.table(enemy);
         }
         
 
