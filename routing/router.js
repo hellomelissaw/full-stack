@@ -93,7 +93,7 @@ async function requestRoute(conn, req) {
             // No valid session and no uid: redirect to login and clear cookie
             console.log("No valid session or uid");
             return {
-                content: pug.renderFile('./templates/loginPage.pug', { showError: true }),
+                content: pug.renderFile('./templates/loginPage.pug', { showError: false }),
                 cookie: 'session=; Max-Age=0; HttpOnly'
             };
         }
