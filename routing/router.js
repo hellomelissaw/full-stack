@@ -88,7 +88,7 @@ async function requestRoute(conn, req) {
     console.log("Extracted Session ID:", sessionId);
 
     if (sessionId) {
-        sessionUser = getSessionUser(sessionId);
+        sessionUser = await getSessionUser(sessionId);
     } else {
         sessionUser = parsedURL.query.uid;
     }
