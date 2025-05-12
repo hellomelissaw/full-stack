@@ -104,8 +104,13 @@ async function createNewGame(conn, req, sessionId) {
 ///////////////////////////////////////////////////////////////////////////////
 
 async function generateNewGamePageResponse(conn, sessionId) {
-    const user = await getSessionUser(conn, sessionId); // Hard-coded token. This should be gotten from the req I guess?? 
-    return pug.renderFile('./templates/new_game_form.pug', { uid: user.uid } );
+    const user = await getSessionUser(conn, sessionId); 
+    if (user) {
+        return pug.renderFile('./templates/new_game_form.pug', { uid: user.uid } );
+    } else {
+        return pug.renderFile('./templates/message.pug', { message: "No user found for this session." });
+    }
+    
 }
 
 
