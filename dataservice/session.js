@@ -133,9 +133,10 @@ async function getSessionPid(conn, sessionID) {
 async function getSessionId(conn, uid) {
     console.log("uid in getSessionId", uid);
     const session = await findOne(conn, 'session', 'uid', uid);
-
+    console.table(session);
     if (session) {
-        return session[0].session_id;
+    console.log(session.session_id);
+        return session.session_id;
     
     } else {
         return null;
