@@ -54,6 +54,15 @@ const {
 
 // }
 
+function buildCookie() {
+    let sessionCook = '';
+    if (sessionId) {
+        let sessionDate = new Date();
+        sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
+        sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
+    }
+    return sessionCook;
+}
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -123,4 +132,4 @@ async function requestRoute(conn, req) {
 
 }
 
-module.exports = { requestRoute, sessionId }
+module.exports = { requestRoute, buildCookie }
