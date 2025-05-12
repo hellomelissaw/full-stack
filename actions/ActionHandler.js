@@ -31,13 +31,14 @@ async function performAction(conn, actionType, sessionId) {
         // maybe return an error message to display in message.pug??
         throw new Error(`Action type "${actionType}" not found.`); 
     }
-    const stats = await getActionStats(conn, actionType);
+
     const pid = await getSessionPid(conn, sessionId);
 
-    if (stats && pid) {
+    if (pid) {
         const result = await getPlayerData(conn, pid);  
 
         if(result.success) {
+            const stats = await getActionStats(conn, result.player_data.loc_id);
             const action = new ActionClass(
                                             stats.xp_base_reward, 
                                             stats.hp_base_cost, 

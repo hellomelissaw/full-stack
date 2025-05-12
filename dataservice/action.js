@@ -22,17 +22,16 @@ const update_xp = `UPDATE player
                     WHERE pid = ?`;
 
 const action_stats = `SELECT xp_base_reward, hp_base_cost, random_action
-                      FROM action AS a
-                      JOIN location_action AS la
-                      ON a.act_id = la.act_id
-                      WHERE la.loc_id = ?
+                      FROM action
+                      JOIN location_action
+                      WHERE action.act_id = ?
                       `;
 
 const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
 
-const get_enemy = `SELECT name, description 
+const get_enemy = `SELECT name, descripton 
                     FROM enemy
                     JOIN location_action
                     ON enemy.object_id = location_action.action_object_id
@@ -52,7 +51,6 @@ async function getRandomEnemy(conn) {
 async function updateStats(conn, hp, xp, level, pid) {
     try {
         const stats = [hp, xp, level, pid];
-        console.log(`stats: ${stats}`);
         const result = await conn.query(update_stats, stats);
         return { success: true, error: null };
     
@@ -82,20 +80,19 @@ async function updateXP(conn, xp, pid) {
     }
 }
 
-async function getActionStats(conn, actionType) {
+async function getActionStats(conn, locID) {
     // const stats = conn.query(action_stats, actionType);
     // if (stats) {
     //     return stats[0];
     // }
     // return null;
     try {
-        const stats = await conn.query(action_stats, [actionType]);
+        const stats = await conn.query(action_stats, [locID]);
         const int_stats = {
             xp_base_reward: parseInt(stats[0].xp_base_reward),
             hp_base_cost: parseInt(stats[0].hp_base_cost),
             isRandom: parseInt(stats[0].random_action)
         }
-        console.log(`int_stats.isRandom: ${int_stats.isRandom}`);
         return int_stats;
     
     } catch (err) {
