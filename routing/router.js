@@ -41,7 +41,8 @@ const {
 
 const { 
     getSessionUser,
-    getSessionId
+    getSessionId,
+    getSessionStatus
 } = require('../dataservice/session');
 
 
@@ -89,10 +90,18 @@ async function requestRoute(conn, req) {
     sessionId = cookie[1] || null;
     console.log("Extracted Session ID:", sessionId);
 
-    if (sessionId) {
+    // TODO: put in helper function if this works...
+    // Check if session is active and if so, what user is associated
+    if (sessionId && await getSessionStatus(conn, sessionId)) {
         sessionUser = await getSessionUser(conn, sessionId);
-    } else {
+    } else if (parsedURL.query.uid) {
         sessionUser = parsedURL.query.uid;
+    } else {
+        // If no valid session and no uid: show login page and clear cookie
+        return {
+            content: pug.renderFile('./templates/loginPage.pug', { showError: true }),
+            cookie: 'session=; Max-Age=0; HttpOnly' // Clear broken cookie
+        };
     }
 
     switch(path) {
