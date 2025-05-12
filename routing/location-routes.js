@@ -61,6 +61,20 @@ async function generateLocationResponse(conn, locID, sessionId) {
     if (data.loc && data.player) {
         const loc = data.loc;
         const player = data.player;
+
+        // Fetch discovered connections for the current player and location
+        const discoveredConnections = await conn.query(
+            "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+            [pid, locID]
+        );
+        const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
+
+/*
+        // Filter loc.connections to include only discovered connections
+        loc.connections = loc.connections.filter(conn => discoveredConnectionIds.includes(conn.conn_id));
+console.log("loc.connections after filtering:", loc.connections);
+ */
+        
         if(locationIsValid(loc.connections, player.loc_id, locID)){
             const playerStats = { 
                 hp: player.health,
@@ -68,7 +82,7 @@ async function generateLocationResponse(conn, locID, sessionId) {
                 level: player.level
             }
             updatePlayerLocation(conn, locID, pid); 
-            return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats });
+            return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats, discoveredConnectionIds });
         
         } else {
             return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!"});
@@ -88,9 +102,7 @@ async function updateAfterAction(conn, act_id) {
 
 async function generateExplore(conn, req) {
     const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
-    console.log("LocRoutes Cookie Header:", req.headers.cookie);
     const sessionId = cookie[1] || null;
-    console.log("LocRoutes Extracted Session ID:", sessionId);
     const pid = await getSessionPid(conn, sessionId);
     if (!pid) {
         return pug.renderFile('./templates/message.pug', { message: "Session ID nhot found."});
@@ -103,9 +115,6 @@ async function generateExplore(conn, req) {
         "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
         [pid, currentLocationId]
     );
-    console.log("Discovered connections:");
-    console.table(discoveredConnections);
-
     const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
     // Filter connections to find undiscovered ones
     const undiscoveredConnections = locationData.loc.connections.filter(conn =>
@@ -120,6 +129,7 @@ async function generateExplore(conn, req) {
                 xp: playerData.player_data.experience,
                 level: playerData.player_data.level
             },
+            discoveredConnectionIds, // Pass discoveredConnectionIds
             message: "No new connections to explore!"
         });
     }
@@ -144,6 +154,7 @@ async function generateExplore(conn, req) {
             xp: playerData.player_data.experience,
             level: playerData.player_data.level
         },
+        discoveredConnectionIds, // Pass discoveredConnectionIds
         message: `You discovered a new location: ${randomConnection.conn_name}!`
     });
 }
