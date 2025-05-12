@@ -59,8 +59,8 @@ const {
 
 // }
 
-async function buildCookie(uid) {
-    const sessionId = await getSessionId(uid);
+async function buildCookie(conn, uid) {
+    const sessionId = await getSessionId(conn, uid);
     let sessionCook = '';
     if (sessionId) {
         let sessionDate = new Date();
@@ -148,7 +148,7 @@ async function requestRoute(conn, req) {
             content = await generateLandingPage(conn, sessionId);
     }
 
-    const updatedCookie = buildCookie(sessionUser);
+    const updatedCookie = await buildCookie(conn, sessionUser);
     console.log(`updated cookie ${updatedCookie}`);
     console.log("Content in router:");
     console.log(content);
