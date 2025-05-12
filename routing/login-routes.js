@@ -79,7 +79,9 @@ async function createAccount (conn, req, sessionId) {
     const username = params.get('username');
 
     if (await usernameExists(conn, username)) {
-        return pug.renderFile('./templates/createAccount.pug', { usernameExists: true })
+        return { content: pug.renderFile('./templates/createAccount.pug', { usernameExists: true }),
+                 cookie: ''
+                }
     }
 
     const pass = params.get('password');
@@ -92,10 +94,14 @@ async function createAccount (conn, req, sessionId) {
             return await createSessionInDB(conn, sessionId, result.uid);
 
         } else { // TODO return clear cookie after fail
-            return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+            return { content: pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } ),
+                     cookie: ''
+                   }
         }
     } else {
-        return pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } )
+        return { content: pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } ),
+                 cookie: ''
+               }
     }
 }    
 

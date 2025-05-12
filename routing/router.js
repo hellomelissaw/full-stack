@@ -110,13 +110,11 @@ async function requestRoute(conn, req) {
             break;
 
         case'/create-account-receive':
-            content = await createAccount(conn, req, sessionId);
-            break;
+            return await createAccount(conn, req, sessionId); // cookie integrated in response
+          
 
         case '/log-in':
-            const resp = await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
-            console.log("Log in response: ", resp);
-            return resp;
+            return await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
 
         case '/location':
             content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
