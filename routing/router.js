@@ -149,6 +149,8 @@ async function requestRoute(conn, req) {
     }
 
     const updatedCookie = buildCookie(sessionUser);
+    console.log("Content in router:");
+    console.log(content);
     return { content: content, cookie: updatedCookie }
 }
 
