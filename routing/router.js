@@ -174,8 +174,8 @@ async function requestRoute(conn, req) {
 
     const updatedCookie = await buildCookie(conn, sessionUser);
     console.log(`updated cookie ${updatedCookie}`);
-    console.log("Content in router:");
-    console.log(content);
+//    console.log("Content in router:");
+//    console.log(content);
     return { content: content, cookie: updatedCookie }
 }
 
