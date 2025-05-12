@@ -14,7 +14,8 @@ html
         img(src=`/static/img/${location.name}.png`)
       .actions
           each conn in location.connections
-            button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+            if discoveredConnectionIds.includes(conn.conn_id)
+              button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
           each action in location.actions 
             button.btn(id=`action-${action.act_id}`, onclick=`handleAction(${action.act_id})`) #{action.act_name}
       .inventory
