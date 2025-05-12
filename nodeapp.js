@@ -5,9 +5,6 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const { requestRoute,
-        buildCookie
-} = require('./routing/router.js');
 
 // Begin building the session cookie
 // function buildCookie() {

@@ -1,3 +1,7 @@
+const {
+    getSessionId
+} = require('../dataservice/session')
+
 async function buildCookie(conn, uid) {
     const sessionId = await getSessionId(conn, uid);
     let sessionCook = '';
