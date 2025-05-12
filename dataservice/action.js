@@ -31,7 +31,7 @@ const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
 
-const get_enemy = `SELECT *
+const get_enemy = `SELECT enemy.*
                     FROM enemy
                     JOIN location_action
                     ON enemy.object_id = location_action.action_object_id
