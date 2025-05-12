@@ -129,7 +129,7 @@ async function getSessionPid(conn, sessionID) {
 }
 
 async function getSessionId(conn, uid) {
-    const session = findOne(conn, 'session', 'uid', uid);
+    const session = await findOne(conn, 'session', 'uid', uid);
 
     if (session) {
         return session[0].session_id;
