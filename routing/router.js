@@ -101,13 +101,13 @@ async function requestRoute(conn, req) {
             content = pug.renderFile('./templates/createAccount.pug')
 
         case'/create-account-receive':
-            content = createAccount(conn, req, sessionId);
+            content = await createAccount(conn, req, sessionId);
 
         case '/log-in':
-            content = validateLoginResponse(conn, req, sessionId);
+            content = await validateLoginResponse(conn, req, sessionId);
 
         case '/location':
-            content = generateLocationResponse(conn, parsedURL.query.locID, sessionId);
+            content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
 
         case '/update_game_page_data':
             content = { 
@@ -119,36 +119,37 @@ async function requestRoute(conn, req) {
             content =  pug.renderFile('./templates/insert_form.pug');
         
         case '/insert-location':
-            content = generateInsertResponse(conn, req, parsedURL);
+            content = await generateInsertResponse(conn, req, parsedURL);
 
         case '/load-game-page':
-            content = generateLoadPageResponse(conn, sessionId);
+            content = await generateLoadPageResponse(conn, sessionId);
 
         case '/load-game':
-            content = loadGame(conn, parsedURL.query.pid, sessionId);
+            content = await loadGame(conn, parsedURL.query.pid, sessionId);
 
         case '/new-game-page':
-            content = generateNewGamePageResponse(conn, sessionId);
+            content = await generateNewGamePageResponse(conn, sessionId);
 
         case '/new-game':
-            content = createNewGame(conn, req, sessionId);
+            content = await createNewGame(conn, req, sessionId);
 
         case '/quit':
-            content = quitGame(conn, sessionId);
+            content = await quitGame(conn, sessionId);
 	
 	    case '/set-hash':
-	        content = setTestUserPasswordHash(conn, parsedURL);
+	        content = await setTestUserPasswordHash(conn, parsedURL);
 
         case '/explore':
-            const template = generateExplore(conn, req);
+            const template = await generateExplore(conn, req);
             console.log(template);
             content = template;
 
         default: 
-            content = generateLandingPage(conn, sessionId);
+            content = await generateLandingPage(conn, sessionId);
     }
 
     const updatedCookie = buildCookie(sessionUser);
+    console.log(`updated cookie ${updatedCookie}`);
     console.log("Content in router:");
     console.log(content);
     return { content: content, cookie: updatedCookie }
