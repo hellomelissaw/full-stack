@@ -1,6 +1,6 @@
 const {
     getSessionId
-} = require('../dataservice/session');
+} = require('./dataservice/session');
 
 ////////////////////////////////////////////////////////////
 // QUERIES
