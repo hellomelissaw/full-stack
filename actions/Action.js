@@ -27,6 +27,7 @@ class FightAction extends Action {
 
     async execute(conn, player) {
         let enemy;
+        console.log(`random? ${this.isRandom}`); 
         if (this.isRandom) {
             enemy = await getRandomEnemy(conn);
         
@@ -49,7 +50,7 @@ class FightAction extends Action {
 
             const updatedHP = player.health - totalCostHP;
 
-            const update = updateStats(conn, updatedHP, totalXP, 1, player.pid);
+            const update = await updateStats(conn, updatedHP, totalXP, 1, player.pid);
 
             if (update.success) {
                 try {
@@ -67,7 +68,8 @@ class FightAction extends Action {
                 }
                 
             } else {
-                return "Error updating player stats.";
+                 
+               return `Error updating player stats. Err: ${update.error}`;
             }
         } else {
             return "Error fetching enemy.";
