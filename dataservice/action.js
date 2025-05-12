@@ -31,11 +31,12 @@ const log_action = `INSERT INTO player_action
                     (pid, loc_id, act_id) values
                     (?, ?, ?)`;
 
-const get_enemy = `SELECT name, description 
+const get_enemy = `SELECT *
                     FROM enemy
                     JOIN location_action
                     ON enemy.object_id = location_action.action_object_id
-                    WHERE loc_id = ? 
+                    WHERE loc_id = ?
+                    LIMIT 1 
                     `;
 
 
