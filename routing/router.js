@@ -91,19 +91,24 @@ async function requestRoute(conn, req) {
     console.log("Extracted Session ID:", sessionId);
 
     // TODO: put in helper function if this works...
+
+    const publicPaths = ['/', '/create-account'];
     // Check if session is active and if so, what user is associated
-    if (sessionId && await getSessionStatus(conn, sessionId)) {
-        sessionUser = await getSessionUser(conn, sessionId);
-    } else if (parsedURL.query.uid) {
-        sessionUser = parsedURL.query.uid;
-    } else {
-        // If no valid session and no uid: show login page and clear cookie
-        console.log("No valid session or uid");
-	return {
-            content: pug.renderFile('./templates/loginPage.pug', { showError: true }),
-            cookie: 'session=; Max-Age=0; HttpOnly' // Clear broken cookie
-        };
+    if (!publicPaths.includes(path)) {
+        if (sessionId && await getSessionStatus(conn, sessionId)) {
+            sessionUser = await getSessionUser(conn, sessionId);
+        } else if (parsedURL.query.uid) {
+            sessionUser = parsedURL.query.uid;
+        } else {
+            // No valid session and no uid: redirect to login and clear cookie
+            console.log("No valid session or uid");
+            return {
+                content: pug.renderFile('./templates/loginPage.pug', { showError: true }),
+                cookie: 'session=; Max-Age=0; HttpOnly'
+            };
+        }
     }
+
 
     switch(path) {
         case '/log-in-page':
