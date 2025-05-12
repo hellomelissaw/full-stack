@@ -6,7 +6,7 @@ const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
 const { requestRoute,
-        sessionId
+        buildCookie
 } = require('./routing/router.js');
 
 // Begin building the session cookie
@@ -62,23 +62,26 @@ async function requestHandler(req, res) {
         }
 
        const result = await requestRoute(conn, req);
-       let content, contentType;
+       let content, contentType, cookie;
 
        if(typeof result === 'string') {
-           content = result;
+           content = result.content;
            contentType = 'text/html';
 
        } else {
-           content = result.content;
-           contentType = result.contentType || 'text/html'; // adding a fallback in case  
+           content = result.content.content; // TODO rename 
+           contentType = result.content.contentType || 'text/html'; // adding a fallback in case  
        }
+
+       const sessionCookie = result.cookie;
 
        res.statusCode = 200;
        res.setHeader('Content-Type', contentType);
        res.setHeader('Cache-Control', 'no-cache');
-       if (sessionId) {
-           res.setHeader('Set-Cookie', sessionCook);
-       }
+       res.setHeader('Set-Cookie', sessionCookie);
+    //    if (sessionId) {
+    //        res.setHeader('Set-Cookie', sessionCook);
+    //    }
        res.end(content);
 
     } catch (err) {

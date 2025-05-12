@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 // Declare cookie variables so they can be exported
-let cookie = [];
+// let cookie = [];
 //console.log("Cookie Header:", req.headers.cookie);
-let sessionId = '';
+// let sessionId = '';
 //console.log("Extracted Session ID:", sessionId);
 
 const {
@@ -39,6 +39,11 @@ const {
     performAction
 } = require('../actions/ActionHandler');
 
+const { 
+    getSessionUser,
+    getSessionId
+} = require('../dataservice/session');
+
 
 // async function setTestUserPasswordHash(conn, url) {
 //     const hash = await getTestUserPasswordHash(url.query.password);
@@ -54,7 +59,8 @@ const {
 
 // }
 
-function buildCookie() {
+async function buildCookie(uid) {
+    const sessionId = await getSessionId(uid);
     let sessionCook = '';
     if (sessionId) {
         let sessionDate = new Date();
@@ -69,68 +75,81 @@ function buildCookie() {
 ////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
+    let cookie;
+    let sessionUser;
+    let sessionId;
+    let content;
+
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
     cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
-    //console.log("Cookie Header:", req.headers.cookie);
+
     sessionId = cookie[1] || null;
     console.log("Extracted Session ID:", sessionId);
 
+    if (sessionId) {
+        sessionUser = getSessionUser(sessionId);
+    } else {
+        sessionUser = parsedURL.query.uid;
+    }
+
     switch(path) {
         case '/log-in-page':
-            return pug.renderFile('./templates/loginPage.pug', { showError: false });
+            content = pug.renderFile('./templates/loginPage.pug', { showError: false });
 
         case '/create-account':
-            return pug.renderFile('./templates/createAccount.pug')
+            content = pug.renderFile('./templates/createAccount.pug')
 
         case'/create-account-receive':
-            return createAccount(conn, req, sessionId);
+            content = createAccount(conn, req, sessionId);
 
         case '/log-in':
-            return validateLoginResponse(conn, req, sessionId);
+            content = validateLoginResponse(conn, req, sessionId);
 
         case '/location':
-            return generateLocationResponse(conn, parsedURL.query.locID, sessionId);
+            content = generateLocationResponse(conn, parsedURL.query.locID, sessionId);
 
         case '/update_game_page_data':
-            return { 
+            content = { 
                 content: await performAction(conn, parsedURL.query.act_id, sessionId), 
                 contentType: 'application/json'
             };
 
         case '/insert-location-form':
-            return pug.renderFile('./templates/insert_form.pug');
+            content =  pug.renderFile('./templates/insert_form.pug');
         
         case '/insert-location':
-           return generateInsertResponse(conn, req, parsedURL);
+            content = generateInsertResponse(conn, req, parsedURL);
 
         case '/load-game-page':
-            return generateLoadPageResponse(conn, sessionId);
+            content = generateLoadPageResponse(conn, sessionId);
 
         case '/load-game':
-            return loadGame(conn, parsedURL.query.pid, sessionId);
+            content = loadGame(conn, parsedURL.query.pid, sessionId);
 
         case '/new-game-page':
-           return generateNewGamePageResponse(conn, sessionId);
+            content = generateNewGamePageResponse(conn, sessionId);
 
         case '/new-game':
-            return createNewGame(conn, req, sessionId);
+            content = createNewGame(conn, req, sessionId);
 
         case '/quit':
-            return quitGame(conn, sessionId);
+            content = quitGame(conn, sessionId);
 	
 	    case '/set-hash':
-	        return setTestUserPasswordHash(conn, parsedURL);
+	        content = setTestUserPasswordHash(conn, parsedURL);
 
         case '/explore':
             const template = generateExplore(conn, req);
             console.log(template);
-            return template;
+            content = template;
 
         default: 
-            return generateLandingPage(conn, sessionId);
+            content = generateLandingPage(conn, sessionId);
     }
 
+    const updatedCookie = buildCookie(sessionUser);
+    return { content: content, cookie: updatedCookie }
 }
 
 module.exports = { requestRoute, buildCookie }

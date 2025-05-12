@@ -128,6 +128,17 @@ async function getSessionPid(conn, sessionID) {
     return result[0].pid;
 }
 
+async function getSessionId(conn, uid) {
+    const session = findOne(conn, 'session', 'uid', uid);
+
+    if (session) {
+        return session[0].session_id;
+    
+    } else {
+        return null;
+    }
+}
+
 
 module.exports = { 
                     createSession,
@@ -138,5 +149,5 @@ module.exports = {
                     getSessionPid,
                     createNewAccount,
                     usernameExists,
-                    sessionUUID
+                    getSessionId
                  }
