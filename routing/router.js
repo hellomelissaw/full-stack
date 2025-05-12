@@ -113,53 +113,68 @@ async function requestRoute(conn, req) {
     switch(path) {
         case '/log-in-page':
             content = pug.renderFile('./templates/loginPage.pug', { showError: false });
+            break;
 
         case '/create-account':
             content = pug.renderFile('./templates/createAccount.pug')
+            break;
 
         case'/create-account-receive':
             content = await createAccount(conn, req, sessionId);
+            break;
 
         case '/log-in':
             content = await validateLoginResponse(conn, req, sessionId);
+            break;
 
         case '/location':
             content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
+            break;
 
         case '/update_game_page_data':
             content = { 
                 content: await performAction(conn, parsedURL.query.act_id, sessionId), 
                 contentType: 'application/json'
             };
+            break;
 
         case '/insert-location-form':
             content =  pug.renderFile('./templates/insert_form.pug');
+            break;
         
         case '/insert-location':
             content = await generateInsertResponse(conn, req, parsedURL);
+            break;
 
         case '/load-game-page':
             content = await generateLoadPageResponse(conn, sessionId);
+            break;
 
         case '/load-game':
             content = await loadGame(conn, parsedURL.query.pid, sessionId);
+            break;
 
         case '/new-game-page':
             content = await generateNewGamePageResponse(conn, sessionId);
+            break;
 
         case '/new-game':
             content = await createNewGame(conn, req, sessionId);
+            break;
 
         case '/quit':
             content = await quitGame(conn, sessionId);
+            break;
 	
 	    case '/set-hash':
 	        content = await setTestUserPasswordHash(conn, parsedURL);
+            break;
 
         case '/explore':
             const template = await generateExplore(conn, req);
             console.log(template);
             content = template;
+            break;
 
         default: 
             content = await generateLandingPage(conn, sessionId);
