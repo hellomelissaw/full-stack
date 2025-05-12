@@ -10,6 +10,8 @@ let sessionUUID = '';
 
 const add_pid_to_session = 'UPDATE session SET pid = ? WHERE uid = ?';
 const username_exists = 'SELECT 1 FROM user WHERE username = ? LIMIT 1';
+const modify_session_id = 'UPDATE session SET session_id = ? WHERE uid = ?';
+const insert_session_id = 'INSERT INTO session (session_id, uid) values (?, ?)'
 
 ////////////////////////////////////////////////////////////
 // SESSION-SPECIFIC INFO
@@ -21,30 +23,34 @@ async function userIsActive(conn, uid) {
 }
 
 async function createSession(conn, sessionID, uid) {
+    // let sessionUUID;
+    // if (!sessionID) {
+    //     sessionUUID = randomBytes(8).toString('hex');
+    
+    // } else {
+    //     sessionUUID = sessionID
+    // }
+    const sessionUUID = randomBytes(8).toString('hex');
+
     if (await userIsActive(conn, uid)) {
         try {
-            await conn.query('DELETE FROM session WHERE uid = ?', [uid]);
+            await conn.query(modify_session_id, [uid]);
+            return { success: true, sessionID: sessionUUID };
 
         } catch (err) {
             return { success: false, error: err.message };
 
         }
-    }
 
-    let sessionUUID;
-    if (!sessionID) {
-        sessionUUID = randomBytes(8).toString('hex');
-    
     } else {
-        sessionUUID = sessionID
-    }
-
-    try {  
-        await conn.query('INSERT INTO session (session_id, uid) values (?, ?)', [sessionUUID, uid]);
-        return { success: true, sessionID: sessionUUID };
-
-    } catch(err) {
-        return { success: false, error: err.message };
+        try {  
+            await conn.query(insert_session_id, [sessionUUID, uid]);
+            return { success: true, sessionID: sessionUUID };
+    
+        } catch(err) {
+            return { success: false, error: err.message };
+    
+        }
 
     }
 
