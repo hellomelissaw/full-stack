@@ -75,6 +75,7 @@ async function requestRoute(conn, req) {
     //console.log("Cookie Header:", req.headers.cookie);
     sessionId = cookie[1] || null;
     console.log("Extracted Session ID:", sessionId);
+
     switch(path) {
         case '/log-in-page':
             return pug.renderFile('./templates/loginPage.pug', { showError: false });
