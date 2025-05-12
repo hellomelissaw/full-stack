@@ -140,21 +140,27 @@ async function validateLoginResponse(conn, req, sessionId) {
 
             } else {
                 console.log('Passwords do not match! Authentication failed.');
-                return pug.renderFile('./templates/loginPage.pug', {
+                return { content: pug.renderFile('./templates/loginPage.pug', {
                     showError: true
-                });
+                }), 
+                cookie: ''
+            }
             }
 
         } catch (err) {
             console.error('Error comparing passwords:', err.message);
-            return pug.renderFile('./templates/message.pug', {
+            return { content: pug.renderFile('./templates/message.pug', {
                 message: 'Something went wrong when checking the password.'
-            });
+            }),
+            cookie: ''
+        }
         }
     } else {
-        return pug.renderFile('./templates/message.pug', {
+        return {content: pug.renderFile('./templates/message.pug', {
             message: result.error
-        });
+        }),
+        cookie: ''
+    }
     }
 }
 
