@@ -10,12 +10,15 @@ const { requestRoute,
 } = require('./routing/router.js');
 
 // Begin building the session cookie
-let sessionCook = '';
-if (sessionId) {
-    let sessionDate = new Date();
-    sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
-    sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
-}
+// function buildCookie() {
+//     let sessionCook = '';
+//     if (sessionId) {
+//         let sessionDate = new Date();
+//         sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
+//         sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
+// }
+
+// }
 
 // Process variables
 let conn;
