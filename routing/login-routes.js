@@ -18,7 +18,11 @@ const {
 
 const {
     generateStartResponse
-} = require('./main-routes')
+} = require('./main-routes');
+
+const {
+    buildCookie
+} = require('../dataservice/utilities');
 
 ////////////////////////////////////////////////////////////
 // HASHING FUNCTIONS
@@ -48,11 +52,14 @@ async function createSessionInDB(conn, sessionId, uid) {
     if (sessionResult.success) {
         //const { sessionUUID } = require('../dataservice/session.js');
         console.log(`sessionUUID in createSession in db: ${sessionResult.sessionID}`);
-        return await generateStartResponse(conn, sessionResult.sessionID);
+        return { content: await generateStartResponse(conn, sessionResult.sessionID), 
+                cookie: await buildCookie(conn, uid)
+        };
     } else {
         console.log("createSession not a success");
-        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
-
+        return { content: pug.renderFile('./templates/message.pug', { message: sessionResult.error }), 
+            cookie: '' 
+        };
     }
 
 }
@@ -84,7 +91,7 @@ async function createAccount (conn, req, sessionId) {
         if (result.success) {
             return await createSessionInDB(conn, sessionId, result.uid);
 
-        } else {
+        } else { // TODO return clear cookie after fail
             return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
         }
     } else {

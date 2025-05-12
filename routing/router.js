@@ -45,6 +45,10 @@ const {
     getSessionStatus
 } = require('../dataservice/session');
 
+const {
+    buildCookie
+} = require('../dataservice/utilities');
+
 
 // async function setTestUserPasswordHash(conn, url) {
 //     const hash = await getTestUserPasswordHash(url.query.password);
@@ -59,19 +63,6 @@ const {
 //     return pug.renderFile('./templates/message.pug', { message: "Failed to get hash" })
 
 // }
-
-async function buildCookie(conn, uid) {
-    const sessionId = await getSessionId(conn, uid);
-    let sessionCook = '';
-    if (sessionId) {
-        let sessionDate = new Date();
-        sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
-        sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
-    } else {
-        return null;
-    }
-    return sessionCook;
-}
 
 ////////////////////////////////////////////////////////////
 // ROUTER 
@@ -124,8 +115,7 @@ async function requestRoute(conn, req) {
             break;
 
         case '/log-in':
-            content = await validateLoginResponse(conn, req, sessionId);
-            break;
+            return await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
 
         case '/location':
             content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
