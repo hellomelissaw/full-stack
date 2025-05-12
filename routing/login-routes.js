@@ -46,9 +46,9 @@ async function createSessionInDB(conn, sessionId, uid) {
     const sessionResult = await createSession(conn, sessionId, uid);
 
     if (sessionResult.success) {
-        const { sessionUUID } = require('../dataservice/session.js');
-        console.log(`sessionUUID in createSession in db: ${sessionUUID}`);
-        return await generateStartResponse(conn, sessionUUID);
+        //const { sessionUUID } = require('../dataservice/session.js');
+        console.log(`sessionUUID in createSession in db: ${sessionResult.sessionID}`);
+        return await generateStartResponse(conn, sessionResult.sessionID);
     } else {
         console.log("createSession not a success");
         return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
@@ -128,7 +128,7 @@ async function validateLoginResponse(conn, req, sessionId) {
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
                 const sessionResult = await createSessionInDB(conn, sessionId, result.user_data.uid);
-                 console.log(`Returning session result...`);
+                console.log(`Returning session result...`);
 		        return sessionResult;
 
             } else {
