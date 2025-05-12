@@ -35,7 +35,7 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 
     for (const row of connection_rows) {
         console.log("conn_log", row.conn_id);
-        if(row.conn_id === loc_id) {
+        if(row.conn_id == loc_id) {
 
             return true;
         }
@@ -89,8 +89,8 @@ console.log("loc.connections after filtering:", loc.connections);
         "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
         [pid, player.loc_id]
         );
-                console.log("goTo:", currentlyAt);
-
+        console.log("currentlyAt:", currentlyAt);
+        console.log("Player loc id:", player.loc_id);
         if(locationIsValid(currentlyAt, player.loc_id, locID)){
             const playerStats = { 
                 hp: player.health,
@@ -138,7 +138,7 @@ async function generateExplore(conn, req) {
     const undiscoveredConnections = locationData.loc.connections.filter(conn =>
         !discoveredConnectionIds.includes(conn.conn_id)
     );
-    
+
     if (undiscoveredConnections.length === 0) {
         return pug.renderFile('./templates/location.pug', {
             location: locationData.loc,
@@ -165,6 +165,12 @@ async function generateExplore(conn, req) {
     // Refresh the location data to include the new connection
     const updatedLocationData = await getLocationPageData(conn, currentLocationId, pid);
 
+    const updatedDiscoveredConnections = await conn.query(
+    "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+    [pid, currentLocationId]
+    );
+    const updatedDiscoveredConnectionIds = updatedDiscoveredConnections.map(row => row.conn_id);
+
     return pug.renderFile('./templates/location.pug', {
         location: updatedLocationData.loc,
         stats: {
@@ -172,7 +178,7 @@ async function generateExplore(conn, req) {
             xp: playerData.player_data.experience,
             level: playerData.player_data.level
         },
-        discoveredConnectionIds, // Pass discoveredConnectionIds
+        discoveredConnectionIds: updatedDiscoveredConnectionIds, // Pass discoveredConnectionIds
         message: `You discovered a new location: ${randomConnection.conn_name}!`
     });
 }
