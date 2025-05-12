@@ -128,7 +128,7 @@ async function validateLoginResponse(conn, req, sessionId) {
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
                 const sessionResult = await createSessionInDB(conn, sessionId, result.user_data.uid);
-                console.log(`Returning session result...`);
+                console.log(`Returning session result... ${sessionResult}`);
 		        return sessionResult;
 
             } else {
