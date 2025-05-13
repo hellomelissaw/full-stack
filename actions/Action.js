@@ -21,7 +21,7 @@ class Action {
 
     checkAndUpdateLevelUp(xp, lvl) {
      	let updatedXP, level, msg;
-        if (xp >= 10) {
+        if (xp >= 45) {
             level = lvl + 1;
             updatedXP = 0;
             msg = "You leveled up."
