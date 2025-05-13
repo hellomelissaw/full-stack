@@ -18,6 +18,17 @@ class Action {
     async execute(player) {
         throw new Error("execute method must be implemented");
     }
+
+    checkAndUpdateLevelUp(xp, lvl) {
+        if (xp >= 10) {
+            const level = lvl + 1;
+            const experience = 0;
+            return { level, experience }
+    
+        } else {
+            return { xp, lvl }
+        }
+    }
 }
 
 class FightAction extends Action {
@@ -47,9 +58,13 @@ class FightAction extends Action {
                         * (1 - reductionRate));
 
             const updatedHP = player.health - totalCostHP;
-
-            const update = await updateStats(conn, updatedHP, totalXP, player.level, player.pid);
-
+            
+            let updatedXP, level;
+            updatedXP, level = this.checkAndUpdateLevelUp(totalXP, player.level);
+            console.log("xp: ", updatedXP, " level: ", level);
+            
+            const update = await updateStats(conn, updatedHP, updatedXP, level, player.pid);
+            
             if (update.success) {
                 try {
                     const json = JSON.stringify({
