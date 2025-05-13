@@ -146,8 +146,8 @@ async function generateExplore(conn, req) {
 
     // Add the new connection to the player's discovered connections
     await conn.query(
-        "INSERT INTO player_location_connection (pid, loc_id, conn_id) VALUES (?, ?, ?)",
-        [pid, currentLocationId, randomConnection.conn_id]
+        "INSERT INTO player_location_connection (pid, loc_id, conn_id) VALUES (?, ?, ?), (?, ?, ?)",
+        [pid, currentLocationId, randomConnection.conn_id, pid, randomConnection.conn_id, currentLocationId]
     );
 
     console.log("Inserted discovered location in db.");
