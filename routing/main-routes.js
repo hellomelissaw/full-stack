@@ -42,7 +42,7 @@ async function generateStartResponse(conn, sessionId) {
         return pug.renderFile('./templates/start.pug', { uid: user.uid, username: user.username });
 
     } else {
-        return pug.renderFile('./templates/message.pug', { message: "User not found." })
+        return pug.renderFile('./templates/loginPage.pug', { message: "Username or password incorrect." })
     }
    
 }
@@ -193,7 +193,7 @@ async function generateInsertResponse(conn, req) {
 
 async function quitGame(conn, sessionId) {
     await deleteSession(conn, sessionId); // Hard-coded session token
-    return pug.renderFile('./templates/loginPage.pug', { showError: false });
+    return pug.renderFile('./templates/loginPage.pug');
 }
 
 module.exports = { 

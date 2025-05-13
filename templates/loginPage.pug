@@ -11,8 +11,8 @@ html(lang="en")
     .sign
       span welcome to the forest
     .login
-        if showError 
-          p Username or password incorrect 
+        if message 
+          p message
         form(action=`/log-in` method="post")
           h3 
             label(for="name") Username:

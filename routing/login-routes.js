@@ -147,7 +147,7 @@ async function validateLoginResponse(conn, req, sessionId) {
             } else {
                 console.log('Passwords do not match! Authentication failed.');
                 return { content: pug.renderFile('./templates/loginPage.pug', {
-                    showError: true
+                    message: "Username or password incorrect."
                 }), 
                 cookie: ''
             }
