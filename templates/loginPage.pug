@@ -12,7 +12,7 @@ html(lang="en")
       span welcome to the forest
     .login
         if message 
-          p message
+          p #{message}
         form(action=`/log-in` method="post")
           h3 
             label(for="name") Username:
