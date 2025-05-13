@@ -32,7 +32,6 @@ async function hashUserInput(input) {
     try {
         const salt = await bcrypt.genSalt(saltRounds); 
         const hash = await bcrypt.hash(input, salt); 
-        console.log(hash)
         return hash; 
     } catch (err) {
         console.log(err);
@@ -51,7 +50,6 @@ async function createSessionInDB(conn, sessionId, uid) {
 
     if (sessionResult.success) {
         //const { sessionUUID } = require('../dataservice/session.js');
-        console.log(`sessionUUID in createSession in db: ${sessionResult.sessionID}`);
         return { content: await generateStartResponse(conn, sessionResult.sessionID), 
                 cookie: await buildCookie(conn, uid)
         };
@@ -124,7 +122,7 @@ async function validateLoginResponse(conn, req, sessionId) {
     const params = new URLSearchParams(body);
     const username = params.get('username');
     const userInputPassword = params.get('password');
-    console.log(`username: ${username} password: ${userInputPassword}`);
+
     // Get the user row by given username
     const result = await getUserData(conn, username);
 

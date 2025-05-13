@@ -160,9 +160,7 @@ async function requestRoute(conn, req) {
             break;
 
         case '/explore':
-            const template = await generateExplore(conn, req);
-            console.log(template);
-            content = template;
+            content = await generateExplore(conn, req);
             break;
 
         default: 

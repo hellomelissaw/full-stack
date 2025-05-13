@@ -135,21 +135,13 @@ async function generateLoadPageResponse(conn, sessionId) { // Hard-coded token. 
 ///////////////////////////////////////////////////////////////////////////////
 
 async function loadGame(conn, pid, sessionId) {
-    // console.log(`sessionId in loadgame: ${sessionId}`);
-
-    // const pid = await getSessionPid(conn, sessionId);
-    // console.log(pid);
-    // if (!pid) {
-    //     return pug.renderFile('./templates/message.pug', { message: "No player found when loading game!" } )
-    // }
     const result = await getPlayerData(conn, pid);
 
     if(result.success){
         const addedPid = await addPidToSession(conn, pid, result.player_data.uid);
         if (addedPid) {
             return generateLocationResponse(conn, result.player_data.loc_id, sessionId);
-            // const loc = await getLocationPageData(conn, result.player_data.loc_id);
-            // return pug.renderFile('./templates/location.pug', { location: loc });  
+
         } else {
             return pug.renderFile('./templates/message.pug', 
                 { message: "Problem adding game to session, please try again." } 

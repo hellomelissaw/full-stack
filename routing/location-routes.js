@@ -25,16 +25,11 @@ const {
 ///////////////////////////////////////////////////////////////////////////////
 
 function locationIsValid(connection_rows, player_loc_id, loc_id) {
-    console.log("connection_rows:", connection_rows);
-    console.log("player_loc_id:", player_loc_id);
-    console.log("loc_id:", loc_id);
-
     if (player_loc_id == loc_id) {
         return true; 
     }
 
     for (const row of connection_rows) {
-        console.log("conn_log", row.conn_id);
         if(row.conn_id == loc_id) {
 
             return true;

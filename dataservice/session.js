@@ -84,7 +84,6 @@ async function createNewAccount (conn, username, password) {
 }
 
 async function getSessionUser(conn, sessionID) {
-    console.log(`sessionUD in getSessionUser: ${sessionID}`);
     const session = await findOne(conn, 'session', 'session_id', sessionID);
     if (session) {
         return await findOne(conn, 'user', 'uid', session.uid);
@@ -118,7 +117,6 @@ async function addPidToSession(conn, pid, uid) {
 }
 
 async function getSessionPid(conn, sessionID) {
-    console.log(`sessionID in getSessionPid: ${sessionID}`);
     const result = await conn.query("SELECT pid FROM session WHERE session_id = ?", [sessionID]);
     if(result.length === 0) {
         return null;
@@ -128,7 +126,6 @@ async function getSessionPid(conn, sessionID) {
 }
 
 async function getSessionId(conn, uid) {
-    console.log("uid in getSessionId", uid);
     const session = await findOne(conn, 'session', 'uid', uid);
     console.table(session);
     if (session) {

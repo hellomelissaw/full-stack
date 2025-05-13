@@ -10,7 +10,6 @@ async function buildCookie(conn, uid) {
         sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
         sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly ';
     } else {
-        console.log("No sessionID to build cookie")
         return null;
     }
     return sessionCook;
