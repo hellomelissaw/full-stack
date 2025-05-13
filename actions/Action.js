@@ -71,10 +71,10 @@ class FightAction extends Action {
             if (update.success) {
                 try {
                     const json = JSON.stringify({
-                                 stats: `<p>HP: ${updatedHP}</p> <p>XP: ${totalXP}</p> <p>Level: 1</p>`,
+                                 stats: `<p>HP: ${updatedHP}</p> <p>XP: ${updatedXP}</p> <p>Level: ${level}</p>`,
                                  description: `You fought the ${enemy.name}! ${enemy.description || ' '}
                                             <br><br>
-                                            Your current stats are: HP: ${updatedHP}, XP: ${totalXP}`
+                                            Your current stats are: HP: ${updatedHP}, XP: ${updatedXP}`
                                 });
 
                 return json;
