@@ -20,14 +20,17 @@ class Action {
     }
 
     checkAndUpdateLevelUp(xp, lvl) {
+     	let updatedXP, level;
         if (xp >= 10) {
-            const level = lvl + 1;
-            const experience = 0;
-            return { level, experience }
+            level = lvl + 1;
+            updatedXP = 0;
     
         } else {
-            return { xp, lvl }
+            updatedXP = xp;
+	    level = lvl;
         }
+	
+	return { updatedXP, level }
     }
 }
 
@@ -60,7 +63,7 @@ class FightAction extends Action {
             const updatedHP = player.health - totalCostHP;
             
             let updatedXP, level;
-            updatedXP, level = this.checkAndUpdateLevelUp(totalXP, player.level);
+            ({ updatedXP, level } = this.checkAndUpdateLevelUp(totalXP, player.level));
             console.log("xp: ", updatedXP, " level: ", level);
             
             const update = await updateStats(conn, updatedHP, updatedXP, level, player.pid);
