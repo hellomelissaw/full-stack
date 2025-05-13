@@ -150,7 +150,7 @@ async function validateLoginResponse(conn, req, sessionId) {
                     message: "Username or password incorrect."
                 }), 
                 cookie: ''
-            }
+                }
             }
 
         } catch (err) {
@@ -164,7 +164,7 @@ async function validateLoginResponse(conn, req, sessionId) {
     } else {
         console.log(result.error);
         return { content: pug.renderFile('./templates/loginPage.pug', {
-            message: "Error logging in. Please try again."
+            message: "User not found."
         }), 
         cookie: ''
     }
