@@ -162,9 +162,10 @@ async function validateLoginResponse(conn, req, sessionId) {
         }
         }
     } else {
-        return {content: pug.renderFile('./templates/message.pug', {
-            message: result.error
-        }),
+        console.log(result.error);
+        return { content: pug.renderFile('./templates/loginPage.pug', {
+            message: "Error logging in. Please try again."
+        }), 
         cookie: ''
     }
     }
