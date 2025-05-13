@@ -1,0 +1,41 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet", href="/static/gamepage.css")
+    title Best game ever
+  body
+    .location-box
+      h1 Welcome to the #{location.name}
+
+    .picture-box
+      img(src="/static/img/apple.jpg", alt="Picture")
+
+    .top-left-buttons
+      button#save-button.btn Save Game
+      button#exit-button.btn Exit Game
+
+    .lower-left-button
+      button#inventory-button.btn Inventory
+      button#explore-button.btn(onclick="window.location.href='/explore'") Explore
+
+    .wrapper
+      if message
+        .message-box
+          p= message
+      canvas#pixelCanvas(width="600", height="400")
+      .textbox text
+      .container
+        p Where to go next?
+        #option-buttons.btn-grid
+          each conn in location.connections
+            button(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+
+
+    #inventory-container.inventory-container
+      h3 Player inventory
+      p No items in inventory
+
+    script(src="/static/logic.js")

@@ -1,0 +1,60 @@
+@import url('/static/base.css');
+
+.screen {   
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    width: 500px;
+    min-height: 670px;
+    padding: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
+
+    border: 5px solid var(--border-color);
+    background-image: url('/static/img/start-page-graphic.png');
+    background-size: cover;
+    background-position: center;
+} /* Places the menu in the middle/left of the screen */
+
+.menu {
+    color: var(--text-color);
+/*    margin-left: 4em;   */
+    text-transform: uppercase;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+} /* removes * symbolerne*/
+
+.menu li {
+    margin: 2em 0;
+} /* spacing*/
+
+.menu li a {
+    text-decoration: none;
+    color: #3124ac;
+    font-weight: 700;
+} 
+
+.startpagePicture {
+    position: absolute;
+    top: 50%; /* Adjust the top to position it between the location box and text box */
+    left: 45%;
+    transform: transla  teX(-50%);
+    width: 1000px;
+    height: 450px; /* Set the height of the picture box */
+    text-align: center;
+    background-image: url('startpagePicture.jpg');
+    background-size: cover;
+    border-radius: 1%;
+    z-index: 2; 
+}
+
+
+
+

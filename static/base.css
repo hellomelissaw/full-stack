@@ -1,0 +1,104 @@
+@import url('/static/style-variables.css');
+
+@font-face {
+    font-family: "w95fa";
+    src:
+      local("w95fa"),
+      url("/static/w95fa/w95fa.woff") format("woff");
+  }
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    /* font-family: 'Georgia', serif;  */
+    font-family: w95fa, monospace; 
+}
+
+body {
+    background-color: var(--background-color-light);
+}
+
+
+/* TEXT STYLING */
+
+h1 {
+    margin: 0px;
+    font-size: 90px;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 60px;
+    font-weight: bold; 
+}
+
+h3 {
+    font-size: 30px;
+}
+
+.outlined-text {
+    color: var(--text-color);;
+    text-shadow:
+      -2px -2px 0 var(--border-color),
+       2px -2px 0 var(--border-color),
+      -2px  2px 0 var(--border-color),
+       2px  2px 0 var(--border-color),
+       0   -2px 0 var(--border-color),
+       0    2px 0 var(--border-color),
+      -2px  0   0 var(--border-color),
+       2px  0   0 var(--border-color);
+}
+
+
+/* BUTTON STYLING AND ACCESSIBILITY */
+
+.btn {
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 3px solid var(--button-border);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--button-hover-color);
+    transform: translateX(-1px) translateY(-2px);
+}
+
+.btn:disabled {
+    cursor: not-allowed; 
+    opacity: 0.5;
+}
+
+.top-left-buttons {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.top-left-buttons > button {
+    border: 3px solid var(--text-color);
+    background-color: var(--button-border);
+    font: w95fa, monospace;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:focus {
+    outline: 2px dashed yellow;
+    outline-offset: 4px;
+}
+
+.clickable:focus:not(:focus-visible) {
+    outline: none;
+}
+  

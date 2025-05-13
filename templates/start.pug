@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="/static/startpage.css")
+    title Hello #{username}
+    //- The second title tag is redundant and has been removed.
+  body
+    .screen
+      .menu
+        .outlined-text 
+          h1 Best game ever
+        p A group 16 creation
+        h3 Welcome, #{username}. 
+        h3 We hope you're ready for an adventure.
+        ul
+          li
+            button(onclick=`window.location.href='/new-game-page?uid=${uid}'`).btn New Game
+          li
+            button(onclick=`window.location.href='/load-game-page?uid=${uid}'`).btn Load Game
+          li
+            button(onclick=`window.location.href='/insert-location-form'`).btn Insert New Location 
+          li
+            button(onclick=`window.location.href='/quit'`)#quit-btn.btn Quit
+    script(src="/static/logic.js")

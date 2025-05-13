@@ -1,0 +1,150 @@
+@import url('/static/base.css');
+
+.container {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: fit-content(100px) 
+                        auto 
+                        fit-content(50px) 
+                        fit-content(75px);
+    grid-template-areas:
+        'title title'
+        'description image'
+        'actions actions'
+        'inventory stats';
+    gap: 3px;
+    padding: 3px;
+    width: 500px;
+    min-height: 600px;
+    
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 20px;
+    
+}
+
+.container > * {
+    padding: 13px;
+    background-color: var(--background-color);
+    border: 3px solid var(--border-color);
+}
+
+.title {
+    grid-area: title;
+}
+
+.description {
+    grid-area: description;
+}
+
+.image {
+    grid-area: image;
+}
+
+.image > img {
+    max-width: 150px;
+}
+
+.actions {
+    grid-area: actions;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+}
+
+.inventory {
+    grid-area: inventory;
+    justify-content: center;
+}
+
+.stats {
+    grid-area: stats;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#inventory-button {
+    background: var(--background-color);
+    color: var(--text-color);
+    width: 250px;
+    border: 3px solid var(--border-color);
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 11;
+    transition: background 0.3s, transform 0.3s;
+}
+
+#inventory-button:hover {
+    background:  var(--button-color);
+    transform: translateY(-2px) translateX(-1px);
+}
+
+.inventory-container {
+    display: none;
+    position: absolute;
+    top: 575px;
+    left: 16px;
+    width: 250px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    overflow: hidden;
+    transition: height 0.5s ease-in-out, bottom 0.5s ease-in-out;
+}
+
+.inventory-container h3 {
+    margin: 0;
+    font-size: 1.6em;
+    text-align: center;
+}
+
+.inventory-container p {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+#explore-button {
+    background: var(--background-color);
+    color: var(--text-color);
+    width: 250px;
+    border: 3px solid var(--border-color);
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 11;
+    transition: background 0.3s, transform 0.3s;
+}
+
+#explore-button:hover {
+    background: var(--button-color);
+    transform: translateY(-2px) translateX(-1px);
+}
+.message-box {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+}

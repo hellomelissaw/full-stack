@@ -1,0 +1,10 @@
+:root {
+    --background-color-light: rgb(90, 100, 95);
+    --background-color: rgb(9, 9, 9);
+    --text-color: rgb(215, 189, 150);
+    --border-color: rgb(99, 76, 51);
+    --button-border: rgb(74, 46, 15);
+    --button-color: rgb(9, 9, 9);
+    --button-hover-color: rgb(25, 24, 24);
+  }
+  

@@ -1,0 +1,33 @@
+html
+  head
+    link(rel="stylesheet", href="/static/gamepage.css")
+    title #{location.name}
+  body
+    .top-left-buttons
+      button#exit-button.btn Exit game
+    .container
+      .title
+        h1 Welcome to the #{location.name}
+      .description 
+        p#description-text #{location.description}
+      .image
+        img(src=`/static/img/${location.name}.png`)
+      .actions
+          each conn in location.connections
+            if discoveredConnectionIds.includes(conn.conn_id)
+              button.btn(onclick=`window.location.href='/location?locID=${conn.conn_id}'`) #{conn.conn_name}
+          each action in location.actions 
+            button.btn(id=`action-${action.act_id}`, onclick=`handleAction(${action.act_id})`) #{action.act_name}
+      .inventory
+        p #{message}
+        button#explore-button.btn(onclick="window.location.href='/explore'") Explore
+        button#inventory-button.btn Inventory
+        #inventory-container.inventory-container
+          h3 Player inventory
+          p No items in inventory
+      .stats#stats
+        p HP: #{stats.hp}
+        p XP: #{stats.xp}
+        p Level: #{stats.level}
+
+script(src="/static/logic.js")

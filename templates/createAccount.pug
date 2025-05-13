@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login & Game Files
+    link(rel="stylesheet", href="/static/createAccount.css")
+  body
+    .image-box
+      img.image-box-img(src="/static/logintree.png", alt="Forest Image") 
+    .sign
+      span Please create an account
+    .login
+      if usernameExists
+        p Username already exists. 
+      form.login(method="POST", action="/create-account-receive")
+        input#username(type="text", name="username", placeholder="Enter username", required)
+        input#password(type="password", name="password", placeholder="Enter password", required)
+        button(type="submit") Create account
+ul#gameFiles
+

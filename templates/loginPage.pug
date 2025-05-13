@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login & Game Files
+    link(rel="stylesheet", href="/static/loginPage.css")
+  body
+    .image-box
+      img.image-box-img(src="/static/logintree.png", alt="Forest Image")
+    .sign
+      span welcome to the forest
+    .login
+        if message 
+          p #{message}
+        form(action=`/log-in` method="post")
+          h3 
+            label(for="name") Username:
+          input(type="text" id="username" name="username" required)
+          h3  
+            label(for="password") Password:
+          input(type="password" id="password" name="password" required)
+          button(type="submit").btn Log in
+    h3(style="margin-bottom: 5px;")
+      | Please log in, or create a new account 
+      a(href='/create-account') here
+    ul#gameFiles

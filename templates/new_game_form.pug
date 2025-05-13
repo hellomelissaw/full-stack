@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    link(rel="stylesheet" href="/static/ui.css")
+    title New game - player creation
+  body
+    main 
+      .top-left-buttons 
+        button#exit-button.btn Back to main menu
+      .container 
+        h1 Create new character
+        form(action=`/new-game?uid=${uid}` method="post")
+          h3  
+            label(for="name") Name:
+          input(type="text" id="name" name="name" required)
+          button(type="submit").btn Create
+    script(src="/static/logic.js")

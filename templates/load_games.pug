@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Load game
+    link(rel="stylesheet", href="/static/ui.css")
+  body
+    main
+      .top-left-buttons
+        button#exit-button.btn Back to main menu
+      .container
+        h1 Select a player from the list:
+        each player in players
+          div.player-card.clickable(role="button" tabindex="0" onclick=`handleClick(${player.pid})`)
+            h3 Player: #{player.name}
+            h3 Location: #{player.loc_name}
+
+    script(src="/static/logic/clickable.js")
+    script(src="/static/logic.js")
