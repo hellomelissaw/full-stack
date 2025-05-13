@@ -20,17 +20,19 @@ class Action {
     }
 
     checkAndUpdateLevelUp(xp, lvl) {
-     	let updatedXP, level;
+     	let updatedXP, level, msg;
         if (xp >= 10) {
             level = lvl + 1;
             updatedXP = 0;
+            msg = "You leveled up."
     
         } else {
             updatedXP = xp;
-	    level = lvl;
+	        level = lvl;
+            msg = "Keep on playing to level up."
         }
 	
-	return { updatedXP, level }
+	return { updatedXP, level, msg }
     }
 }
 
@@ -62,9 +64,8 @@ class FightAction extends Action {
 
             const updatedHP = player.health - totalCostHP;
             
-            let updatedXP, level;
+            let updatedXP, level, msg;
             ({ updatedXP, level } = this.checkAndUpdateLevelUp(totalXP, player.level));
-            console.log("xp: ", updatedXP, " level: ", level);
             
             const update = await updateStats(conn, updatedHP, updatedXP, level, player.pid);
             
@@ -74,7 +75,10 @@ class FightAction extends Action {
                                  stats: `<p>HP: ${updatedHP}</p> <p>XP: ${updatedXP}</p> <p>Level: ${level}</p>`,
                                  description: `You fought the ${enemy.name}! ${enemy.description || ' '}
                                             <br><br>
-                                            Your current stats are: HP: ${updatedHP}, XP: ${updatedXP}`
+                                            Your current stats are: HP: ${updatedHP}, XP: ${updatedXP}.
+                                            <br><br>
+                                            Level: ${level}. ${msg}
+                                            `
                                 });
 
                 return json;
