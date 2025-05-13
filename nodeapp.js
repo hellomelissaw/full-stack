@@ -64,25 +64,19 @@ async function requestHandler(req, res) {
        let content, contentType, cookie;
 
        if(typeof result.content === 'string') {
-//        console.log("content in nodeapp (text/html): ", result.content);
            content = result.content;
            contentType = 'text/html';
 
        } else {
-//           console.log("content in nodeapp (json): ", result.content.content);
            content = result.content.content; // TODO rename 
            contentType = result.content.contentType || 'text/html'; // adding a fallback in case  
        }
 
        const sessionCookie = result.cookie;
-       console.log("coookie in nodeapp: ", sessionCookie);
        res.statusCode = 200;
        res.setHeader('Content-Type', contentType);
        res.setHeader('Cache-Control', 'no-cache');
        res.setHeader('Set-Cookie', sessionCookie);
-    //    if (sessionId) {
-    //        res.setHeader('Set-Cookie', sessionCook);
-    //    }
        res.end(content);
 
     } catch (err) {
@@ -130,10 +124,6 @@ process.on('SIGINT', async () => {
         console.log("Database connection closed.");
     }
 
-    // if(pool) {
-    //   await pool.end();
-    //   console.log("Connection pool closed. Summer is over.");
-    // }
     } catch (err) {
         console.error("Error during shutdown ", err);
   } finally {
