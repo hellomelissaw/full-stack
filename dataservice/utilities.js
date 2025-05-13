@@ -17,9 +17,7 @@ async function findOne(conn, table, whereclause, value) {  // TODO return error 
                                 `, [value]);
     return rows[0] || null;
 }
-exports.findOne = findOne;
-
 
 module.exports = { 
-                    findOne,
+                    findOne
                  }

@@ -5,15 +5,23 @@ const port = 3000;
 const http = require('http');
 const url = require('url');
 const mariadb = require('mariadb');
-const { requestRoute } = require('./routing/router.js');
+const { requestRoute,
+} = require('./routing/router.js');
+
+// Begin building the session cookie
+// function buildCookie() {
+//     let sessionCook = '';
+//     if (sessionId) {
+//         let sessionDate = new Date();
+//         sessionDate = sessionDate.setDate(sessionDate.getDate() + 3);
+//         sessionCook = 'session=' + sessionId + '; Expires=' + sessionDate + '; HttpOnly';
+// }
+
+// }
+
 // Process variables
 let conn;
 let debug = false;
-
-// Create testing session cookie
-let sessionDate = new Date();
-sessionDate = sessionDate.setDate(sessionDate.getDate() + 3)
-let sessionCook = 'session=' + 'eqctlv3u' + '; Expires=' + sessionDate + '; HttpOnly';
 
 // Collect command line arguments
 process.argv.forEach(function (value, index) {
@@ -53,21 +61,22 @@ async function requestHandler(req, res) {
         }
 
        const result = await requestRoute(conn, req);
-       let content, contentType;
+       let content, contentType, cookie;
 
-       if(typeof result === 'string') {
-           content = result;
+       if(typeof result.content === 'string') {
+           content = result.content;
            contentType = 'text/html';
 
        } else {
-           content = result.content;
-           contentType = result.contentType || 'text/html'; // adding a fallback in case  
+           content = result.content.content; // TODO rename 
+           contentType = result.content.contentType || 'text/html'; // adding a fallback in case  
        }
 
+       const sessionCookie = result.cookie;
        res.statusCode = 200;
        res.setHeader('Content-Type', contentType);
        res.setHeader('Cache-Control', 'no-cache');
-       res.setHeader('Set-Cookie', sessionCook);
+       res.setHeader('Set-Cookie', sessionCookie);
        res.end(content);
 
     } catch (err) {
@@ -115,10 +124,6 @@ process.on('SIGINT', async () => {
         console.log("Database connection closed.");
     }
 
-    // if(pool) {
-    //   await pool.end();
-    //   console.log("Connection pool closed. Summer is over.");
-    // }
     } catch (err) {
         console.error("Error during shutdown ", err);
   } finally {

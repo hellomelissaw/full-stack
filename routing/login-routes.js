@@ -18,7 +18,11 @@ const {
 
 const {
     generateStartResponse
-} = require('./main-routes')
+} = require('./main-routes');
+
+const {
+    buildCookie
+} = require('./cookie');
 
 ////////////////////////////////////////////////////////////
 // HASHING FUNCTIONS
@@ -45,12 +49,17 @@ async function hashUserInput(input) {
 async function createSessionInDB(conn, sessionId, uid) {
     const sessionResult = await createSession(conn, sessionId, uid);
 
-    if (sessionResult.success) {     
-        return await generateStartResponse(conn, sessionId);
-
+    if (sessionResult.success) {
+        //const { sessionUUID } = require('../dataservice/session.js');
+        console.log(`sessionUUID in createSession in db: ${sessionResult.sessionID}`);
+        return { content: await generateStartResponse(conn, sessionResult.sessionID), 
+                cookie: await buildCookie(conn, uid)
+        };
     } else {
-        return pug.renderFile('./templates/message.pug', { message: sessionResult.error })
-
+        console.log("createSession not a success");
+        return { content: pug.renderFile('./templates/message.pug', { message: sessionResult.error }), 
+            cookie: '' 
+        };
     }
 
 }
@@ -70,7 +79,9 @@ async function createAccount (conn, req, sessionId) {
     const username = params.get('username');
 
     if (await usernameExists(conn, username)) {
-        return pug.renderFile('./templates/createAccount.pug', { usernameExists: true })
+        return { content: pug.renderFile('./templates/createAccount.pug', { usernameExists: true }),
+                 cookie: ''
+                }
     }
 
     const pass = params.get('password');
@@ -82,11 +93,15 @@ async function createAccount (conn, req, sessionId) {
         if (result.success) {
             return await createSessionInDB(conn, sessionId, result.uid);
 
-        } else {
-            return pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } )
+        } else { // TODO return clear cookie after fail
+            return { content: pug.renderFile('./templates/message.pug', { message: "Problem creating new account, please try again." } ),
+                     cookie: ''
+                   }
         }
     } else {
-        return pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } )
+        return { content: pug.renderFile('./templates/message.pug', { message: "Securing password failed, please try again." } ),
+                 cookie: ''
+               }
     }
 }    
 
@@ -126,25 +141,32 @@ async function validateLoginResponse(conn, req, sessionId) {
                 // session=eqctlv3u; Expires=1747041076537; HttpOnly
                 // req.headers.cookie;
                 const sessionResult = await createSessionInDB(conn, sessionId, result.user_data.uid);
+                console.log(`Returning session result... ${sessionResult}`);
 		        return sessionResult;
 
             } else {
                 console.log('Passwords do not match! Authentication failed.');
-                return pug.renderFile('./templates/loginPage.pug', {
+                return { content: pug.renderFile('./templates/loginPage.pug', {
                     showError: true
-                });
+                }), 
+                cookie: ''
+            }
             }
 
         } catch (err) {
-            console.error('Error comparing passwords:', err);
-            return pug.renderFile('./templates/message.pug', {
+            console.error('Error comparing passwords:', err.message);
+            return { content: pug.renderFile('./templates/message.pug', {
                 message: 'Something went wrong when checking the password.'
-            });
+            }),
+            cookie: ''
+        }
         }
     } else {
-        return pug.renderFile('./templates/message.pug', {
+        return {content: pug.renderFile('./templates/message.pug', {
             message: result.error
-        });
+        }),
+        cookie: ''
+    }
     }
 }
 

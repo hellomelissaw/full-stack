@@ -4,6 +4,12 @@ const pug = require('pug');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+// Declare cookie variables so they can be exported
+// let cookie = [];
+//console.log("Cookie Header:", req.headers.cookie);
+// let sessionId = '';
+//console.log("Extracted Session ID:", sessionId);
+
 const {
     generateLandingPage,
     createNewGame,
@@ -33,6 +39,16 @@ const {
     performAction
 } = require('../actions/ActionHandler');
 
+const { 
+    getSessionUser,
+    getSessionId,
+    getSessionStatus
+} = require('../dataservice/session');
+
+const {
+    buildCookie
+} = require('./cookie');
+
 
 // async function setTestUserPasswordHash(conn, url) {
 //     const hash = await getTestUserPasswordHash(url.query.password);
@@ -48,73 +64,116 @@ const {
 
 // }
 
-
 ////////////////////////////////////////////////////////////
 // ROUTER 
 ////////////////////////////////////////////////////////////
 
 async function requestRoute(conn, req) {
+    let cookie;
+    let sessionUser;
+    let sessionId;
+    let content;
+
     const parsedURL = url.parse(req.url, true);
     const path = parsedURL.pathname;
-    const cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
-    //console.log("Cookie Header:", req.headers.cookie);
-    const sessionId = cookie[1] || null;
-    //console.log("Extracted Session ID:", sessionId);
+    cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
+
+    sessionId = cookie[1] || null;
+    console.log("Extracted Session ID:", sessionId);
+
+    // TODO: put in helper function if this works...
+
+    const publicPaths = ['/', '/log-in-page','/log-in', '/create-account', '/create-account-receive'];
+    // Check if session is active and if so, what user is associated
+    if (!publicPaths.includes(path)) {
+        if (sessionId && await getSessionStatus(conn, sessionId)) {
+            sessionUser = await getSessionUser(conn, sessionId);
+        
+        } else {
+            // No valid session and no uid: redirect to login and clear cookie
+            console.log("No valid session or uid");
+            return {
+                content: pug.renderFile('./templates/loginPage.pug', { showError: false }),
+                cookie: 'session=; Max-Age=0; HttpOnly'
+            };
+        }
+    }
+
+
     switch(path) {
         case '/log-in-page':
-            return pug.renderFile('./templates/loginPage.pug', { showError: false });
+            content = pug.renderFile('./templates/loginPage.pug', { showError: false });
+            break;
 
         case '/create-account':
-            return pug.renderFile('./templates/createAccount.pug')
+            content = pug.renderFile('./templates/createAccount.pug')
+            break;
 
         case'/create-account-receive':
-            return createAccount(conn, req, sessionId);
+            return await createAccount(conn, req, sessionId); // cookie integrated in response
+          
 
         case '/log-in':
-            return validateLoginResponse(conn, req, sessionId);
+            return await validateLoginResponse(conn, req, sessionId); // cookie integrated in response
 
         case '/location':
-            return generateLocationResponse(conn, parsedURL.query.locID, sessionId);
+            content = await generateLocationResponse(conn, parsedURL.query.locID, sessionId);
+            break;
 
         case '/update_game_page_data':
-            return { 
+            content = { 
                 content: await performAction(conn, parsedURL.query.act_id, sessionId), 
                 contentType: 'application/json'
             };
+            break;
 
         case '/insert-location-form':
-            return pug.renderFile('./templates/insert_form.pug');
+            content =  pug.renderFile('./templates/insert_form.pug');
+            break;
         
         case '/insert-location':
-           return generateInsertResponse(conn, req, parsedURL);
+            content = await generateInsertResponse(conn, req, parsedURL);
+            break;
 
         case '/load-game-page':
-            return generateLoadPageResponse(conn, sessionId);
+            content = await generateLoadPageResponse(conn, sessionId);
+            break;
 
         case '/load-game':
-            return loadGame(conn, parsedURL.query.pid, sessionId);
+            content = await loadGame(conn, parsedURL.query.pid, sessionId);
+            break;
 
         case '/new-game-page':
-           return generateNewGamePageResponse(conn, sessionId);
+            content = await generateNewGamePageResponse(conn, sessionId);
+            break;
 
         case '/new-game':
-            return createNewGame(conn, req, sessionId);
+            content = await createNewGame(conn, req, sessionId);
+            break;
 
         case '/quit':
-            return quitGame(conn, sessionId);
+            content = await quitGame(conn, sessionId);
+            break;
 	
 	    case '/set-hash':
-	        return setTestUserPasswordHash(conn, parsedURL);
+	        content = await setTestUserPasswordHash(conn, parsedURL);
+            break;
 
         case '/explore':
-            const template = generateExplore(conn, req);
+            const template = await generateExplore(conn, req);
             console.log(template);
-            return template;
+            content = template;
+            break;
 
         default: 
-            return generateLandingPage(conn, sessionId);
+            content = await generateLandingPage(conn, sessionId);
     }
 
+    const updatedCookie = await buildCookie(conn, sessionUser);
+    console.log(`updated cookie ${updatedCookie}`);
+//    console.log("Content in router:");
+//    console.log(content);
+    return { content: content, cookie: updatedCookie }
 }
 
 module.exports = { requestRoute }

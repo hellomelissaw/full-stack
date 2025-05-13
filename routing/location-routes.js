@@ -73,12 +73,7 @@ async function generateLocationResponse(conn, locID, sessionId) {
             "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
             [pid, locID]
         );
-        console.log("discoveredConnections:", discoveredConnections);
-        console.log("PID and loc_id:", pid, locID);
-
         const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
-        console.log("discoveredConnectionIds:", discoveredConnectionIds);
-        console.log("PID and loc_id:", pid, locID);
 
 /*
         // Filter loc.connections to include only discovered connections
@@ -98,7 +93,6 @@ console.log("loc.connections after filtering:", loc.connections);
                 level: player.level
             }
             updatePlayerLocation(conn, locID, pid);
-            console.log("PID and loc_id:", pid, locID);
 
             return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats, discoveredConnectionIds });
         
