@@ -48,7 +48,7 @@ class FightAction extends Action {
 
             const updatedHP = player.health - totalCostHP;
 
-            const update = await updateStats(conn, updatedHP, totalXP, 1, player.pid);
+            const update = await updateStats(conn, updatedHP, totalXP, player.level, player.pid);
 
             if (update.success) {
                 try {

@@ -50,8 +50,10 @@ async function getRandomEnemy(conn) {
 }
 
 async function updateStats(conn, hp, xp, level, pid) {
+    const incoming = [hp, xp, level, pid];
+    console.log("incoming stats: ", incoming);
     let experience, lvl;
-    if (xp >= 45) {
+    if (xp >= 10) {
         lvl = level + 1;
         experience = 0;
 
@@ -59,9 +61,9 @@ async function updateStats(conn, hp, xp, level, pid) {
         experience = xp;
         lvl = level;
     }
-
+    const stats = [hp, experience, lvl, pid];
+    console.log("stats: ", stats);
     try {
-        const stats = [hp, experience, lvl, pid];
         const result = await conn.query(update_stats, stats);
         return { success: true, error: null };
     
