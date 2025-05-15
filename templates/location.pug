@@ -11,7 +11,7 @@ html
       .description 
         p#description-text #{location.description}
       .image
-        img(src=`/static/img/${location.name}.png`)
+        img(src=`/static/img/${location.image_file_name}.png`)
       .actions
           each conn in location.connections
             if discoveredConnectionIds.includes(conn.conn_id)
