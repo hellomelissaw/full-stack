@@ -26,11 +26,11 @@ const {
 
 function locationIsValid(connection_rows, player_loc_id, loc_id) {
     if (player_loc_id == loc_id) {
-        return true; 
+        return true;
     }
 
     for (const row of connection_rows) {
-        if(row.conn_id == loc_id) {
+        if (row.conn_id == loc_id) {
 
             return true;
         }
@@ -48,15 +48,15 @@ function locationIsValid(connection_rows, player_loc_id, loc_id) {
 async function generateLocationResponse(conn, locID, sessionId) {
     const pid = await getSessionPid(conn, sessionId); // PROBABLY NEED TO GET THIS FROM THE COOKIE?
     if (!pid) {
-        return pug.renderFile('./templates/message.pug', { message: "No player found for this session." } )
+        return pug.renderFile('./templates/message.pug', { message: "No player found for this session." })
     }
 
     const apply = await applyLocationEffect(conn, locID, pid);
 
     if (!apply.success) {
-        return pug.renderFile('./templates/message.pug', { message: "Well, you should have perished, but something went wrong.. Good for you!"});
+        return pug.renderFile('./templates/message.pug', { message: "Well, you should have perished, but something went wrong.. Good for you!" });
     }
-    
+
     const data = await getLocationPageData(conn, locID, pid);
 
     if (data.loc && data.player) {
@@ -70,19 +70,17 @@ async function generateLocationResponse(conn, locID, sessionId) {
         );
         const discoveredConnectionIds = discoveredConnections.map(row => row.conn_id);
 
-/*
-        // Filter loc.connections to include only discovered connections
-        loc.connections = loc.connections.filter(conn => discoveredConnectionIds.includes(conn.conn_id));
-console.log("loc.connections after filtering:", loc.connections);
- */
+        /*
+                // Filter loc.connections to include only discovered connections
+                loc.connections = loc.connections.filter(conn => discoveredConnectionIds.includes(conn.conn_id));
+        console.log("loc.connections after filtering:", loc.connections);
+         */
         const currentlyAt = await conn.query(
-        "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
-        [pid, player.loc_id]
+            "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+            [pid, player.loc_id]
         );
-        console.log("currentlyAt:", currentlyAt);
-        console.log("Player loc id:", player.loc_id);
-        if(locationIsValid(currentlyAt, player.loc_id, locID)){
-            const playerStats = { 
+        if (locationIsValid(currentlyAt, player.loc_id, locID)) {
+            const playerStats = {
                 hp: player.health,
                 xp: player.experience,
                 level: player.level
@@ -90,15 +88,15 @@ console.log("loc.connections after filtering:", loc.connections);
             updatePlayerLocation(conn, locID, pid);
 
             return pug.renderFile('./templates/location.pug', { location: loc, stats: playerStats, discoveredConnectionIds });
-        
+
         } else {
-            return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!"});
+            return pug.renderFile('./templates/location_error.pug', { locID: player.loc_id, buttonLabel: "GO!" });
         }
-    
+
     } else {
-        return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." } )
+        return pug.renderFile('./templates/message.pug', { message: "Player or location data not found." })
     }
-}   
+}
 
 async function updateAfterAction(conn, act_id) {
     return JSON.stringify({
@@ -112,7 +110,7 @@ async function generateExplore(conn, req) {
     const sessionId = cookie[1] || null;
     const pid = await getSessionPid(conn, sessionId);
     if (!pid) {
-        return pug.renderFile('./templates/message.pug', { message: "Session ID nhot found."});
+        return pug.renderFile('./templates/message.pug', { message: "Session ID nhot found." });
     }
     const playerData = await getPlayerData(conn, pid);
     const currentLocationId = playerData.player_data.loc_id;
@@ -155,8 +153,8 @@ async function generateExplore(conn, req) {
     const updatedLocationData = await getLocationPageData(conn, currentLocationId, pid);
 
     const updatedDiscoveredConnections = await conn.query(
-    "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
-    [pid, currentLocationId]
+        "SELECT conn_id FROM player_location_connection WHERE pid = ? AND loc_id = ?",
+        [pid, currentLocationId]
     );
     const updatedDiscoveredConnectionIds = updatedDiscoveredConnections.map(row => row.conn_id);
 
@@ -173,7 +171,7 @@ async function generateExplore(conn, req) {
 }
 
 
-module.exports = { 
+module.exports = {
     generateLocationResponse,
     generateExplore
 };

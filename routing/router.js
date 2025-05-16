@@ -79,7 +79,6 @@ async function requestRoute(conn, req) {
     cookie = req.headers.cookie ? req.headers.cookie.split("=") : [];
 
     sessionId = cookie[1] || null;
-    console.log("Extracted Session ID:", sessionId);
 
     // TODO: put in helper function if this works...
 
@@ -168,9 +167,6 @@ async function requestRoute(conn, req) {
     }
 
     const updatedCookie = await buildCookie(conn, sessionUser);
-    console.log(`updated cookie ${updatedCookie}`);
-//    console.log("Content in router:");
-//    console.log(content);
     return { content: content, cookie: updatedCookie }
 }
 

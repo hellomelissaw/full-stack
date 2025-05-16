@@ -59,6 +59,7 @@ async function getLocationPageData(conn, id, pid) {
     const locationData = {
         loc_id: loc.loc_id,
         name: loc.name,
+        image_file_name: loc.name.toLowerCase().replace(/\s+/g, '-'),
         description: loc.description,
         connections: Object.keys(connections).map(key => ({
             conn_id: connections[key].conn_id,
