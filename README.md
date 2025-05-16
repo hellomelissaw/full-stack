@@ -21,3 +21,7 @@ Instead of a clear winning system, we decided to go for leveling up when you rea
 _Addendum:_ In the submitted report, it was noted that the Secure attribute is set on the session cookie to ensure it is transmitted only over HTTPS. While this reflects best practice, we did not end up configuring HTTPS support in the current local development after all.
 
 Despite omitting the Secure flag to facilitate testing, we are aware of the security implications in terms of production-ready applications.
+
+## Dev log
+### 16/05/24
+Added missing location images
