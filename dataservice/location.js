@@ -84,11 +84,14 @@ async function updatePlayerLocation(conn, id, pid) {
 async function insertLocation(conn, name, emojis, connections) {
     try {
         const result = await conn.query("INSERT INTO location (name, emojis) VALUES (?, ?)", [name, emojis]);
-        const loc_id = result.insertId;
+        const loc_id = Number(result.insertId);
         if (connections) {
-            const connectionIds = connections.split(',').map(id => id.trim());
+            const connectionIds = connections.split(',').map(id => parseInt(id.trim(), 10));
             for (const connId of connectionIds) {
-                await conn.query("INSERT INTO location_connection (loc_id, conn_id) VALUES (?, ?)", [loc_id, connId]);
+                if(connId !== loc_id) {
+                    await conn.query("INSERT INTO location_connection (loc_id, conn_id) VALUES (?, ?)", [loc_id, connId]);
+                    await conn.query("INSERT INTO location_connection (loc_id, conn_id) VALUES (?, ?)", [connId, loc_id]);
+                }
             }
         }
         return 'Location inserted successfully!';
